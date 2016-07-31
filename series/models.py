@@ -8,12 +8,15 @@ class Series(models.Model):
     name = models.CharField(max_length=110)
     api_id = models.CharField(
         max_length=20,
-        blank=True
+        blank=True,
+        unique=True
     )
-    cover_link = models.URLField(blank=True)
-    synopsis = models.TextField(blank=True)
+    cover_link = models.URLField(blank=True, editable=False)
+    synopsis = models.TextField(blank=True, editable=False)
     mal_link = models.URLField(blank=True)
+    ani_link = models.URLField(blank=True)
     wiki_link = models.URLField(blank=True)
+    last_api_update = models.DateField(null=True, editable=False)
 
     def __str__(self):
         return self.name

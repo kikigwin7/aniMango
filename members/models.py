@@ -9,10 +9,7 @@ class Member(models.Model):
         on_delete=models.CASCADE,
         primary_key=True
     )
-    nick = models.CharField(
-        max_length=30,
-        blank=True
-    )
+    nick = models.CharField(max_length=30, blank=True)
     bio = models.TextField(blank=True)
 
     def __str__(self):
