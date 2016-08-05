@@ -1,10 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
-from series.models import Series
+from .models import Series
 
 # Create your views here.
 
 def index(request):
-	response = "This is the library index"
-	return HttpResponse(response)
+    template = 'library/index.html'
+    series_list = Series.objects.order_by('name')
+    context = {
+        'series_list': series_list
+    }
+    return render(request, template, context)
+
+def series_view(request, series_id, media_type):
+    template = 'library/view.html'
+    series = get_object_or_404(Series, api_id=series_id, media_type=media_type)
+    context = {
+        'series': series
+    }
+    return render(request, template, context)
