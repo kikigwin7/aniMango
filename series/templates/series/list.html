@@ -1,0 +1,8 @@
+<h1>List of series in database</h1>
+<ul>
+{% for series in series_list %}
+	<li><a href="{{ series.media_type }}/{{ series.api_id }}">{{ series.name }}</a></li>
+{% empty %}
+	<li>No series in database</li>
+{% endfor %}
+</ul>

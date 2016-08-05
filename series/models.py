@@ -7,8 +7,8 @@ from .anilist import api_get_info
 # Series model to describe an anime or manga
 # Will be used in both viewings and library managment
 class Series(models.Model):
-    name = models.CharField(max_length=110, editable=False)
-    api_id = models.CharField(max_length=20)
+    name = models.CharField(max_length=110)
+    api_id = models.IntegerField()
     MEDIA_TYPE_CHOICES = (
         ('manga', 'API id is for Manga'),
         ('anime', 'API id is for Anime')
@@ -18,9 +18,9 @@ class Series(models.Model):
         choices=MEDIA_TYPE_CHOICES,
         default='manga'
     )
-    cover_link = models.URLField(editable=False)
-    synopsis = models.TextField(editable=False)
-    ani_link = models.URLField(editable=False)
+    cover_link = models.URLField()
+    synopsis = models.TextField()
+    ani_link = models.URLField()
     mal_link = models.URLField(blank=True)
     wiki_link = models.URLField(blank=True)
 

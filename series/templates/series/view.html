@@ -1,5 +1,15 @@
-<h1>{{ title }}</h1>
-<img src="{{ cover_image }}"/>
-<p>{{ synopsis }}</p>
+<h1>{{ series.title }}</h1>
+<img src="{{ series.cover_link }}"/>
+<p>{{ series.synopsis|safe }}</p>
 <p>More info</p>
-<a href="{{ anilist_link }}" target="_blank">Anilist</a>
+<ul>
+{% if series.ani_link %}
+	<li><a href="{{ series.ani_link }}" target="_blank">Anilist</a></li>
+{% endif %}
+{% if series.mal_link %}
+	<li><a href="{{ series.mal_link }}" target="_blank">Myanimelist</a></li>
+{% endif %}
+{% if series.wiki_link %}
+	<li><a href="{{ series.wiki_link }}" target="_blank">Wikipedia</a></li>
+{% endif %}
+</ul>
