@@ -9,13 +9,13 @@ from .anilist import api_get_info
 class Series(models.Model):
     name = models.CharField(max_length=110)
     api_id = models.IntegerField()
-    MEDIA_TYPE_CHOICES = (
+    SERIES_TYPE_CHOICES = (
         ('manga', 'API id is for Manga'),
         ('anime', 'API id is for Anime')
     )
-    media_type = models.CharField(
+    series_type = models.CharField(
         max_length=5,
-        choices=MEDIA_TYPE_CHOICES,
+        choices=SERIES_TYPE_CHOICES,
         default='manga'
     )
     cover_link = models.URLField()
@@ -50,38 +50,43 @@ class Series(models.Model):
             self.ani_link = link
             super(Series, self).save(*args,  **kwargs) # Call real save
 
-# Item class that repesents each library item
+# Item class that repesents each library item with associated loan
 class Item(models.Model):
     parent_series = models.ForeignKey(
         Series,
         on_delete=models.CASCADE
     )
-
     name = models.CharField(max_length=100)
-    media = models.CharField(max_length=15)
+    MEDIA_TYPE_CHOICES = (
+        ('Manga', 'Manga'),
+        ('Light Novel', 'Light Novel'),
+        ('DVD', 'DVD'),
+        ('BD', 'BD'),
+        ('Other', 'Other')
+    )
+    media_type = models.CharField(
+        max_length=15,
+        choices=MEDIA_TYPE_CHOICES,
+        blank=True
+    )
     details = models.CharField(
         max_length=30,
         blank=True
     )
-    
-    available = models.BooleanField(default=True)
+    on_loan = models.BooleanField(default=False)
+    requested = models.BooleanField(default=False)
+    loan_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        models.SET_NULL,
+        null=True
+    )
+    return_date = models.DateField(null=True)
 
     def __str__(self):
         return self.name
 
-class Loan(models.Model):
-    loan_item = models.ForeignKey(
-        Item,
-        on_delete=models.CASCADE
-    )
-
-    loan_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-
-    return_date = models.DateField()
-    returned = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.loan_user.str() + self.loan_item.str()
+    def available(self):
+        if self.on_loan or self.requested:
+            return False
+        else:
+            return True
