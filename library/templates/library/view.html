@@ -5,6 +5,7 @@
 {% endif %}
 <h1>{{ series.name }}</h1>
 <img src="{{ series.cover_link }}"/>
+{# added 'safe' to following tag to not escape html formatted symbols #}
 <p>{{ series.synopsis|safe }}</p>
 <p>More info</p>
 <ul>

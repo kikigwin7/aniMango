@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 # api functions
 from .anilist import api_get_info
+from datetime import date
 
 # Series model to describe an anime or manga
 # Will be used in library managment
@@ -40,12 +41,12 @@ class Series(models.Model):
             super(Series, self).save(*args,  **kwargs) # Call real save
         else:
             # get the info from the api on save if series info doesnt exist
-            api_info = api_get_info(self.api_id, self.media_type)
+            api_info = api_get_info(self.api_id, self.series_type)
             self.name = api_info['title_romaji']
             self.cover_link = api_info['image_url_lge']
             self.synopsis = api_info['description']
             link = 'https://anilist.co/'
-            link += self.media_type + '/'
+            link += self.series_type + '/'
             link += str(self.api_id)
             self.ani_link = link
             super(Series, self).save(*args,  **kwargs) # Call real save
@@ -88,8 +89,18 @@ class Item(models.Model):
 
     def status(self):
         if self.on_loan and not self.requested:
-            return 'On Loan'
+            if not self.return_date:
+                return 'On Loan'
+            elif self.return_date < date.today():
+                return 'Late'
+            else:
+                return 'On Loan'
+
         elif self.requested and not self.on_loan:
             return 'Requested'
         else:
             return 'Available'
+
+    # orders by requested items first, on_loan second
+    class Meta:
+        ordering = ['-requested', '-on_loan','name']

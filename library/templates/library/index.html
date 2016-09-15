@@ -1,14 +1,29 @@
 <h1>List of series in library</h1>
+<form action="{% url 'library:search' %}" method="get">
+    <input type="search" name="query">
+</form>
 <ul>
-{% for series in series_list %}
+{% for series in series_l %}
 	<li>
 		<a href="{% url 'library:detail' series.series_type series.api_id %}">
 			{{ series.name }}
 		</a>
 	</li>
-{% empty %}
-	<li>
-		No series in database
-	</li>
 {% endfor %}
 </ul>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if series_l.has_previous %}
+            <a href="?page={{ series_l.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ series_l.number }} of {{ series_l.paginator.num_pages }}
+        </span>
+
+        {% if series_l.has_next %}
+            <a href="?page={{ series_l.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>

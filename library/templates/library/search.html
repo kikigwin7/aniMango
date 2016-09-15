@@ -1,0 +1,12 @@
+<h1>Search result of series in library</h1>
+<ul>
+{% for series in series_l %}
+	<li>
+		<a href="{% url 'library:detail' series.series_type series.api_id %}">
+			{{ series.name }}
+		</a>
+	</li>
+{% empty %}
+	<h4>Your search returned no results</h4>
+{% endfor %}
+</ul>

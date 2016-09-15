@@ -6,6 +6,8 @@ app_name = 'library'
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
 
+	url(r'^search/$', views.index_search, name='search'),
+
 	url(
 		r'^(?P<media_type>anime|manga)/(?P<series_id>.+)/$',
 		views.series_view,

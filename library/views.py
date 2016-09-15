@@ -3,16 +3,42 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, InvalidPage
 
 from .models import Series, Item
 
 def index(request):
     template = 'library/index.html'
+    # Get page number from get variable in url
+    page = request.GET.get('page')
     series_list = Series.objects.order_by('name')
+    # 12 series per page
+    paginator = Paginator(series_list, 12)
+
+    try:
+        series = paginator.page(page)
+    except InvalidPage:
+        # Return first page for invalid input
+        series = paginator.page(1)
+
     context = {
-        'series_list': series_list
+        'series_l': series
     }
     return render(request, template, context)
+
+def index_search(request):
+    template ='library/search.html'
+    query = request.GET.get('query')
+    if query is None or query == '':
+        # An empty query is redirected to the regular index
+        return HttpResponseRedirect(reverse('library:index'))
+    else:
+        # Case insensitive filter of series name
+        results = Series.objects.filter(name__icontains=query)
+        context = {
+            'series_l': results
+        }
+        return render(request, template, context)
 
 def series_view(request, media_type, series_id):
     template = 'library/view.html'
