@@ -1,3 +1,8 @@
+{% if messages %}
+	{% for message in messages %}
+		{{ message }}
+	{% endfor %}
+{% endif %}
 <h1>{{ series.name }}</h1>
 <img src="{{ series.cover_link }}"/>
 <p>{{ series.synopsis|safe }}</p>
@@ -16,12 +21,28 @@
 
 <h2>Library items</h2>
 
-<ul>
-{% for item in items %}
-	<li>
-		{{ item.name }}
-	</li>
-{% empty %}
-	<li>This series has nothing available in the library</li>
-{% endfor %}
-</ul>
+{% if items %}
+	<table>
+		<tr>
+			<th>Media</th>
+			<th>Item</th>
+			<th>Details</th>
+			<th>Availability</th>
+		</tr>
+	{% for item in items %}
+		<tr>
+			<td>{{ item.media_type }}</td>
+			<td>{{ item.name }}</td>
+			<td>{{ item.details }}</td>
+			<td>{{ item.status }}</td>
+			<td>
+			{% if item.status == 'Available' %}
+				<a href="{% url 'library:request_form' item.id %}">Request</a>
+			{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% else %}
+<p>This series has nothing available in the library</p>
+{% endif %}

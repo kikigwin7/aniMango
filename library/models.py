@@ -77,16 +77,19 @@ class Item(models.Model):
     requested = models.BooleanField(default=False)
     loan_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
+        # Can be null if no one has taken it out
         models.SET_NULL,
         null=True
     )
     return_date = models.DateField(null=True)
 
     def __str__(self):
-        return self.name
+        return self.parent_series.name + ' : ' + self.name
 
-    def available(self):
-        if self.on_loan or self.requested:
-            return False
+    def status(self):
+        if self.on_loan and not self.requested:
+            return 'On Loan'
+        elif self.requested and not self.on_loan:
+            return 'Requested'
         else:
-            return True
+            return 'Available'

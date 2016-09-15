@@ -2,7 +2,7 @@
 <ul>
 {% for series in series_list %}
 	<li>
-		<a href="{{ series.media_type }}/{{ series.api_id }}">
+		<a href="{% url 'library:detail' series.series_type series.api_id %}">
 			{{ series.name }}
 		</a>
 	</li>

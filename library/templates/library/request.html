@@ -1,0 +1,10 @@
+<img src="{{ series.cover_link }}">
+<p>Request this item?</p>
+<h3>{{ item }}</h3>
+<p>{{ item.details }}</p>
+<form action="{% url 'library:request_item' %}" method="post">
+	{% csrf_token %}
+	<input type="hidden" name="id" value="{{ item.id }}">
+	<input type="submit" value="Yes">
+</form>
+<a href="{% url 'library:detail' series.series_type series.api_id %}">No</a>
