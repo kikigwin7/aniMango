@@ -90,7 +90,7 @@ def api_get_info(media_id, media_type):
                 url + str(media_id),
                 params={'access_token':access_token}
             )
-        
+
         if request.status_code == 200:
             return request.json()
         else:
