@@ -12,8 +12,8 @@ def index(request):
     # Get page number from get variable in url
     page = request.GET.get('page')
     series_list = Series.objects.order_by('name')
-    # 12 series per page
-    paginator = Paginator(series_list, 12)
+    # 24 series per page
+    paginator = Paginator(series_list, 24)
 
     try:
         series = paginator.page(page)
@@ -36,6 +36,7 @@ def index_search(request):
         # Case insensitive filter of series name
         results = Series.objects.filter(name__icontains=query)
         context = {
+            'pre_search': query,
             'series_l': results
         }
         return render(request, template, context)
@@ -88,16 +89,15 @@ def item_get(request):
 
     # Sanity check
     if lib_item.status() != 'Available':
-        raise PermissionDenied
-
-    lib_item.requested = True
-    lib_item.loan_user = request.user
-    lib_item.save()
+        messages.error(request, 'Error: Item unavailable')
+    else:
+        # Do the thing
+        lib_item.requested = True
+        lib_item.loan_user = request.user
+        lib_item.save()
+        messages.success(request, 'Item successfully requested')
 
     parent = lib_item.parent_series
-
-    # Redirect to series view with success message
-    messages.success(request, 'Item successfully requested')
     # Construct redirect url using reverse()
     redir_url = reverse(
         'library:detail',

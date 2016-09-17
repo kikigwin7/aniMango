@@ -14,9 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
+# Callabe homepage view method
+from home.views import home
 
 urlpatterns = [
+    # The first url uses the views file in the home app
+    url(r'^$', home, name='home'),
 	url(r'^library/', include('library.urls')),
 	url(r'^members/', include('members.urls')),
     url(r'^admin/', admin.site.urls),

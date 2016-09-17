@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <!--Import Google Icon Font-->
+    <link
+      href="http://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!--Import materialize.css-->
+    {% load static %}
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{% static 'css/materialize.min.css' %}"
+      media="screen,projection"
+    />
+    <!--Site specific anime.css-->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{% static 'css/anime.css' %}"
+    />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>
+      Warwick Animesoc -
+      {% block title %}Base Template{% endblock %}
+    </title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="navbar-fixed">
+        <nav>
+          <div class="nav-wrapper indigo darken-4">
+            <a href="#" data-activates="mobile-menu" class="button-collapse">
+              <i class="material-icons">menu</i>
+            </a>
+            <a href="{% url 'home' %}" class="brand-logo hide-on-med-and-up">
+              <img src="{% static 'images/smol_logo.gif' %}">
+            </a>
+            <a href="{% url 'home' %}" class="brand-logo hide-on-small-only">
+              Warwick Anime and Manga Society
+            </a>
+            <ul class="right hide-on-med-and-down">
+              <li><a href="#">Forums</a></li>
+              <li><a href="#">Viewings</a></li>
+              <li>
+                <a href="{% url 'library:index' %}">
+                  Library
+                </a>
+              </li>
+              <li><a href="#">About</a></li>
+              <li>
+                <a href="{% url 'admin:index' %}">
+                  Admin
+                </a>
+              </li>
+            </ul>
+            <ul class="side-nav" id="mobile-menu">
+              <li><a href="#">Forums</a></li>
+              <li><a href="#">Viewings</a></li>
+              <li>
+                <a href="{% url 'library:index' %}">Library</a>
+              </li>
+              <li><a href="#">About</a></li>
+              <li><a href="{% url 'admin:index' %}">Admin</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        {% block content %}
+        <div class="row">
+          <div class="col s12">
+            <h1>Base Template</h1>
+        </div>
+        {% endblock %}
+      </div>
+    </main>
+
+    <footer class="page-footer indigo darken-4">
+      <div class="footer-copyright indigo darken-3">
+        <div class="container">
+          &copy; Warwick Anime and Manga Society 2016
+        </div>
+      </div>
+    </footer>
+
+    <!--Import jQuery before materialize.js-->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-2.1.1.min.js">
+    </script>
+    <script
+      type="text/javascript"
+      src="{% static 'js/materialize.min.js' %}">
+    </script>
+    <!--Custom js for the website-->
+    <script
+      type="text/javascript"
+      src="{% static 'js/anime.js' %}">
+    </script>
+  </body>
+</html>

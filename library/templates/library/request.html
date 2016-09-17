@@ -1,10 +1,58 @@
-<img src="{{ series.cover_link }}">
-<p>Request this item?</p>
-<h3>{{ item }}</h3>
-<p>{{ item.details }}</p>
-<form action="{% url 'library:request_item' %}" method="post">
-	{% csrf_token %}
-	<input type="hidden" name="id" value="{{ item.id }}">
-	<input type="submit" value="Yes">
-</form>
-<a href="{% url 'library:detail' series.series_type series.api_id %}">No</a>
+{% extends "base.html" %}
+{% block title %}
+    Request
+{% endblock %}
+
+{% block content %}
+<div class="card-panel">
+  <div class="row">
+    <div class="col s12 m4">
+      <div class="center-align">
+        <img class="responsive-img" src="{{ series.cover_link }}">
+      </div>
+    </div>
+    <div class="col s12 m8">
+      <h4 class="center-align">Request this item?</h4>
+      <p><b>Item name:</b></p>
+        <p>{{ item }}</p>
+      <p><b>Item details:</b></p>
+        <p>{{ item.details }}</p>
+      <b>
+        <p>
+          Proceeding will make the available for pickup at the next Animesoc
+          weekly showing.
+        </p>
+        <p>
+          A deposit of £5 must be paid per item which will be returned when the
+           item is returned.
+          Items must be returned within
+          the allocated loan period which will be given at item pickup 
+          (usually two weeks.
+          Loan period may be extended upon request to an exec member.
+      </b>
+
+      <div class="col s6">
+        <div class="center-align">
+          <a
+            href="{% url 'library:detail' series.series_type series.api_id %}"
+            class="btn red darken-1"
+          >
+            Cancel
+          </a>
+        </div>
+      </div>
+
+      <div class="col s6">
+        <div class="center-align">
+          <form action="{% url 'library:request_item' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ item.id }}">
+            <input type="submit" value="Request" class="btn">
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

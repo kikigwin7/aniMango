@@ -1,12 +1,42 @@
-<h1>Search result of series in library</h1>
-<ul>
+{% extends "base.html" %}
+{% block title %}
+    Library Search
+{% endblock %}
+
+{% block content %}
+<h3 class="center-align">Library Search</h3>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel">
+      <form action="{% url 'library:search' %}" method="get">
+        <div class="input-field">
+          <input id="searchbar" type="search" name="query"
+            {% if pre_search %}
+            value="{{ pre_search }}"
+            {% endif %}
+          >
+          <label for="searchbar" class="active">Search the library</label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row">
 {% for series in series_l %}
-	<li>
-		<a href="{% url 'library:detail' series.series_type series.api_id %}">
-			{{ series.name }}
-		</a>
-	</li>
+  <div class="col s6 m4 l3">
+    <a href="{% url 'library:detail' series.series_type series.api_id %}">
+    <div class="card small hoverable">
+      <img class="library-img" src="{{ series.cover_link }}">
+      <div class="card-content library-label">
+        <p class="center-align">{{ series.name }}</p>
+      </div>
+    </div>
+    </a>
+  </div>
 {% empty %}
-	<h4>Your search returned no results</h4>
+<h5 class="center-align">There are no results for your search</h5>
 {% endfor %}
-</ul>
+</div>
+{% endblock %}

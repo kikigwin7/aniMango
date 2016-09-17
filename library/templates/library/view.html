@@ -1,49 +1,102 @@
-{% if messages %}
-	{% for message in messages %}
-		{{ message }}
-	{% endfor %}
-{% endif %}
-<h1>{{ series.name }}</h1>
-<img src="{{ series.cover_link }}"/>
-{# added 'safe' to following tag to not escape html formatted symbols #}
-<p>{{ series.synopsis|safe }}</p>
-<p>More info</p>
-<ul>
-{% if series.ani_link %}
-	<li><a href="{{ series.ani_link }}" target="_blank">Anilist</a></li>
-{% endif %}
-{% if series.mal_link %}
-	<li><a href="{{ series.mal_link }}" target="_blank">Myanimelist</a></li>
-{% endif %}
-{% if series.wiki_link %}
-	<li><a href="{{ series.wiki_link }}" target="_blank">Wikipedia</a></li>
-{% endif %}
-</ul>
+{% extends "base.html" %}
 
-<h2>Library items</h2>
+{% block title %}
+    {{ series.name }}
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="card-panel {{ message.tags }}">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="card-panel">
+  <div class="row">
+
+    <div class="col s12 m3">
+      <div class="center-align">
+        <img class="responsive-img" src="{{ series.cover_link }}">
+      </div>
+    </div>
+
+    <div class="col s12 m9">
+      <h4 class="center-align">
+        {{ series.name }}
+      </h4>
+      <p>
+        {# added 'safe' to following tag to 'not' escape formatted symbols #}
+        {{ series.synopsis|safe }}
+      </p>
+      <h5>
+        More info
+      </h5>
+        {% load static %}
+        {% if series.mal_link %}
+        <a href="{{ series.mal_link }}" target="_blank">
+          <img src="{% static 'mal_icon.png' %}" alt="MyAnimeList">
+        </a>
+        {% endif %}
+
+        {# ani_link check not needed, as it is required for the api to work #}
+        <a href="{{ series.ani_link }}" target="_blank">
+          <img src="{% static 'anilist_icon.png' %}" alt="Anilist">
+        </a>
+
+        {% if series.wiki_link %}
+        <a href="{{ series.wiki_link }}" target="_blank">
+          <img src="{% static 'wiki_icon.png' %}" alt="Wikipedia">
+        </a>
+        {% endif %}
+    </div>
+
+
+  </div>
+</div>
+
+<div class="divider"></div>
+<h4>Library Items</h4>
 
 {% if items %}
-	<table>
-		<tr>
-			<th>Media</th>
-			<th>Item</th>
-			<th>Details</th>
-			<th>Availability</th>
-		</tr>
-	{% for item in items %}
-		<tr>
-			<td>{{ item.media_type }}</td>
-			<td>{{ item.name }}</td>
-			<td>{{ item.details }}</td>
-			<td>{{ item.status }}</td>
-			<td>
-			{% if item.status == 'Available' %}
-				<a href="{% url 'library:request_form' item.id %}">Request</a>
-			{% endif %}
-			</td>
-		</tr>
-	{% endfor %}
+	<table class="responsive-table">
+    <thead>
+	  	<tr>
+	   		<th>Media</th>
+		  	<th>Item</th>
+		  	<th>Details</th>
+		  	<th>Status</th>
+		  </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+		  <tr>
+		  	<td>{{ item.media_type }}</td>
+		  	<td>{{ item.name }}</td>
+		  	<td>{{ item.details }}</td>
+		  	<td>{{ item.status }}</td>
+		  	<td>
+		  	  {% if item.status == 'Available' %}
+		  		<a 
+            class="btn waves-effect blue darken-3"
+            href="{% url 'library:request_form' item.id %}"
+          >
+            request
+          </a>
+          {% else %}
+            <a class="btn disabled">
+              request
+            </a>
+		  	  {% endif %}
+		  	</td>
+		  </tr>
+    {% endfor %}
+    </tbody>
 	</table>
 {% else %}
-<p>This series has nothing available in the library</p>
+<p>This series has no items available in the library</p>
 {% endif %}
+
+{% endblock %}
