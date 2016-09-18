@@ -13,6 +13,7 @@
         <div class="input-field">
           <input id="searchbar" type="search" name="query">
           <label for="searchbar" class="active">Search the library</label>
+          <i class="material-icons">close</i>
         </div>
       </form>
     </div>
@@ -42,12 +43,6 @@
           <i class="material-icons">chevron_left</i>
         </a>
       </li>
-      {% else %}
-      <li class="disabled">
-        <a href="">
-          <i class="material-icons">chevron_left</i>
-        </a>
-      </li>
       {% endif %}
 
       Page {{ series_l.number }} of {{ series_l.paginator.num_pages }}
@@ -55,12 +50,6 @@
       {% if series_l.has_next %}
       <li class="waves-effect">
         <a href="?page={{ series_l.next_page_number }}">
-          <i class="material-icons">chevron_right</i>
-        </a>
-      </li>
-      {% else %}
-      <li class="disabled">
-        <a href="">
           <i class="material-icons">chevron_right</i>
         </a>
       </li>

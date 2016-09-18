@@ -16,12 +16,6 @@ nav .button-collapse i {
     height: 40px;
     line-height: 40px;
 }
-nav .brand-logo { 
-    font-size: 1.5rem;
-    /* Add padding to the left  and right of the main logo text */
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-}
 @media only screen and (min-width: 601px){
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
         height: 40px;
@@ -29,6 +23,12 @@ nav .brand-logo {
     }
 }
 
+/* Add padding to the left  and right of the main logo text */
+nav .brand-logo {
+    font-size: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
 /* Remove padding on labels in the library view */
 .card .card-content.library-label {
   padding: 0px;

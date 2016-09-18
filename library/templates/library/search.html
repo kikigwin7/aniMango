@@ -17,6 +17,7 @@
             {% endif %}
           >
           <label for="searchbar" class="active">Search the library</label>
+          <i class="material-icons">close</i>
         </div>
       </form>
     </div>
@@ -39,4 +40,12 @@
 <h5 class="center-align">There are no results for your search</h5>
 {% endfor %}
 </div>
+
+<div class="center-align">
+  <a class="btn waves-effect blue darken-3" href="{% url 'library:index' %}">
+    <i class="material-icons left">chevron_left</i>
+    back to library
+  </a>
+</div>
+
 {% endblock %}

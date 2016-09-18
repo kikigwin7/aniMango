@@ -37,15 +37,25 @@
       <div class="navbar-fixed">
         <nav>
           <div class="nav-wrapper indigo darken-4">
+
             <a href="#" data-activates="mobile-menu" class="button-collapse">
               <i class="material-icons">menu</i>
             </a>
-            <a href="{% url 'home' %}" class="brand-logo hide-on-med-and-up">
+            <a
+              href="{% url 'home' %}"
+              class="brand-logo center hide-on-med-only"
+            >
               <img src="{% static 'images/smol_logo.gif' %}">
             </a>
             <a href="{% url 'home' %}" class="brand-logo hide-on-small-only">
               Warwick Anime and Manga Society
             </a>
+
+            <ul id="member-dropdown" class="dropdown-content">
+              <li><a href="{% url 'admin:index' %}">Admin</a></li>
+              <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+
             <ul class="right hide-on-med-and-down">
               <li><a href="#">Forums</a></li>
               <li><a href="#">Viewings</a></li>
@@ -56,19 +66,53 @@
               </li>
               <li><a href="#">About</a></li>
               <li>
-                <a href="{% url 'admin:index' %}">
-                  Admin
+                {% if user.is_authenticated %}
+                <a class="dropdown-button" data-activates="member-dropdown">
+                  <i class="material-icons left">account_circle</i>
+                  {{ user }}
                 </a>
+                {% else %}
+                <a href="{% url 'login' %}">
+                  Login
+                </a>
+                {% endif %}
               </li>
             </ul>
+            <!--Mobile menu stuff here-->
             <ul class="side-nav" id="mobile-menu">
+              <li>
+                {% if user.is_authenticated %}
+                <ul class="collapsible collapsible-accordian">
+                  <li>
+                    <a class="collapsible-header waves-effect">
+                     <i class="material-icons left">account_circle</i>
+                     {{ user }}
+                     <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    <div class="collapsible-body">
+                      <ul>
+                        <li>
+                          <a href="{% url 'admin:index' %}">Admin</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'logout' %}">Logout</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+                {% else %}
+                <a href="{% url 'login' %}">
+                  Login
+                </a>
+                {% endif %}
+              </li>
               <li><a href="#">Forums</a></li>
               <li><a href="#">Viewings</a></li>
               <li>
                 <a href="{% url 'library:index' %}">Library</a>
               </li>
               <li><a href="#">About</a></li>
-              <li><a href="{% url 'admin:index' %}">Admin</a></li>
             </ul>
           </div>
         </nav>
@@ -77,6 +121,15 @@
 
     <main>
       <div class="container">
+
+        {% if messages %}
+         {% for message in messages %}
+          <div class="card-panel {{ message.tags }}">
+            {{ message }}
+          </div>
+          {% endfor %}
+        {% endif %}
+
         {% block content %}
         <div class="row">
           <div class="col s12">
