@@ -1,9 +1,121 @@
 {% extends "base.html" %}
 
 {% block title%}
-	Homepage
+  Homepage
 {% endblock %}
 
 {% block content %}
-	<h1>Test Homepage</h1>
+  {% load static %}
+  <img
+    class="responsive-img"
+    src="{% static 'front_banner.jpg' %}"
+    alt="banner"
+  />  
+  <h4 class="center-align">
+    Welcome to the University of Warwick Anime and Manga Society
+  </h4>
+
+  <p>
+    From Cowboy Bebop to Princess Mononoke, Azumanga Daioh to Dragon Ball Z, the Anime and Manga society is for anyone interested in trying, watching, discussing or borrowing Anime or Manga of any kind, and meeting people with similar interests.
+  </p>
+
+        <!--Row that contains the news and events sections, divided by columns-->
+        <div class="row">
+          <!--The news section-->
+          <div class="col s12 m12 l8">
+            <h5>News and Announcements</h5>
+            <div class="card-panel">
+              <h6>Hello this is a news title</h6>
+              <div class="divider"></div>
+              <p> 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+              <div class="divider"></div>
+              <h6>Posted by Jai on 2016-07-12</h6>
+            </div>
+            <div class="card-panel">
+              <h6>Hello this is a news title</h6>
+              <div class="divider"></div>
+              <p> 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+              <div class="divider"></div>
+              <h6>Posted by Jai on 2016-07-12</h6>
+            </div>
+            <div class="card-panel">
+              <h6>Hello this is a news title</h6>
+              <div class="divider"></div>
+              <p> 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+              <div class="divider"></div>
+              <h6>Posted by Jai on 2016-07-12</h6>
+            </div>
+          </div>
+          <!--The events section-->
+          <div class="col s12 l4">
+            <!--Event heading card-->
+              <h5>Upcoming Events</h5>
+            <!--single event card-->
+            <div class="col s12 m6 l12">
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title">Event title</span>
+                <p>
+                  This is an event and its details and such. You can click the link below and get taken to an events page.
+                </p>
+                <div class="card-action">
+                  <a href="#" class="blue-text">Go to event</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 m6 l12">
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title">Event title</span>
+                <p>
+                  Well the link won't actually work yet because I haven't developed the backend.
+                </p>
+                <div class="card-action">
+                  <a href="#" class="blue-text">Go to event</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 l4">
+
+          <div class="col s12 m6 l12">
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title">Event title</span>
+                <p>
+                  Well the link won't actually work yet because I haven't developed the backend.
+                </p>
+                <div class="card-action">
+                  <a href="#" class="blue-text">Go to event</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col s12 m6 l12">
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title">Event title</span>
+                <p>
+                  Well the link won't actually work yet because I haven't developed the backend.
+                </p>
+                <div class="card-action">
+                  <a href="#" class="blue-text">Go to event</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          </div>
+        </div>
+  
 {% endblock %}
