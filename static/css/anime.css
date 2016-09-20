@@ -50,13 +50,3 @@ body {
 main {
   flex: 1 0 auto;
 }
-
-/* Message panels */
-.card-panel.success {
-  background-color: #4caf50;
-  color: white;
-}
-.card-panel.error {
-  background-color: red;
-  color: white;
-}

@@ -5,4 +5,9 @@ function link_starto () {
 	$(".button-collapse").sideNav({
 		closeOnClick: true
 	});
+
+	// Display messages, if any
+	if (typeof pageMessages == 'function') {
+		pageMessages();
+	}
 }

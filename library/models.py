@@ -35,8 +35,9 @@ class Series(models.Model):
     class Meta:
         verbose_name_plural = "series"
 
+    # Save override so that api data can be used for new series entries
     def save(self, *args, **kwargs):
-        #Check if series info is set by the api
+        # self.name should exist if api data has been populated
         if self.name:
             super(Series, self).save(*args,  **kwargs) # Call real save
         else:

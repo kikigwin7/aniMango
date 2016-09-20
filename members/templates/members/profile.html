@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title%}
+  Profile
+{% endblock %}
+
+{% block content %}
+  <h4 class="center-align">
+    Your member profile
+  </h4>
+  <div class="card-panel">
+    <div class="col s12 m6">
+      <p>Name: {{ user.get_full_name }}</p>
+      <p>
+        Nickname: 
+        {% if user.member.nick %}
+          {{ user.member.nick }}
+        {% else %}
+          None set
+        {% endif %}
+      </p>
+      <p>
+        Bio: 
+        {% if user.member.bio %}
+          {{ user.member.bio }}
+        {% else %}
+          None set
+        {% endif %}
+      </p>
+      <div class="center-align">
+        <a href="{% url 'member:edit' %}" class="btn blue darken-3">edit</a>
+      </div>
+      <div class="col s12 m6">
+        <img class="" src=""/>
+      </div>
+    </div>
+  </div>
+
+  <h5>Library items:</h5>
+
+  <p>Feature coming soon...</p>
+
+{% endblock %}
