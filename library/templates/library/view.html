@@ -29,18 +29,18 @@
         {% load static %}
         {% if series.mal_link %}
         <a href="{{ series.mal_link }}" target="_blank">
-          <img src="{% static 'mal_icon.png' %}" alt="MyAnimeList">
+          <img src="{% static 'mal_icon.png' %}" title="View on MyAnimeList.net">
         </a>
         {% endif %}
 
         {# ani_link check not needed, as it is required for the api to work #}
         <a href="{{ series.ani_link }}" target="_blank">
-          <img src="{% static 'anilist_icon.png' %}" alt="Anilist">
+          <img src="{% static 'anilist_icon.png' %}" title="View on Anilist.co">
         </a>
 
         {% if series.wiki_link %}
         <a href="{{ series.wiki_link }}" target="_blank">
-          <img src="{% static 'wiki_icon.png' %}" alt="Wikipedia">
+          <img src="{% static 'wiki_icon.png' %}" title="View on Wikipedia">
         </a>
         {% endif %}
     </div>

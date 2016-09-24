@@ -2,13 +2,14 @@ from django.db import models
 # Use django settings to reference the AUTH_USER_MODEL
 from django.conf import settings
 # api functions
-from .anilist import api_get_info
+from anilist_api.anilist import api_get_info
 from datetime import date
 
 # Series model to describe an anime or manga
 # Will be used in library managment
 class Series(models.Model):
     name = models.CharField(max_length=110)
+    name_eng = models.CharField(max_length=110)
     api_id = models.IntegerField()
     SERIES_TYPE_CHOICES = (
         ('manga', 'API id is for Manga'),
@@ -27,7 +28,7 @@ class Series(models.Model):
 
     def __str__(self):
         if self.name:
-            return self.name
+            return self.name + ' / ' + self.name_eng
         else:
             return 'Unknown %s --> API ID: %s' % (self.media_type, self.api_id)
 
@@ -44,6 +45,7 @@ class Series(models.Model):
             # get the info from the api on save if series info doesnt exist
             api_info = api_get_info(self.api_id, self.series_type)
             self.name = api_info['title_romaji']
+            self.name_eng = api_info['title_english']
             self.cover_link = api_info['image_url_lge']
             self.synopsis = api_info['description']
             link = 'https://anilist.co/'

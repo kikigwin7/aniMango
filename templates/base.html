@@ -64,7 +64,7 @@
 
             <ul class="right hide-on-med-and-down">
               <li><a href="#">Forums</a></li>
-              <li><a href="#">Viewings</a></li>
+              <li><a href="{% url 'showings:schedule' %}">Showings</a></li>
               <li>
                 <a href="{% url 'library:index' %}">
                   Library
@@ -114,7 +114,7 @@
                 {% endif %}
               </li>
               <li><a href="#">Forums</a></li>
-              <li><a href="#">Viewings</a></li>
+              <li><a href="{% url 'showings:schedule' %}">Showings</a></li>
               <li>
                 <a href="{% url 'library:index' %}">Library</a>
               </li>

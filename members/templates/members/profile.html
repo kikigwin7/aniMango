@@ -9,30 +9,39 @@
     Your member profile
   </h4>
   <div class="card-panel">
-    <div class="col s12 m6">
-      <p>Name: {{ user.get_full_name }}</p>
-      <p>
-        Nickname: 
-        {% if user.member.nick %}
-          {{ user.member.nick }}
-        {% else %}
-          None set
-        {% endif %}
-      </p>
-      <p>
-        Bio: 
-        {% if user.member.bio %}
-          {{ user.member.bio }}
-        {% else %}
-          None set
-        {% endif %}
-      </p>
-      <div class="center-align">
-        <a href="{% url 'member:edit' %}" class="btn blue darken-3">edit</a>
+    <div class="row">
+      <div class="col s12 m6 push-m6">
+        <div class="right-align hide-on-small-only">
+          {% load static %}
+          <img class="circle" src="{% static 'profile_default.jpg' %}"/>
+        </div>
+        <div class="center-align hide-on-med-and-up">
+          {% load static %}
+          <img class="circle" src="{% static 'profile_default.jpg' %}"/>
+        </div>
       </div>
-      <div class="col s12 m6">
-        <img class="" src=""/>
+      <div class="col s12 m6 pull-m6">
+        <p>Name: {{ user.get_full_name }}</p>
+        <p>
+          Nickname: 
+          {% if user.member.nick %}
+            {{ user.member.nick }}
+          {% else %}
+            None set
+          {% endif %}
+        </p>
+        <p>
+          Bio: 
+          {% if user.member.bio %}
+            {{ user.member.bio }}
+          {% else %}
+            None set
+          {% endif %}
+        </p>
       </div>
+    </div>
+    <div class="center-align">
+      <a href="{% url 'member:edit' %}" class="btn blue darken-3">edit</a>
     </div>
   </div>
 

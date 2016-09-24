@@ -7,8 +7,4 @@ from django.core.urlresolvers import reverse
 
 def home(request):
 	template = 'home/home.html'
-	try:
-		print(request.user.member.nick_or_name())
-	except:
-		print('Anonymous user')
 	return render(request, template)

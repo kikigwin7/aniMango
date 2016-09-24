@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'library.apps.LibraryConfig',
     'members.apps.MembersConfig',
+    'showings.apps.ShowingsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

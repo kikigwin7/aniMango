@@ -6,14 +6,26 @@ from .models import Item, Series
 
 admin.site.disable_action('delete_selected')
 
+class ItemInline(admin.StackedInline):
+    model = Item
+    extra = 1
+    readonly_fields = (
+        'on_loan',
+        'requested',
+        'loan_user',
+        'return_date'
+    )
+
 class SeriesAdmin(admin.ModelAdmin):
     readonly_fields = (
         'name',
+        'name_eng',
         'cover_link',
         'synopsis',
         'ani_link'
     )
     search_fields = ['name']
+    inlines = [ItemInline]
 
 # Approve item loan request method
 def approve_req(modeladmin, request, queryset):

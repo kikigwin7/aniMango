@@ -26,6 +26,8 @@ class Member(models.Model):
             return self.user.username
 
 # Ensure a blank member object is created for each user using django post_save
+# Would normally do a save override but not safe to do on the django user model
+# https://coderwall.com/p/ktdb3g/django-signals-an-extremely-simplified-explanation-for-beginners
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def ensure_profile_exists(sender, **kwargs):
     if kwargs.get('created', False):

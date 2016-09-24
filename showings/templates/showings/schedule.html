@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Showings
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col s12 m4">
+    <div class="card-panel">
+      <form action="{% url 'showings:cooldown' %}">
+        <div class="input-field">
+          <input id="cool_search" type="search" name="query">
+          <label for="cool_search" class="active">Cooldown Search</label>
+        </div>
+      </form>
+    </div>
+    <div class="card-panel">
+      <h5>View by year</h5>
+      <div class="row">
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">All</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2016</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2015</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2014</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2013</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2012</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2011</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2010</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2009</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2008</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2007</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2006</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2005</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2004</a>
+        </div>
+        <div class="col s4 m12 l6">
+          <a class="waves-effect btn-flat">2003</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col s12 m8">
+    {% for showing in showing_page %}
+    <div class="card-panel">
+      <strong>{{ showing.get_showing_type_display }}</strong>
+      <div class="divider"></div>
+      <dl>
+        {% for show in showing.show_set.all %}
+        <dt>
+          {{ show.title_eng }}
+
+          <div class="right">
+            {% load static %}
+            {% if show.mal_link %}
+            <a href="{{ show.mal_link }}" target="_blank">
+              <img src="{% static 'smol_mal_icon.png' %}" title="View on MyAnimeList.net">
+            </a>
+            {% endif %}
+            <a href="{{ show.ani_link }}" target="_blank">
+              <img src="{% static 'smol_anilist_icon.png' %}" title="View on Anilist.co">
+            </a>
+            {% if show.wiki_link %}
+            <a href="{{ show.wiki_link }}" target="_blank">
+              <img src="{% static 'smol_wiki_icon.png' %}" title="View on Wikipedia">
+            </a>
+            {% endif %}
+            {% if show.lib_series %}
+            <a href="{% url 'library:detail' 'anime' show.api_id %}" target="_blank">
+              <img src="{% static 'smol_lib_icon.png' %}" title="Series available in the Animesoc Library">
+            </a>
+            {% endif %}
+          </div>
+        </dt>
+        <dd>
+          {{ show.details }}
+        </dd>
+        {% endfor %}
+      </dl>
+      <div class="divider"></div>
+      <strong>{{ showing.date }}</strong>
+    </div>
+    {% empty %}
+      <h4 class="center-align">No showings available</h4>
+    {% endfor %}
+
+    <div class="center-align">
+      <ul class="pagination">
+          {% if showing_page.has_previous %}
+          <li class="waves-effect">
+            <a href="?page={{ showing_page.previous_page_number }}">
+              <i class="material-icons">chevron_left</i>
+            </a>
+          </li>
+          {% endif %}
+
+          Page {{ showing_page.number }} of {{ showing_page.paginator.num_pages }}
+
+          {% if showing_page.has_next %}
+          <li class="waves-effect">
+            <a href="?page={{ showing_page.next_page_number }}">
+              <i class="material-icons">chevron_right</i>
+            </a>
+          </li>
+          {% endif %}
+      </ul>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
