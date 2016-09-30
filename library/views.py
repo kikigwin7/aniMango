@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -11,7 +12,7 @@ def index(request):
     template = 'library/index.html'
     # Get page number from get variable in url
     page = request.GET.get('page')
-    series_list = Series.objects.order_by('name')
+    series_list = Series.objects.order_by('title_eng')
     # 24 series per page
     paginator = Paginator(series_list, 24)
 
@@ -33,20 +34,21 @@ def index_search(request):
         # An empty query is redirected to the regular index
         return HttpResponseRedirect(reverse('library:index'))
     else:
-        # Case insensitive filter of series name
-        results = Series.objects.filter(name__icontains=query)
+        # Case insensitive filter of series title in english and romaji
+        results = Series.objects.filter(
+            Q(title__icontains=query)|Q(title_eng__icontains=query)
+        )
         context = {
             'pre_search': query,
             'series_l': results
         }
         return render(request, template, context)
 
-def series_view(request, media_type, series_id):
+def series_view(request, series_id):
     template = 'library/view.html'
     library_series = get_object_or_404(
         Series,
-        api_id=series_id,
-        series_type=media_type
+        id=series_id
     )
     library_items = Item.objects.filter(parent_series=library_series)
     context = {
@@ -72,7 +74,7 @@ def request_form(request, item_id):
         # Construct redirect url using reverse()
         redir_url = reverse(
             'library:detail',
-            args=[parent.series_type, parent.api_id]
+            args=[parent.id]
         )
         return HttpResponseRedirect(redir_url)
 
@@ -101,6 +103,6 @@ def item_get(request):
     # Construct redirect url using reverse()
     redir_url = reverse(
         'library:detail',
-        args=[parent.series_type, parent.api_id]
+        args=[parent.id]
     )
     return HttpResponseRedirect(redir_url)

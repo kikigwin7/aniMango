@@ -27,11 +27,11 @@
 <div class="row">
 {% for series in series_l %}
   <div class="col s6 m4 l3">
-    <a href="{% url 'library:detail' series.series_type series.api_id %}">
+    <a href="{% url 'library:detail' series.id %}">
     <div class="card small hoverable">
       <img class="library-img" src="{{ series.cover_link }}">
       <div class="card-content library-label">
-        <p class="center-align">{{ series.name }}</p>
+        <p class="center-align">{{ series.title }}</p>
       </div>
     </div>
     </a>

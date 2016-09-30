@@ -5,21 +5,33 @@ from django.conf import settings
 from anilist_api.anilist import api_get_info
 from datetime import date
 
+# Copy info from api to series model
+def copy_info(series, info):
+    series.title = info['title_romaji']
+    series.title_eng = info['title_english']
+    series.cover_link = info['image_url_lge']
+    series.synopsis = info['description']
+    if info['series_type'] == 'manga':
+        # it's a mango
+        if info['relations_manga']:
+            series.api_anime = info['relations_manga'][0]['id']
+    else:
+        # it's an annie may!
+        if info['relations_manga']:
+            series.api_manga = info['relations_manga'][0]['id']
+
+    if series.api_anime:
+        series.ani_link = 'https://anilist.co/anime/' + str(series.api_anime)
+    else:
+        series.ani_link = 'https://anilist.co/manga/' + str(series.api_manga)
+
 # Series model to describe an anime or manga
 # Will be used in library managment
 class Series(models.Model):
-    name = models.CharField(max_length=110)
-    name_eng = models.CharField(max_length=110)
-    api_id = models.IntegerField()
-    SERIES_TYPE_CHOICES = (
-        ('manga', 'API id is for Manga'),
-        ('anime', 'API id is for Anime')
-    )
-    series_type = models.CharField(
-        max_length=5,
-        choices=SERIES_TYPE_CHOICES,
-        default='manga'
-    )
+    title = models.CharField(max_length=110)
+    title_eng = models.CharField(max_length=110)
+    api_manga = models.IntegerField(unique=True, null=True)
+    api_anime = models.IntegerField(unique=True, null=True)
     cover_link = models.URLField()
     synopsis = models.TextField()
     ani_link = models.URLField()
@@ -27,10 +39,12 @@ class Series(models.Model):
     wiki_link = models.URLField(blank=True)
 
     def __str__(self):
-        if self.name:
-            return self.name + ' / ' + self.name_eng
+        if self.title:
+            return self.title + ' / ' + self.title_eng
         else:
-            return 'Unknown %s --> API ID: %s' % (self.media_type, self.api_id)
+            man = self.api_manga
+            ani = self.api_anime
+            return 'Unknown series --> Manga ID: %s, Anime ID: %s' % (man, ani)
 
     # Tell django that the plural of 'series' is 'series' for the admin screen
     class Meta:
@@ -38,21 +52,19 @@ class Series(models.Model):
 
     # Save override so that api data can be used for new series entries
     def save(self, *args, **kwargs):
-        # self.name should exist if api data has been populated
-        if self.name:
+        # self.title should exist if api data has been populated
+        if self.title:
             super(Series, self).save(*args,  **kwargs) # Call real save
         else:
             # get the info from the api on save if series info doesnt exist
-            api_info = api_get_info(self.api_id, self.series_type)
-            self.name = api_info['title_romaji']
-            self.name_eng = api_info['title_english']
-            self.cover_link = api_info['image_url_lge']
-            self.synopsis = api_info['description']
-            link = 'https://anilist.co/'
-            link += self.series_type + '/'
-            link += str(self.api_id)
-            self.ani_link = link
+            if self.api_anime:
+                info = api_get_info(self.api_anime)
+            else:
+                info = api_get_info(self.api_manga)
+
+            copy_info(self, info)
             super(Series, self).save(*args,  **kwargs) # Call real save
+
 
 # Item class that repesents each library item with associated loan
 class Item(models.Model):

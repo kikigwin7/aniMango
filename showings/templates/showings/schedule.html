@@ -80,20 +80,32 @@
             {% load static %}
             {% if show.mal_link %}
             <a href="{{ show.mal_link }}" target="_blank">
-              <img src="{% static 'smol_mal_icon.png' %}" title="View on MyAnimeList.net">
+              <img
+                src="{% static 'smol_mal_icon.png' %}"
+                title="View on MyAnimeList.net"
+              >
             </a>
             {% endif %}
             <a href="{{ show.ani_link }}" target="_blank">
-              <img src="{% static 'smol_anilist_icon.png' %}" title="View on Anilist.co">
+              <img
+                src="{% static 'smol_anilist_icon.png' %}"
+                title="View on Anilist.co"
+              >
             </a>
             {% if show.wiki_link %}
             <a href="{{ show.wiki_link }}" target="_blank">
-              <img src="{% static 'smol_wiki_icon.png' %}" title="View on Wikipedia">
+              <img
+                src="{% static 'smol_wiki_icon.png' %}"
+                title="View on Wikipedia"
+              >
             </a>
             {% endif %}
             {% if show.lib_series %}
-            <a href="{% url 'library:detail' 'anime' show.api_id %}" target="_blank">
-              <img src="{% static 'smol_lib_icon.png' %}" title="Series available in the Animesoc Library">
+            <a href="{% url 'library:detail' show.lib_series.id %}">
+              <img
+                src="{% static 'smol_lib_icon.png' %}"
+                title="Series available in the Animesoc Library"
+              >
             </a>
             {% endif %}
           </div>

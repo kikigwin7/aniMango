@@ -5,6 +5,10 @@ import time
 import json
 from .anilist_config import aniclient, anisecret
 
+# The anilist api uses numbers > 30000 for manga pages and below for anime
+# I dont know why, it just is
+ANILIST_MAGIC_NUMBER = 30000
+
 ANICLIENT = aniclient
 ANISECRET = anisecret
 
@@ -69,27 +73,23 @@ def setup():
         #print('No valid existing token')
         get_new_token()
 
-def api_get_info(media_id, media_type):
+def api_get_info(media_id):
     url = 'https://anilist.co/api/'
-    if media_type == 'anime':
-        url += 'anime/'
-    elif media_type == 'manga':
+    # 30000 is the anilist cutoff value for manga 
+    # MAGIC NUMBERS
+    if media_id > ANILIST_MAGIC_NUMBER:
         url += 'manga/'
     else:
-        return None
+        url += 'anime/'
+
+    url += str(media_id) + '/page'
 
     try:
-        request = requests.get(
-            url+ str(media_id),
-            params={'access_token':access_token}
-        )
+        request = requests.get(url, params={'access_token':access_token})
 
         if request.status_code == 401:
             setup()
-            request = requests.get(
-                url + str(media_id),
-                params={'access_token':access_token}
-            )
+            request = requests.get(url, params={'access_token':access_token})
 
         if request.status_code == 200:
             return request.json()

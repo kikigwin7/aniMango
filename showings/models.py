@@ -7,6 +7,18 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # Create your models here.
 
+def copy_new_info(show, info):
+    show.title = info['title_romaji']
+    show.title_eng = info['title_english']
+    show.ani_link = 'https://anilist.co/anime/'+str(show.anilist_anime_number)
+
+def copy_from_lib_series(show, lib):
+    show.title = lib.title
+    show.title_eng = lib.title_eng
+    show.ani_link = lib.ani_link
+    show.mal_link = lib.mal_link
+    show.wiki_link = lib.wiki_link
+
 class Showing(models.Model):
     date = models.DateField()
     SHOWING_CHOICES = (
@@ -18,8 +30,6 @@ class Showing(models.Model):
         choices=SHOWING_CHOICES,
         default='wk'
     )
-    details = models.TextField(blank=True)
-
     def __str__(self):
         out = self.get_showing_type_display()
         return out + ' - ' + self.date.strftime('%a %d %b %Y')
@@ -34,10 +44,10 @@ class Show(models.Model):
     title = models.CharField(max_length=110)
     title_eng = models.CharField(max_length=110)
     details = models.CharField(max_length=200)
-    api_id = models.IntegerField()
+    anilist_anime_number = models.IntegerField()
     ani_link = models.URLField()
     mal_link = models.URLField(blank=True)
-    wiki_link = models.URLField(blank=True)
+    wiki_link = models.URLField()
     shown_at = models.ForeignKey(
         Showing,
         null = False,
@@ -58,27 +68,19 @@ class Show(models.Model):
         if self.title:
             super(Show, self).save(*args,  **kwargs) # Call real save
         else:
-            # Check if the correspinig series is in the library
+            # Check if the corresponding series is in the library
             try:
                 lib_obj = Series.objects.get(
-                    api_id=self.api_id,
-                    series_type='anime'
+                    api_anime=self.anilist_anime_number,
                 )
                 self.lib_series = lib_obj
-                self.title = lib_obj.name
-                self.title_eng = lib_obj.name_eng
-                self.ani_link = lib_obj.ani_link
-                self.mal_link = lib_obj.mal_link
-                self.wiki_link = lib_obj.wiki_link
+                copy_from_lib_series(self, lib_obj)
                 super(Show, self).save(*args,  **kwargs) # Call real save
                 print('Used existing data')
             except ObjectDoesNotExist:
                 # if not then get new api data
-                api_info = api_get_info(self.api_id, 'anime')
-                self.title = api_info['title_romaji']
-                self.title_eng = api_info['title_english']
-                # Create anilink form string + api_id
-                self.ani_link = 'https://anilist.co/anime/' + str(self.api_id)
+                api_info = api_get_info(self.anilist_anime_number)
+                copy_new_info(self, api_info)
                 super(Show, self).save(*args,  **kwargs) # Call real save
                 print('Fetched new data')
 
@@ -94,17 +96,18 @@ def match_or_update_lib_series(sender, **kwargs):
         # Only works for lib series using the anime api_id
         # Have to manually match manga lib series
         # TODO fix that ^^^^^^^^
-        if series.series_type == 'anime':
-            matched_shows = Show.objects.filter(api_id=series.api_id)
+        if series.api_anime:
+            matched_shows = Show.objects.filter(
+                anilist_anime_number=series.api_anime
+            )
             # Sanity check for a non empty queryset
             if matched_shows:
                 for show in matched_shows:
                     show.lib_series = series
-                    show.ani_link = series.ani_link
-                    show.mal_link = series.mal_link
                     show.save()
     # The library series has been updated, so copy across shared updated fields
     else:
+        # set of shows that refer to the lib series
         matched_shows = series.show_set.all()
         if matched_shows:
             for show in matched_shows:

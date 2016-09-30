@@ -9,7 +9,7 @@ urlpatterns = [
 	url(r'^search/$', views.index_search, name='search'),
 
 	url(
-		r'^(?P<media_type>anime|manga)/(?P<series_id>.+)/$',
+		r'^series/(?P<series_id>.+)/$',
 		views.series_view,
 		name='detail'
 	),
