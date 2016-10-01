@@ -1,5 +1,8 @@
 from django.shortcuts import render
-from .models import Showing
+from django.db.models import Q
+from .models import Showing, Show
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, InvalidPage
 
 # Create your views here.
@@ -29,8 +32,15 @@ def year(request, year):
 
 def cooldown(request):
 	template = 'showings/cooldown.html'
-	search = request.GET.get('query')
-	context = {
-		'search': search
-	}
-	return render(request, template, context)
+	query = request.GET.get('query')
+	if query is None or query == '':
+		return HttpResponseRedirect(reverse('showings:schedule'))
+	else:
+		results = Show.objects.filter(
+			Q(title__icontains=query)|Q(title_eng__icontains=query)
+		)
+		context = {
+			'pre_search': query,
+			'shows_l': results
+		}
+		return render(request, template, context)
