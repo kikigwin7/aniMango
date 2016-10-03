@@ -10,4 +10,7 @@ function link_starto () {
 	if (typeof pageMessages == 'function') {
 		pageMessages();
 	}
+
+	// Initialise select
+	$('select').material_select();
 }

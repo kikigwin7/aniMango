@@ -7,6 +7,7 @@
 {% block content %}
 <div class="row">
   <div class="col s12 m4">
+
     <div class="card-panel">
       <form action="{% url 'showings:cooldown' %}">
         <div class="input-field">
@@ -15,58 +16,39 @@
         </div>
       </form>
     </div>
+
     <div class="card-panel">
-      <h5>View by year</h5>
-      <div class="row">
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">All</a>
+      <form action="{% url 'showings:search' %}">
+        <div class="input-field">
+          <input id="reg_search" type="search" name="query">
+          <label for="reg_search" class="active">Showings Search</label>
         </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2016</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2015</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2014</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2013</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2012</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2011</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2010</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2009</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2008</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2007</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2006</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2005</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2004</a>
-        </div>
-        <div class="col s4 m12 l6">
-          <a class="waves-effect btn-flat">2003</a>
-        </div>
-      </div>
+      </form>
     </div>
+
+    <div class="card-panel">
+      <h5 class="center-align">View by year</h5>
+      <form action="{% url 'showings:year' %}">
+        <div class="row">
+          <div class="input-field col s6">
+            <select name="year">
+              <option value="" disabled selected>Choose year</option>
+              <option value="All">All</option>
+              {% for year in date_range %}
+                <option value="{{ year }}">{{ year }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="input-field col s6">
+            <input type="submit" value="go" class="btn blue darken-4">
+          </div>
+        </div>
+      </form>
+    </div>
+
   </div>
   <div class="col s12 m8">
+    <h5 class="center-align">Recent Showings</h5>
     {% for showing in showing_page %}
     <div class="card-panel">
       <strong>{{ showing.get_showing_type_display }}</strong>
@@ -121,29 +103,6 @@
     {% empty %}
       <h4 class="center-align">No showings available</h4>
     {% endfor %}
-
-    <div class="center-align">
-      <ul class="pagination">
-          {% if showing_page.has_previous %}
-          <li class="waves-effect">
-            <a href="?page={{ showing_page.previous_page_number }}">
-              <i class="material-icons">chevron_left</i>
-            </a>
-          </li>
-          {% endif %}
-
-          Page {{ showing_page.number }} of {{ showing_page.paginator.num_pages }}
-
-          {% if showing_page.has_next %}
-          <li class="waves-effect">
-            <a href="?page={{ showing_page.next_page_number }}">
-              <i class="material-icons">chevron_right</i>
-            </a>
-          </li>
-          {% endif %}
-      </ul>
-    </div>
-
   </div>
 </div>
 {% endblock %}

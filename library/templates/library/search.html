@@ -11,10 +11,11 @@
     <div class="card-panel">
       <form action="{% url 'library:search' %}" method="get">
         <div class="input-field">
-          <input id="searchbar" type="search" name="query"
-            {% if pre_search %}
+          <input
+            id="searchbar"
+            type="search"
+            name="query"
             value="{{ pre_search }}"
-            {% endif %}
           >
           <label for="searchbar" class="active">Search the library</label>
           <i class="material-icons">close</i>

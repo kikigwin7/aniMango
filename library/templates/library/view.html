@@ -20,8 +20,10 @@
         {{ series.title }}
       </h4>
       <p>
-        {# added 'safe' to following tag to 'not' escape formatted symbols #}
-        {{ series.synopsis|safe }}
+      {# added 'autoescape off' as synopsis may contain pre-escaped html #}
+      {% autoescape off %}
+        {{ series.synopsis }}
+      {% endautoescape %}
       </p>
       <h5>
         More info

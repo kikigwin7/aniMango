@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block content %}
-<h4 class="center-align">Cooldown search</h4>
+<h4 class="center-align">Showings search</h4>
 <div class="row">
   <div class="col s12 m4">
     <div class="card-panel">
-      <form action="{% url 'showings:cooldown' %}">
+      <form action="{% url 'showings:search' %}">
         <div class="input-field">
           <input id="cool_search" type="search" name="query" value="{{ pre_search }}">
-          <label for="cool_search" class="active">Cooldown Search</label>
+          <label for="cool_search" class="active">Showings Search</label>
         </div>
       </form>
       <div class="center-align">
@@ -26,11 +26,7 @@
   <div class="col s12 m8">
   {% for show in shows_l %}
     <div class="card-panel">
-    {% if show.shown_at.date >= cd_date %}
-      <p><b>ON COOLDOWN</b> - {{ show }}</p>
-    {% else %}
-      <p><b>NOT ON COOLDOWN</b> - {{ show }}</p>
-    {% endif %}
+      {{ show }}
     </div>
   {% empty %}
     <h5 class="center-align">There are no results for your search</h5>
