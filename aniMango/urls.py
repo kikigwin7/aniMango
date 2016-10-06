@@ -26,5 +26,6 @@ urlpatterns = [
 	url(r'^library/', include('library.urls')),
 	url(r'^members/', include('members.urls')),
     url(r'^showings/', include('showings.urls')),
+    url(r'^forum/', include('forum.urls')),
     url(r'^admin/', admin.site.urls),
 ]

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'library.apps.LibraryConfig',
     'members.apps.MembersConfig',
     'showings.apps.ShowingsConfig',
+    'forum.apps.ForumConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,9 +122,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 # Static files served in testing
 STATICFILES_DIRS = [

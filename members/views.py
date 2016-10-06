@@ -20,11 +20,10 @@ def profile_edit(request):
 		return HttpResponseRedirect(reverse('member:profile'))
 
 	if request.method == 'POST':
-		new_nick = request.POST['nick']
-		new_bio = request.POST['bio']
 		user_prof = request.user.member
-		user_prof.nick = new_nick
-		user_prof.bio = new_bio
+		user_prof.nick = request.POST['nick']
+		user_prof.bio = request.POST['bio']
+		user_prof.profile_url = request.POST['pic']
 		user_prof.save()
 		messages.success(request, 'Your profile was successfully updated')
 		return HttpResponseRedirect(reverse('member:profile'))

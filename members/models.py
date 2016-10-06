@@ -13,7 +13,7 @@ class Member(models.Model):
     )
     nick = models.CharField(max_length=30, blank=True)
     bio = models.TextField(blank=True)
-    profile_pic = models.ImageField(null=True, upload_to='profile_pics')
+    profile_url = models.URLField(blank=True)
 
     def __str__(self):
         return self.nick
