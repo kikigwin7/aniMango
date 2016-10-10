@@ -14,9 +14,12 @@ def schedule(request):
 	showing_page = paginator.page(1)
 
 	# Get the earliest year any showing was shown
-	earliest_year = Showing.objects.order_by('date')[0].date.year
-	# Get the range of dates of showings as a list
-	date_range = list(range(earliest_year, date.today().year))
+	if Showing.objects.order_by('date'):
+		earliest_year = Showing.objects.order_by('date')[0].date.year
+		# Get the range of dates of showings as a list
+		date_range = list(range(earliest_year, date.today().year))
+	else:
+		date_range = None
 
 	context = {
 		'showing_page': showing_page,
@@ -47,9 +50,12 @@ def year(request):
 		showing_page = paginator.page(1)
 
 	# Get the earliest year any showing was shown
-	earliest_year = Showing.objects.order_by('date')[0].date.year
-	# Get the range of dates of showings as a list
-	date_range = list(range(earliest_year, date.today().year))
+	if Showing.objects.order_by('date'):
+		earliest_year = Showing.objects.order_by('date')[0].date.year
+		# Get the range of dates of showings as a list
+		date_range = list(range(earliest_year, date.today().year))
+	else:
+		date_range = None
 	
 	context = {
 		'year': year,

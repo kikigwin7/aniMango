@@ -1,9 +1,26 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Forum Index
+  Forum Index
 {% endblock %}
 
 {% block content %}
-<h4 class="center-align">Forum Index</h4>
+<h4 class="center-align">
+  Warwick Anime and Manga Society Forum
+</h4>
+<ul class="collection with-header">
+  <li class="collection-header">
+    <h5>Forum boards</h5>
+  </li>
+{% for board in board_list %}
+  <li class="collection-item avatar">
+    <i class="material-icons circle">forum</i>
+    <span class="title">{{ board }}</span>
+    <p>{{ board.description }}</p>
+    <a href="{% url 'forum:board' board.id %}" class="secondary-content">
+      <i class="material-icons">send</i>
+    </a>
+  </li>
+{% endfor %}
+</ul>
 {% endblock %}

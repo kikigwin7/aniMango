@@ -75,7 +75,7 @@
                 {% if user.is_authenticated %}
                 <a class="dropdown-button" data-activates="member-dropdown">
                   <i class="material-icons left">account_circle</i>
-                  {{ user.member.nick_or_name }}
+                  {{ user.member }}
                 </a>
                 {% else %}
                 <a href="{% url 'member:login' %}">
@@ -92,7 +92,7 @@
                   <li>
                     <a class="collapsible-header waves-effect">
                      <i class="material-icons left">account_circle</i>
-                     {{ user.member.nick_or_name }}
+                     {{ user.member }}
                      <i class="material-icons right">arrow_drop_down</i>
                     </a>
                     <div class="collapsible-body">

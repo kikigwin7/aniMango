@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ thread }}
+{% endblock %}
+
+{% block content %}
+<ul class="collection with-header">
+  <li class="collection-item avatar">
+    <i class="material-icons circle">account_circle</i>
+    <h5 class="center-align">{{ thread }}</h5>
+    <p>{{ thread.content }}</p>
+    <p><br>{{ thread.info }}</p>
+  </li>
+{% for post in post_list %}
+  <li class="collection-item avatar">
+    <i class="material-icons circle">account_circle</i>
+    {% if post.deleted %}
+      <span class="title">[ POST DELETED ]</span>
+    {% else %}
+      <span class="title">{{ post.content }}</span>
+    {% endif %}
+    <p><br>{{ post.by }}</p>
+  </li>
+{% empty %}
+  <li class="collection-item">
+    <p>No responses! Why don't you reply?</p>
+  </li>
+{% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<div
+  class="fixed-action-btn hide-on-small-only"
+  style="bottom: 80px; right: 30px;"
+>
+  <a
+    href="#reply_modal"
+    class="btn-floating btn-large blue darken-4 tooltipped modal-trigger"
+    data-position="left"
+    data-delay="50"
+    data-tooltip="Reply to this thread"
+  >
+    <i class="large material-icons">mode_edit</i>
+  </a>
+</div>
+<div
+  class="fixed-action-btn hide-on-med-and-up"
+  style="bottom: 40px; right: 30px;"
+>
+  <a
+    href="#reply_modal"
+    class="btn-floating btn-large blue darken-4 tooltipped modal-trigger"
+    data-position="left"
+    data-delay="50"
+    data-tooltip="Reply to this thread"
+  >
+    <i class="large material-icons">mode_edit</i>
+  </a>
+</div>
+
+<div id="reply_modal" class="modal">
+  <div class="modal-content">
+    <h4 class="center-align">Thread Reply</h4>
+    <form action="{% url 'forum:reply' thread.id %}" method="POST">
+    {% csrf_token %}
+      <div class="input-field">
+        <textarea
+          id="reply_text"
+          name="reply_text"
+          class="materialize-textarea"
+        ></textarea>
+        <label for="reply_text">Your reply</label>
+      </div>
+      <div class="input-field">
+        <input class="btn" type="submit" value="reply">
+        <a class="modal-action modal-close waves-effect waves-red btn-flat">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% endif %}
+
+{% endblock %}

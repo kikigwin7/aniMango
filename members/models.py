@@ -16,15 +16,10 @@ class Member(models.Model):
     profile_url = models.URLField(blank=True)
 
     def __str__(self):
-        return self.nick
-
-    def nick_or_name(self):
-        if self.nick is not '':
+        if self.nick:
             return self.nick
-        elif self.user.get_full_name() is not '':
-            return self.user.get_full_name()
         else:
-            return self.user.username
+            return str(self.user)
 
 # Ensure a blank member object is created for each user using django post_save
 # Would normally do a save override but not safe to do on the django user model

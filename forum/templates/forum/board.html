@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ board }}
+{% endblock %}
+
+{% block content %}
+<ul class="collection with-header">
+  <li class="collection-header">
+    <h5>{{ board }}</h5>
+    <p>{{ board.description }}</p>
+  </li>
+{% for thread in thread_list %}
+  <li class="collection-item avatar">
+    <i class="material-icons circle">message</i>
+    <span class="title">{{ thread }}</span>
+    <p>{{ thread.info }}</p>
+    <a href="{% url 'forum:thread' thread.id %}" class="secondary-content">
+      <i class="material-icons">send</i>
+    </a>
+  </li>
+{% empty %}
+  <li class="collection-item">
+    <p>No threads! Why don't you start one?</p>
+  </li>
+{% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<div
+  class="fixed-action-btn hide-on-small-only"
+  style="bottom: 80px; right: 30px;"
+>
+  <a
+    href="#thread_modal"
+    class="btn-floating btn-large blue darken-4 tooltipped modal-trigger"
+    data-position="left"
+    data-delay="50"
+    data-tooltip="Start a new thread"
+  >
+    <i class="large material-icons">add</i>
+  </a>
+</div>
+<div
+  class="fixed-action-btn hide-on-med-and-up"
+  style="bottom: 40px; right: 30px;"
+>
+  <a
+    href="#thread_modal"
+    class="btn-floating btn-large blue darken-4 tooltipped modal-trigger"
+    data-position="left"
+    data-delay="50"
+    data-tooltip="Start a new thread"
+  >
+    <i class="large material-icons">add</i>
+  </a>
+</div>
+
+<div id="thread_modal" class="modal">
+  <div class="modal-content">
+    <h4 class="center-align">Start a new thread</h4>
+    <form action="{% url 'forum:new' board.id %}" method="POST">
+      {% csrf_token %}
+      <div class="input-field">
+        <input type="text" name="title" id="title">
+        <label for="title">Thread Title</label>
+      </div>
+      <div class="input-field">
+        <textarea
+          id="content"
+          name="content"
+          class="materialize-textarea"
+        ></textarea>
+        <label for="content">Content</label>
+      </div>
+      <div class="input-field">
+        <input class="btn" type="submit" value="reply">
+        <a class="modal-action modal-close waves-effect waves-red btn-flat">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -9,7 +9,7 @@ urlpatterns = [
 	url(r'^search/$', views.index_search, name='search'),
 
 	url(
-		r'^series/(?P<series_id>.+)/$',
+		r'^series/(?P<series_id>[0-9]+)/$',
 		views.series_view,
 		name='detail'
 	),
