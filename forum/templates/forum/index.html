@@ -8,19 +8,16 @@
 <h4 class="center-align">
   Warwick Anime and Manga Society Forum
 </h4>
-<ul class="collection with-header">
-  <li class="collection-header">
+<div class="collection with-header">
+  <div class="collection-header">
     <h5>Forum boards</h5>
-  </li>
+  </div>
 {% for board in board_list %}
-  <li class="collection-item avatar">
+  <a href="{% url 'forum:board' board.id %}" class="collection-item avatar">
     <i class="material-icons circle">forum</i>
     <span class="title">{{ board }}</span>
     <p>{{ board.description }}</p>
-    <a href="{% url 'forum:board' board.id %}" class="secondary-content">
-      <i class="material-icons">send</i>
-    </a>
-  </li>
+  </a>
 {% endfor %}
-</ul>
+</div>
 {% endblock %}

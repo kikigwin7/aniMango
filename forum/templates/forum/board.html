@@ -5,26 +5,23 @@
 {% endblock %}
 
 {% block content %}
-<ul class="collection with-header">
-  <li class="collection-header">
+<div class="collection with-header">
+  <div class="collection-header">
     <h5>{{ board }}</h5>
     <p>{{ board.description }}</p>
-  </li>
+  </div>
 {% for thread in thread_list %}
-  <li class="collection-item avatar">
+  <a href="{% url 'forum:thread' thread.id %}" class="collection-item avatar">
     <i class="material-icons circle">message</i>
-    <span class="title">{{ thread }}</span>
+    <span class="title">{{ thread.title }}</span>
     <p>{{ thread.info }}</p>
-    <a href="{% url 'forum:thread' thread.id %}" class="secondary-content">
-      <i class="material-icons">send</i>
-    </a>
-  </li>
+  </a>
 {% empty %}
-  <li class="collection-item">
+  <div class="collection-item">
     <p>No threads! Why don't you start one?</p>
-  </li>
+  </div>
 {% endfor %}
-</ul>
+</div>
 
 {% if user.is_authenticated %}
 <div
@@ -74,10 +71,10 @@
         <label for="content">Content</label>
       </div>
       <div class="input-field">
-        <input class="btn" type="submit" value="reply">
         <a class="modal-action modal-close waves-effect waves-red btn-flat">
           Cancel
         </a>
+        <input class="btn" type="submit" value="post">
       </div>
     </form>
   </div>

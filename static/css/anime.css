@@ -50,3 +50,9 @@ body {
 main {
   flex: 1 0 auto;
 }
+
+/* Make error messages red */
+.error {
+  color: red;
+  font-weight: bold;
+}

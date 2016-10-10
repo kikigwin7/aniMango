@@ -132,7 +132,10 @@
           <script type="text/javascript">
           function pageMessages() {
           {% for message in messages %}
-            Materialize.toast('{{ message }}', 6000);
+            Materialize.toast(
+              '<div class="{{message.tags}}">{{ message }}</div>',
+              6000
+            );
           {% endfor %}
           }
           </script>

@@ -28,6 +28,12 @@ def thread(request, thread_id):
 	template = 'forum/thread.html'
 	thread = get_object_or_404(Thread, id=thread_id)
 	posts = Post.objects.filter(parent_thread=thread)
+
+	# Change the content of the instance of a post if it is marked as deleted
+	for post in posts:
+		if post.deleted:
+			post.content = '[POST DELETED]'
+
 	context = {
 		'thread': thread,
 		'post_list': posts

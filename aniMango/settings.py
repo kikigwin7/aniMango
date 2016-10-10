@@ -123,15 +123,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-# Static files served in testing
+# Testing path, production path and url postfix for static files
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
-# Path to production static directory
 STATIC_ROOT = ''
-# App specific static file sub directory
 STATIC_URL = '/static/'
+
+# Testing path, production path and url postfix for static files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Disable https during testing
 SECURE_SSL_REDIRECT = False

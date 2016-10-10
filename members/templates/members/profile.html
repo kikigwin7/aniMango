@@ -33,10 +33,10 @@
       {% load static %}
       <img
         class="circle"
-        {% if user.member.profile_url %}
-        src="{{ user.member.profile_url }}"
+        {% if user.member.img %}
+          src="{{ user.member.img.url }}"
         {% else %}
-        src="{% static 'profile_default.jpg' %}"
+          src="{% static 'profile_default.jpg' %}"
         {% endif %}
       />
     </div>

@@ -4,6 +4,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from library.models import Item
+from PIL import Image
 
 def profile(request):
 	template = "members/profile.html"
@@ -23,9 +24,15 @@ def profile_edit(request):
 		user_prof = request.user.member
 		user_prof.nick = request.POST['nick']
 		user_prof.bio = request.POST['bio']
-		user_prof.profile_url = request.POST['pic']
+		if request.FILES:
+			try:
+				# Throws exception if file is not an image
+				im = Image.open(request.FILES['img'])
+				user_prof.img = request.FILES['img']
+			except IOError:
+				messages.error(req, 'You did not upload a valid image file')
 		user_prof.save()
-		messages.success(request, 'Your profile was successfully updated')
+		messages.success(request, 'Your profile was updated')
 		return HttpResponseRedirect(reverse('member:profile'))
 	else:
 		return render(request, template)

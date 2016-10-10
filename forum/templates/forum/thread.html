@@ -7,19 +7,23 @@
 {% block content %}
 <ul class="collection with-header">
   <li class="collection-item avatar">
-    <i class="material-icons circle">account_circle</i>
-    <h5 class="center-align">{{ thread }}</h5>
+    {% if thread.thread_user.img %}
+      <img src="{{ thread.thread_user.img.url }}" class="circle">
+    {% else %}
+      <i class="material-icons circle">account_circle</i>
+    {% endif %}
+    <h5 class="center-align">{{ thread.title }}</h5>
     <p>{{ thread.content }}</p>
     <p><br>{{ thread.info }}</p>
   </li>
 {% for post in post_list %}
   <li class="collection-item avatar">
-    <i class="material-icons circle">account_circle</i>
-    {% if post.deleted %}
-      <span class="title">[ POST DELETED ]</span>
+    {% if post.post_user.img %}
+      <img src="{{ post.post_user.img.url }}" class="circle">
     {% else %}
-      <span class="title">{{ post.content }}</span>
+      <i class="material-icons circle">account_circle</i>
     {% endif %}
+    <span class="title">{{ post.content }}</span>
     <p><br>{{ post.by }}</p>
   </li>
 {% empty %}
@@ -73,10 +77,10 @@
         <label for="reply_text">Your reply</label>
       </div>
       <div class="input-field">
-        <input class="btn" type="submit" value="reply">
         <a class="modal-action modal-close waves-effect waves-red btn-flat">
           Cancel
         </a>
+        <input class="btn" type="submit" value="reply">
       </div>
     </form>
   </div>

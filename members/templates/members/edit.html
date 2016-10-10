@@ -5,9 +5,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="card-panel">
+<div class="card-panel" id="progress-container">
   <h4 class="center-align">Edit your profile</h4>
-  <form action="{% url 'member:edit' %}" method="POST">
+  <form
+    action="{% url 'member:edit' %}"
+    method="POST"
+    enctype="multipart/form-data"
+  >
     {% csrf_token %}
     <div class="input-field">
       <input id="nick" name="nick" type="text" value="{{ user.member.nick }}">
@@ -21,16 +25,18 @@
         >{{ user.member.bio }}</textarea>
       <label for="bio" >Bio</label>
     </div>
-    <div class="input-field">
-      <input
-        id="pic"
-        name="pic"
-        type="url"
-        value="{{ user.member.profile_url }}"
-      >
-      <label for="pic">
-        Profile Picture image url(needs to be direct image link)
-      </label>
+    <div class="file-field input-field">
+      <div class="btn blue darken-1">
+        <span>File</span>
+        <input type="file" name="img">
+      </div>
+      <div class="file-path-wrapper">
+        <input
+          class="file-path validate"
+          type="text"
+          placeholder="Upload image file"
+        >
+      </div>
     </div>
     <div class="row">
       <div class="col s6">
@@ -43,11 +49,11 @@
       <div class="col s6">
         <div class="center-align">
           <input
-            class="btn blue darken-3" type="submit" value="update"
+            class="btn blue darken-3" type="submit" value="update" id="memberedit"
           >
         </div>
       </div>
     </div>
   </form>
 </div>
-{% endblock %}        
+{% endblock %}
