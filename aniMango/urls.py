@@ -23,9 +23,10 @@ from home.views import home
 urlpatterns = [
     # The first 3 urls use the views file in the home app
     url(r'^$', home, name='home'),
-	url(r'^library/', include('library.urls')),
-	url(r'^members/', include('members.urls')),
+    url(r'^library/', include('library.urls')),
+    url(r'^members/', include('members.urls')),
     url(r'^showings/', include('showings.urls')),
     url(r'^forum/', include('forum.urls')),
+    url(r'^news/', include('news.urls')),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

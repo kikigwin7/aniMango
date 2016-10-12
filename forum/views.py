@@ -56,7 +56,7 @@ def new(request, board_id):
 				new_thread.thread_user = request.user.member
 				new_thread.save()
 				new_thread_url = reverse('forum:thread', args=[new_thread.id])
-				messages.error(request, 'Thread created')
+				messages.success(request, 'Thread created')
 				return HttpResponseRedirect(new_thread_url)
 			except ObjectDoesNotExist:
 				messages.error(request, 'Board does not exist')
@@ -78,7 +78,7 @@ def reply(request, thread_id):
 				new_post.parent_thread = Thread.objects.get(id=thread_id)
 				new_post.created = timezone.localtime(timezone.now())
 				new_post.save()
-				messages.error(request, 'Reply posted')
+				messages.success(request, 'Reply posted')
 				return HttpResponseRedirect(redir_url)
 			except ObjectDoesNotExist:
 				messages.error(request, 'Thread does not exist')

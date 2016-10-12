@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<ul class="collection with-header">
+<ul class="collection with-header collapsible">
   <li class="collection-item avatar">
     {% if thread.thread_user.img %}
       <img src="{{ thread.thread_user.img.url }}" class="circle">
@@ -13,7 +13,7 @@
       <i class="material-icons circle">account_circle</i>
     {% endif %}
     <h5 class="center-align">{{ thread.title }}</h5>
-    <p>{{ thread.content }}</p>
+    <div class="forum-content"><p>{{ thread.content|safe }}</p></div>
     <p><br>{{ thread.info }}</p>
   </li>
 {% for post in post_list %}
@@ -23,8 +23,12 @@
     {% else %}
       <i class="material-icons circle">account_circle</i>
     {% endif %}
-    <span class="title">{{ post.content }}</span>
-    <p><br>{{ post.by }}</p>
+    <div class="col s12 forum-content">
+      {{ post.content|safe }}
+    </div>
+    <div class="col s12">
+      <p>{{ post.by }}</p>
+    </div>
   </li>
 {% empty %}
   <li class="collection-item">
@@ -63,19 +67,15 @@
   </a>
 </div>
 
+{% load wysiwyg %}
+{% wysiwyg_setup %}
+
 <div id="reply_modal" class="modal">
   <div class="modal-content">
     <h4 class="center-align">Thread Reply</h4>
     <form action="{% url 'forum:reply' thread.id %}" method="POST">
     {% csrf_token %}
-      <div class="input-field">
-        <textarea
-          id="reply_text"
-          name="reply_text"
-          class="materialize-textarea"
-        ></textarea>
-        <label for="reply_text">Your reply</label>
-      </div>
+      <textarea id="reply_text" name="reply_text"></textarea>
       <div class="input-field">
         <a class="modal-action modal-close waves-effect waves-red btn-flat">
           Cancel
@@ -86,6 +86,7 @@
   </div>
 </div>
 
+{% wysiwyg_editor "reply_text" %}
 
 {% endif %}
 

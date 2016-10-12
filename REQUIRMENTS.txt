@@ -1,3 +1,5 @@
-django 1.10
-python requests
-python pillow
+pip django 1.10
+pip requests
+pip pillow
+pip django-wysiwyg
+pip bleach

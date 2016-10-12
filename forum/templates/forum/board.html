@@ -53,6 +53,9 @@
   </a>
 </div>
 
+{% load wysiwyg %}
+{% wysiwyg_setup %}
+
 <div id="thread_modal" class="modal">
   <div class="modal-content">
     <h4 class="center-align">Start a new thread</h4>
@@ -62,14 +65,7 @@
         <input type="text" name="title" id="title">
         <label for="title">Thread Title</label>
       </div>
-      <div class="input-field">
-        <textarea
-          id="content"
-          name="content"
-          class="materialize-textarea"
-        ></textarea>
-        <label for="content">Content</label>
-      </div>
+      <textarea id="content" name="content"></textarea>
       <div class="input-field">
         <a class="modal-action modal-close waves-effect waves-red btn-flat">
           Cancel
@@ -79,6 +75,8 @@
     </form>
   </div>
 </div>
+
+{% wysiwyg_editor "content" %}
 
 {% endif %}
 

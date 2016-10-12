@@ -21,7 +21,7 @@ class Member(models.Model):
         if self.nick:
             return self.nick
         else:
-            return str(self.user)
+            return self.user.get_full_name()
 
     def save(self, *args, **kwargs):
         if self.img:

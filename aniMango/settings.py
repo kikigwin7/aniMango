@@ -31,11 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_wysiwyg',
     'home.apps.HomeConfig',
     'library.apps.LibraryConfig',
     'members.apps.MembersConfig',
     'showings.apps.ShowingsConfig',
     'forum.apps.ForumConfig',
+    'news.apps.NewsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -125,13 +127,13 @@ USE_TZ = True
 
 # Testing path, production path and url postfix for static files
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static_files'),
 ]
 STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 # Testing path, production path and url postfix for static files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
 MEDIA_URL = '/media/'
 
 # Disable https during testing

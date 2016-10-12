@@ -6,8 +6,6 @@ from anilist_api.anilist import ANILIST_MAGIC_NUMBER
 
 from .models import Item, Series
 
-admin.site.disable_action('delete_selected')
-
 class ItemInline(admin.StackedInline):
     model = Item
     extra = 1
@@ -29,6 +27,7 @@ class SeriesAPIForm(forms.ModelForm):
         fields = '__all__'
 
 class SeriesAdmin(admin.ModelAdmin):
+    actions = None
     form = SeriesAPIForm
     readonly_fields = (
         'api_anime',
@@ -76,6 +75,12 @@ class ItemAdmin(admin.ModelAdmin):
         'on_loan'
     ]
     search_fields = ['parent_series']
+    actions = [
+        'approve_req',
+        'deny_req',
+        'recieve_loan',
+        'renew_loan'
+    ]
 
     # Approve item loan request method
     def approve_req(modeladmin, request, queryset):
