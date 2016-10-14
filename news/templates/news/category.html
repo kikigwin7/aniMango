@@ -14,7 +14,7 @@
       {% for cat in category_l %}
       <a
         href="{% url 'news:category' %}?query={{cat}}"
-        class="collection-item"
+        class="collection-item {%if cat == query%}active{%endif%}"
       >
         {{ cat }}
       </a>
@@ -37,29 +37,8 @@
     <br>
     <div class="divider"></div>
   {% empty %}
-    <p>No news!</p>
+    <p>No news in this category: {{query}}!</p>
   {% endfor %}
-    <div class="center-align">
-      <ul class="pagination">
-          {% if articles_l.has_previous %}
-          <li class="waves-effect">
-            <a href="?page={{ articles_l.previous_page_number }}">
-              <i class="material-icons">chevron_left</i>
-            </a>
-          </li>
-          {% endif %}
-
-          Page {{ articles_l.number }} of {{ articles_l.paginator.num_pages }}
-
-          {% if articles_l.has_next %}
-          <li class="waves-effect">
-            <a href="?page={{ articles_l.next_page_number }}">
-              <i class="material-icons">chevron_right</i>
-            </a>
-          </li>
-          {% endif %}
-      </ul>
-    </div>
   </div>
 </div>
 

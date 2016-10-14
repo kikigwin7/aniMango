@@ -29,13 +29,13 @@
         <h6>{{ article.title }}</h6>
       <div class="divider"></div>
       <div class="article-content">
-        {{ article.content|safe|truncatewords_html:50 }}
+        {{ article.content|safe|truncatewords_html:75 }}
       </div>
       <div class="divider"></div>
-      <div class="col s3">
+      <div class="col s4">
         <a href="{% url 'news:article' article.slug %}"><h6>Read more</h6></a>
       </div>
-      <div class="col s9">
+      <div class="col s8">
         <h6 class="right">{{ article.info }}</h6>
       </div>
       <br>
@@ -49,21 +49,52 @@
   <!--Event heading card-->
     <h5>Upcoming Events</h5>
   <!--single event card-->
-    <div class="card">
-      <div class="card-content">
-        <span class="card-title">Event title</span>
-          <p>
-            This is an event and its details and such.
-            You can click the link below and get taken to an events page.
-          </p>
-        <div class="card-action">
-          <a href="#" class="blue-text">Go to event</a>
+    <div class="col s12 m6 l12">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Event title</span>
+            <p>
+              This is an event and its details and such.
+              You can click the link below and get taken to an events page.
+            </p>
+          <div class="card-action">
+            <a href="#" class="blue-text">Go to event</a>
+          </div>
         </div>
       </div>
     </div>
-    
-  </div>
 
+    <div class="col s12 m6 l12">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Event title</span>
+            <p>
+              This is an event and its details and such.
+              You can click the link below and get taken to an events page.
+            </p>
+          <div class="card-action">
+            <a href="#" class="blue-text">Go to event</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12 m6 l12">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Event title</span>
+            <p>
+              This is an event and its details and such.
+              You can click the link below and get taken to an events page.
+            </p>
+          <div class="card-action">
+            <a href="#" class="blue-text">Go to event</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 

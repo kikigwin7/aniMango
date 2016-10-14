@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'showings.apps.ShowingsConfig',
     'forum.apps.ForumConfig',
     'news.apps.NewsConfig',
+    'events.apps.EventsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

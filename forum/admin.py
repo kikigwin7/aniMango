@@ -33,6 +33,8 @@ class BoardAdmin(admin.ModelAdmin):
 		'description'
 	)
 
+
 admin.site.register(Board, BoardAdmin)
 admin.site.register(Thread, ThreadAdmin)
-admin.site.register(Post, PostAdmin)
+# Uncomment if you need admin for posts, not really needed
+# admin.site.register(Post, PostAdmin)
