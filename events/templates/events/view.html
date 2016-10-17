@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ event.title }}
+{% endblock %}
+
+{% block content %}
+
+<h4>{{ event.title }}</h4>
+<strong>{{ event.subtitle }}</strong>
+<ul>
+  <li>When: {{ event.when|date:'l jS F - f a' }}</li>
+  <li>Where: {{ event.where }}</li>
+</ul>
+<p>{{ event.details }}</p>
+<ul class="collection">
+{% if signup_required %}
+  <li class="collection-item">
+    Signup count: <strong>({{event.signup_count}})</strong>
+  </li>
+  <li class="collection-item">
+    {% include "events/available.html" %}
+  </li>
+  {% for signup in signups %}
+    <li class="collection-item">
+      <div class="row" style="margin-bottom: 0px">
+      <div class="col s2">{{ signup.who }}</div>
+      <div class="col s10">{{ signup.comment }}</div>
+      </div>
+    </li> 
+  {% empty %}
+    <li class="collection-item">No signups yet. Be the first!</li>  
+  {% endfor %}
+{% else %}
+  <li class="collection-item">
+    Signup not required for this event. Just show up!
+  </li> 
+{% endif %}
+</ul>
+
+{% endblock %}

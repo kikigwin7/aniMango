@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<h4 class="center-align">News</h4>
+<h4 class="center-align">News and Announcments</h4>
 <div class="row">
   <div class="col s12 m3 push-m9 card-panel">
     <h5 class="center-align">Article Categories</h5>
@@ -22,23 +22,9 @@
     </div>
   </div>
   <div class="col s12 m9 pull-m3">
-  {% for article in articles_l %}
-    <h5 >{{ article.title }}</h5>
-    <div class="article-content">
-      {{ article.content|safe|truncatewords_html:50 }}
-    </div>
-    <br>
-    <div class="col s3">
-      <a href="{% url 'news:article' article.slug %}">Read more</a>
-    </div>
-    <div class="col s9">
-      <span class="right">{{ article.info }}</span>
-    </div>
-    <br>
-    <div class="divider"></div>
-  {% empty %}
-    <p>No news!</p>
-  {% endfor %}
+
+  {% include "news/news_lister.html" %}
+
     <div class="center-align">
       <ul class="pagination">
           {% if articles_l.has_previous %}

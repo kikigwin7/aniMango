@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^showings/', include('showings.urls')),
     url(r'^forum/', include('forum.urls')),
     url(r'^news/', include('news.urls')),
+    url(r'^events/', include('events.urls')),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -31,7 +31,8 @@ class Member(models.Model):
                     os.remove(orig.img.path)
                 name, ext = os.path.splitext(str(self.img))
                 new_img = Image.open(self.img)
-                new_img = new_img.resize((100,100), Image.LANCZOS)
+                #new_img = new_img.resize((100,100), Image.LANCZOS)
+                new_img.thumbnail((100,100))
                 new_img_name = str(self.user.username) + ext
                 # PIL needs explicit media root defined
                 new_img.save(os.path.join(settings.MEDIA_ROOT,new_img_name))

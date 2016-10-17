@@ -46,53 +46,31 @@
   </div>
   <!--The events section-->
   <div class="col s12 l4">
-  <!--Event heading card-->
+
     <h5>Upcoming Events</h5>
-  <!--single event card-->
+    <!--single event card-->
+    {% for event in events_l %}
     <div class="col s12 m6 l12">
       <div class="card">
         <div class="card-content">
-          <span class="card-title">Event title</span>
+          <span class="card-title">{{ event.title }}</span>
             <p>
-              This is an event and its details and such.
-              You can click the link below and get taken to an events page.
+              {{event.subtitle}}
+            </p>
+            <p>
+              {{event.when}} -- {{event.where}}
             </p>
           <div class="card-action">
-            <a href="#" class="blue-text">Go to event</a>
+            <a href="{% url 'events:view' event.id %}" class="blue-text">
+              Go to event
+            </a>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="col s12 m6 l12">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Event title</span>
-            <p>
-              This is an event and its details and such.
-              You can click the link below and get taken to an events page.
-            </p>
-          <div class="card-action">
-            <a href="#" class="blue-text">Go to event</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col s12 m6 l12">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Event title</span>
-            <p>
-              This is an event and its details and such.
-              You can click the link below and get taken to an events page.
-            </p>
-          <div class="card-action">
-            <a href="#" class="blue-text">Go to event</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% empty %}
+    <p>No events!</p>
+    {% endfor %}
 
   </div>
 </div>
