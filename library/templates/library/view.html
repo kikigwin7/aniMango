@@ -35,10 +35,11 @@
         </a>
         {% endif %}
 
-        {# ani_link check not needed, as it is required for the api to work #}
+        {% if series.ani_link %}
         <a href="{{ series.ani_link }}" target="_blank">
           <img src="{% static 'anilist_icon.png' %}" title="View on Anilist.co">
         </a>
+        {% endif %}
 
         {% if series.wiki_link %}
         <a href="{{ series.wiki_link }}" target="_blank">

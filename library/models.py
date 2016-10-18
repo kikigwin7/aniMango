@@ -28,13 +28,13 @@ def copy_info(series, info):
 # Series model to describe an anime or manga
 # Will be used in library managment
 class Series(models.Model):
-    title = models.CharField(max_length=110)
-    title_eng = models.CharField(max_length=110)
+    title = models.CharField(max_length=110, blank=True)
+    title_eng = models.CharField(max_length=110, blank=True)
     api_manga = models.IntegerField(unique=True, null=True)
     api_anime = models.IntegerField(unique=True, null=True)
-    cover_link = models.URLField()
-    synopsis = models.TextField()
-    ani_link = models.URLField()
+    cover_link = models.URLField(blank=True)
+    synopsis = models.TextField(blank=True)
+    ani_link = models.URLField(blank=True)
     mal_link = models.URLField(blank=True)
     wiki_link = models.URLField(blank=True)
 
@@ -51,10 +51,10 @@ class Series(models.Model):
         verbose_name_plural = "series"
 
     # Save override so that api data can be used for new series entries
-    def save(self, *args, **kwargs):
+    def save(self):
         # self.title should exist if api data has been populated
         if self.title:
-            super(Series, self).save(*args,  **kwargs) # Call real save
+            super(Series, self).save() # Call real save
         else:
             # get the info from the api on save if series info doesnt exist
             if self.api_anime:
@@ -62,8 +62,10 @@ class Series(models.Model):
             else:
                 info = api_get_info(self.api_manga)
 
-            copy_info(self, info)
-            super(Series, self).save(*args,  **kwargs) # Call real save
+            if info:
+                copy_info(self, info)
+
+            super(Series, self).save() # Call real save
 
 
 # Item class that repesents each library item with associated loan
@@ -100,7 +102,7 @@ class Item(models.Model):
     return_date = models.DateField(null=True)
 
     def __str__(self):
-        return self.parent_series.name + ' : ' + self.name
+        return str(self.parent_series) + ' : ' + self.name
 
     def status(self):
         if self.on_loan and not self.requested:

@@ -30,7 +30,7 @@ def profile_edit(request):
 				im = Image.open(request.FILES['img'])
 				user_prof.img = request.FILES['img']
 			except IOError:
-				messages.error(req, 'You did not upload a valid image file')
+				messages.error(request, 'You did not upload a valid image file')
 		user_prof.save()
 		messages.success(request, 'Your profile was updated')
 		return HttpResponseRedirect(reverse('member:profile'))
@@ -47,7 +47,7 @@ def login_view(request):
 			if user.is_active:
 				login(request, user)
 				messages.success(request, 'You have been logged in')
-				return HttpResponseRedirect(reverse('home'))
+				return HttpResponseRedirect(reverse('site_info:home'))
 			else:
 				messages.error(request, 'Your account has been disabled')
 				return render(request, template)
@@ -61,4 +61,4 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	messages.success(request, 'You have been logged out')
-	return HttpResponseRedirect(reverse('home'))
+	return HttpResponseRedirect(reverse('site_info:home'))

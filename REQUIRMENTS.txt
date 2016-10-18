@@ -2,4 +2,4 @@ pip django 1.10
 pip requests
 pip pillow
 pip django-wysiwyg
-pip bleach
+pip html5lib 0.9999999 (7 0's)

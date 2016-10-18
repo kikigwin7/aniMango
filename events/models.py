@@ -2,8 +2,7 @@ from django.db import models
 from members.models import Member
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
-
-# Create your models here.
+from django.template.defaultfilters import date as d_date
 
 class Event(models.Model):
 	title = models.CharField(max_length=150)
@@ -18,7 +17,8 @@ class Event(models.Model):
 	signups_close = models.DateTimeField()
 
 	def __str__(self):
-		return self.title + ' -- ' + str(self.when) + ' -- ' + self.where
+		out = self.title + ', ' + d_date(self.when, 'D jS F Y, H:i')
+		return out + ', ' + self.where
 
 	def week_start(self):
 		# Get the day at the start of the week
@@ -33,6 +33,7 @@ class Event(models.Model):
 			return True
 
 	def already_signed_up(self, member):
+		# Check of member is already signed up
 		try:
 			self.signup_set.get(who=member)
 			return True
@@ -40,7 +41,15 @@ class Event(models.Model):
 			return False
 
 	def signup_count(self):
+		# How many people have signed up
 		return str(self.signup_set.count()) + '/' + str(self.max_signups)
+
+	def closed(self):
+		# Event is closed past signup close
+		if self.signups_close > datetime.now():
+			return True
+		else:
+			return False
 
 class Signup(models.Model):
 	who = models.ForeignKey(Member)

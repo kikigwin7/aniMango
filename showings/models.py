@@ -43,7 +43,10 @@ class Show(models.Model):
     )
     title = models.CharField(max_length=110)
     title_eng = models.CharField(max_length=110)
-    details = models.CharField(max_length=200)
+    details = models.CharField(
+        max_length=200,
+        help_text='Episodes watched etc.'
+    )
     anilist_anime_number = models.IntegerField()
     ani_link = models.URLField()
     mal_link = models.URLField(blank=True)

@@ -17,7 +17,6 @@ def upcoming(request):
 	events = Event.objects.filter(when__gte=timezone.now())
 
 	# Solution copied from uwcs-zarya
-	#
 	weeks_dict = OrderedDict()
 	for event in events:
 		event_week = event.when.isocalendar()[1]
@@ -27,12 +26,9 @@ def upcoming(request):
 			weeks_dict.get(key).append(event)
 		else:
 			weeks_dict[key] = [event]
-
 	weeks = list()
-
 	for _, week in weeks_dict.items():
 		weeks.append(week)
-	#
 
 	list_type = 'Upcoming'
 	context = {
@@ -43,19 +39,25 @@ def upcoming(request):
 
 def previous(request):
 	template = 'events/list.html'
-	page = request.GET.get('get')
-	events = Event.objects.filter(when__lt=timezone.now())
+	events = Event.objects.filter(when__lte=timezone.now())
 	list_type = 'Previous'
-	paginator = Paginator(events, 24)
 
-	try:
-		event_page = paginator.page(page)
-	except InvalidPage:
-		# Return first page for invalid input
-		event_page = paginator.page(1)
+	# Solution copied from uwcs-zarya
+	weeks_dict = OrderedDict()
+	for event in events:
+		event_week = event.when.isocalendar()[1]
+		key = '{year}-{week}'.format(year=event.when.year, week=event_week)
+
+		if weeks_dict.get(key):
+			weeks_dict.get(key).append(event)
+		else:
+			weeks_dict[key] = [event]
+	weeks = list()
+	for _, week in weeks_dict.items():
+		weeks.append(week)
 
 	context = {
-		'events_l': event_page,
+		'weeks': weeks,
 		'list_type': list_type
 	}
 	return render(request, template, context)
@@ -96,6 +98,9 @@ def signup(request, event_id):
 		elif event.already_signed_up(request.user.member):
 			messages.error(request, 'You have already signed up for this event')
 			return HttpResponseRedirect(reverse('events:view', args=[event_id]))
+
+		elif event.closed():
+			pass
 
 		new_signup = Signup(
 			who=request.user.member,

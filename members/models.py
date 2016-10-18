@@ -15,7 +15,7 @@ class Member(models.Model):
     )
     nick = models.CharField(max_length=30, blank=True)
     bio = models.TextField(blank=True)
-    img = models.ImageField(blank=True)
+    img = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         if self.nick:
@@ -27,17 +27,20 @@ class Member(models.Model):
         if self.img:
             orig = Member.objects.get(pk=self.pk)
             if orig.img != self.img:
-                if orig.img:
-                    os.remove(orig.img.path)
-                name, ext = os.path.splitext(str(self.img))
-                new_img = Image.open(self.img)
-                #new_img = new_img.resize((100,100), Image.LANCZOS)
-                new_img.thumbnail((100,100))
-                new_img_name = str(self.user.username) + ext
-                # PIL needs explicit media root defined
-                new_img.save(os.path.join(settings.MEDIA_ROOT,new_img_name))
-                # Saving to django model automatically prepends media root
-                self.img = new_img_name
+                try:
+                    if orig.img:
+                        os.remove(orig.img.path)
+                    name, ext = os.path.splitext(str(self.img))
+                    new_img = Image.open(self.img)
+                    #new_img = new_img.resize((100,100), Image.LANCZOS)
+                    new_img.thumbnail((100,100))
+                    new_img_name = str(self.user.username) + ext
+                    # PIL needs explicit media root defined
+                    new_img.save(os.path.join(settings.MEDIA_ROOT,new_img_name))
+                    # Saving to django model automatically prepends media root
+                    self.img = new_img_name
+                except Exception:
+                    self.img = None
             super(Member, self).save(*args,  **kwargs) # Call real save
         else:
             super(Member, self).save(*args,  **kwargs) # Call real save

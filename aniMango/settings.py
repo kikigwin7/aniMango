@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django_wysiwyg',
-    'home.apps.HomeConfig',
+    'site_info.apps.SiteInfoConfig',
     'library.apps.LibraryConfig',
     'members.apps.MembersConfig',
     'showings.apps.ShowingsConfig',

@@ -17,12 +17,9 @@ from django.conf.urls import url, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-# Callable view method from the home app
-from home.views import home
 
 urlpatterns = [
-    # The first 3 urls use the views file in the home app
-    url(r'^$', home, name='home'),
+    url(r'^', include('site_info.urls')),
     url(r'^library/', include('library.urls')),
     url(r'^members/', include('members.urls')),
     url(r'^showings/', include('showings.urls')),

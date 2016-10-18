@@ -18,6 +18,7 @@ def schedule(request):
 		earliest_year = Showing.objects.order_by('date')[0].date.year
 		# Get the range of dates of showings as a list
 		date_range = list(range(earliest_year, date.today().year))
+		date_range.append(date.today().year)
 	else:
 		date_range = None
 

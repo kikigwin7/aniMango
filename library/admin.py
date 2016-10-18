@@ -19,7 +19,8 @@ class ItemInline(admin.StackedInline):
 class SeriesAPIForm(forms.ModelForm):
     anilist_series_number = forms.IntegerField(
         widget=forms.TextInput,
-        required=False
+        required=False,
+        help_text="If using the anilist number, don't fill in anything below"
     )
 
     class Meta:
@@ -29,15 +30,15 @@ class SeriesAPIForm(forms.ModelForm):
 class SeriesAdmin(admin.ModelAdmin):
     actions = None
     form = SeriesAPIForm
-    readonly_fields = (
-        'api_anime',
-        'api_manga',
+    fields = [
+        'mal_link',
+        'wiki_link',
+        'anilist_series_number',
         'title',
         'title_eng',
-        'cover_link',
         'synopsis',
-        'ani_link'
-    )
+        'cover_link',
+    ]
     search_fields = ['name']
     inlines = [ItemInline]
 

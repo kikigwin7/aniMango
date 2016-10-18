@@ -57,7 +57,7 @@ main {
   margin: 0 auto;
 }
 /* Allow for forum posts to display correctly */
-.forum-content, .article-content {
+.forum-content, .article-content, .history-content{
   display: block;
   overflow: auto;
 }

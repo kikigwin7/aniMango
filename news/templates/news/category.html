@@ -18,6 +18,8 @@
       >
         {{ cat }}
       </a>
+      {% empty %}
+      <p class="center-align">No categories!</p>
       {% endfor %}
     </div>
   </div>
