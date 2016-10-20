@@ -3,3 +3,4 @@ __pycache__/
 anilist.token
 anilist_config.py
 media/
+env/

@@ -17,6 +17,12 @@
 {% if signup_required %}
   <li class="collection-item">
     Signup count: <strong>({{event.signup_count}})</strong>
+    <span class="right">
+      Signups close:
+      <strong>
+        {{event.signups_close|date:'l jS F - f a'}}
+      </strong>
+    </span>
   </li>
   <li class="collection-item">
     {% include "events/available.html" %}

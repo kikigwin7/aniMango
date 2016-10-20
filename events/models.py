@@ -46,7 +46,8 @@ class Event(models.Model):
 
 	def closed(self):
 		# Event is closed past signup close
-		if self.signups_close > datetime.now():
+		print('this runs')
+		if datetime.now() > self.signups_close:
 			return True
 		else:
 			return False

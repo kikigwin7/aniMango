@@ -100,7 +100,8 @@ def signup(request, event_id):
 			return HttpResponseRedirect(reverse('events:view', args=[event_id]))
 
 		elif event.closed():
-			pass
+			messages.error(request, 'Signups for this event are closed')
+			return HttpResponseRedirect(reverse('events:view', args=[event_id]))
 
 		new_signup = Signup(
 			who=request.user.member,
