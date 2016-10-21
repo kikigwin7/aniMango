@@ -4,3 +4,4 @@ anilist.token
 anilist_config.py
 media/
 env/
+*.pyc

@@ -51,7 +51,7 @@ def new(request, board_id):
 				new_thread = Thread()
 				new_thread.title = request.POST['title']
 				new_thread.content = request.POST['content']
-				new_thread.created = timezone.localtime(timezone.now())
+				new_thread.created = timezone.now()
 				new_thread.parent_board = Board.objects.get(id=board_id)
 				new_thread.thread_user = request.user.member
 				new_thread.save()
