@@ -1,7 +1,6 @@
 db.sqlite3
 __pycache__/
 anilist.token
-anilist_config.py
 media/
 env/
 *.pyc
