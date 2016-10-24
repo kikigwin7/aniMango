@@ -32,12 +32,23 @@ class Member(models.Model):
                         os.remove(orig.img.path)
                     name, ext = os.path.splitext(str(self.img))
                     new_img = Image.open(self.img)
-                    #new_img = new_img.resize((100,100), Image.LANCZOS)
-                    new_img.thumbnail((100,100))
                     new_img_name = str(self.user.username) + ext
-                    # PIL needs explicit media root defined
-                    new_img.save(os.path.join(settings.MEDIA_ROOT,new_img_name))
-                    # Saving to django model automatically prepends media root
+                    ######
+                    #http://matthiaseisen.com/pp/patterns/p0202/
+                    longer_side = max(new_img.size)
+                    horizontal_padding = (longer_side - new_img.size[0]) / 2
+                    vertical_padding = (longer_side - new_img.size[1]) / 2
+                    img_square = new_img.crop(
+                        (
+                            -horizontal_padding,
+                            -vertical_padding,
+                            new_img.size[0] + horizontal_padding,
+                            new_img.size[1] + vertical_padding
+                        )
+                    )
+                    #######
+                    img_square.thumbnail((100,100))
+                    img_square.save(os.path.join(settings.MEDIA_ROOT,new_img_name))
                     self.img = new_img_name
                 except Exception:
                     self.img = None

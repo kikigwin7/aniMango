@@ -139,3 +139,9 @@ MEDIA_URL = '/media/'
 
 # Disable https during testing
 SECURE_SSL_REDIRECT = False
+
+# To get memberlist from Warwick Students Union
+SU_API_KEY = 'c76aa4b2-ae70-43e7-b59f-81d680deb1c5'
+
+#Test email host DO NOT USE IN PRODUCTION
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -4,6 +4,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from library.models import Item
+from django.contrib.auth.models import User
 from PIL import Image
 
 def profile(request):
@@ -12,7 +13,19 @@ def profile(request):
 		return render(request, template)
 	else:
 		messages.error(request, 'You must be logged in to view this page')
-		return HttpResponseRedirect(reverse('home'))
+		return HttpResponseRedirect(reverse('site_info:home'))
+
+def view_other(request, username):
+	template = "members/other_profile.html"
+	try:
+		user = User.objects.get(username=username)
+		context = {
+			'other_user': user,
+		}
+		return render(request, template, context)
+	except User.DoesNotExist:
+		messages.error(request, 'This user does not exist')
+		return HttpResponseRedirect(reverse('site_info:home'))
 
 def profile_edit(request):
 	template = "members/edit.html"
