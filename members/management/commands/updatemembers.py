@@ -12,8 +12,19 @@ except ImportError:
 
 API_PREFIX = 'https://www.warwicksu.com/membershipapi/listMembers/'
 
-def send_signup_mail():
-	pass
+def send_signup_mail(user, password):
+	subject = 'Welcome to the University of Warwick Anime and Manga Society'
+	from_email = 'Anime and Managa Exec <noreply@animesoc.co.uk>'
+	message = 'Thanks for joining the society! Your login details are as follows:\n\n' \
+			  'Username: {username}\n' \
+			  'Password: {password}\n\n' \
+			  'You can log in at https://animesoc.co.uk/members/login/. We suggest you change your \n' \
+			  'password as soon as you log in. Don\'t forget to add a nickname, too!\n\n' \
+			  'Regards,\n' \
+			  'Anime and Manga Society Exec\n\n' \
+			  'P.S.: Please don\'t reply to this email, you will not get a response.'.format(username=user.username, 
+																							 password=password)
+	user.email_user(subject, message, from_email)
 
 class Command(BaseCommand):
 	help = 'Updates the list of members from the Warwick SU member API'
@@ -46,6 +57,7 @@ class Command(BaseCommand):
 				new_user.first_name = title(member.find('FirstName').text)
 				new_user.last_name = title(member.find('LastName').text)
 				new_user.save()
+				send_signup_mail(new_user, password)
 				active_member_ids.append(new_user.id)
 				print('New member: ' + new_user.username)
 

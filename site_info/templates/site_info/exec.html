@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+  History
+{% endblock %}
+
+{% block content %}
+<h4>
+  Society Exec
+</h4>
+
+{% for exec in exec_members %}
+  <h5>{{ exec.exec_role }} - {{ exec.user.get_full_name }}</h5>
+  <p>{{ exec.exec_info }}</p>
+{% empty %}
+  <p>No exec!</p>
+{% endfor %}
+
+{% endblock %}

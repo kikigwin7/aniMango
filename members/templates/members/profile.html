@@ -48,8 +48,12 @@
 </div>
 
 
-<h5>Library items:</h5>
+<h5>Items on loan:</h5>
 
-<p>Feature coming soon...</p>
+{% for item in loaned_items %}
+  <p>{{ item }} - {{ item.status }}: Due on {{ item.return_date }}</p>
+{% empty %}
+  <p>You have no items on loan from the library</p>
+{% endfor %}
 
 {% endblock %}

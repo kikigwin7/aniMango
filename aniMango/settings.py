@@ -145,3 +145,6 @@ SU_API_KEY = 'c76aa4b2-ae70-43e7-b59f-81d680deb1c5'
 
 #Test email host DO NOT USE IN PRODUCTION
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+LOGIN_REDIRECT_URL = 'member:profile'

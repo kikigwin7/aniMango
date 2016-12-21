@@ -28,8 +28,10 @@
         </ul>
         {% endif %}
 
+        <!--DROPDOWN FOR SITE INFO ON DESKTOP-->
         <ul id="info-dropdown" class="dropdown-content">
           <li><a href="{% url 'site_info:history' %}">History</a></li>
+          <li><a href="{% url 'site_info:exec' %}">Exec</a></li>
         </ul>
 
         <ul class="right hide-on-med-and-down">
@@ -43,18 +45,17 @@
           </a></li>
           <li>
             {% if user.is_authenticated %}
-            <a class="dropdown-button" data-activates="member-dropdown">
-              <i class="material-icons left">account_circle</i>
-              {{ user.member }}
-            </a>
+              <a class="dropdown-button" data-activates="member-dropdown">
+                <i class="material-icons left">account_circle</i>
+                {{ user.member }}
+              </a>
             {% else %}
-            <a href="{% url 'member:login' %}">
-              Login
-            </a>
+              <a href="{% url 'member:login' %}">Login</a>
             {% endif %}
           </li>
         </ul>
-        <!--Mobile menu stuff here-->
+
+        <!--MOBILE MENU BEGINS-->
         <ul class="side-nav" id="mobile-menu">
           <li>
             {% if user.is_authenticated %}
@@ -78,9 +79,7 @@
               </li>
             </ul>
             {% else %}
-            <a href="{% url 'member:login' %}">
-              Login
-            </a>
+              <a href="{% url 'member:login' %}">Login</a>
             {% endif %}
           </li>
           <li><a href="{% url 'events:upcoming' %}">Events</a></li>
@@ -88,7 +87,19 @@
           <li><a href="{% url 'forum:index' %}">Forum</a></li>
           <li><a href="{% url 'showings:schedule' %}">Showings</a></li>
           <li><a href="{% url 'library:index' %}">Library</a></li>
-          <li><a href="#">About</a></li>
+          <ul class="collapsible collapsible-accordian">
+            <li>
+              <a class="collapsible-header waves-effect">About Us</a>
+              <div class="collapsible-body">
+                <ul>
+                  <!--DROPDOWN FOR ABOUT ON MOBILE-->
+                  <li><a href="{% url 'site_info:history' %}">History</a></li>
+                  <li><a href="{% url 'site_info:exec' %}">Exec</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+
         </ul>
       </div>
     </nav>

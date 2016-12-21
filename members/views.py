@@ -5,17 +5,22 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from library.models import Item
 from django.contrib.auth.models import User
+from library.models import Item
 from PIL import Image
 
 def profile(request):
 	template = "members/profile.html"
 	if request.user.is_authenticated():
-		return render(request, template)
+		loaned_items = Item.objects.filter(loan_user=request.user)
+		context = {
+			'loaned_items': loaned_items
+		}
+		return render(request, template, context)
 	else:
 		messages.error(request, 'You must be logged in to view this page')
 		return HttpResponseRedirect(reverse('site_info:home'))
 
-def view_other(request, username):
+def view(request, username):
 	template = "members/other_profile.html"
 	try:
 		user = User.objects.get(username=username)
@@ -75,3 +80,9 @@ def logout_view(request):
 	logout(request)
 	messages.success(request, 'You have been logged out')
 	return HttpResponseRedirect(reverse('site_info:home'))
+
+def change_password(request):
+	pass
+
+def reset_password(request):
+	pass

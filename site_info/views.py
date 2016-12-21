@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from news.models import Article
 from events.models import Event
-from .models import HistoryEntry
+from .models import HistoryEntry, Exec
 
 
 def home(request):
@@ -24,7 +24,11 @@ def constitution(request):
 
 def exec_people(request):
 	template = 'site_info/exec.html'
-	pass
+	exec_members = Exec.objects.all()
+	context = {
+		'exec_members': exec_members
+	}
+	return render(request, template, context)
 
 def history(request):
 	template = 'site_info/history.html'
