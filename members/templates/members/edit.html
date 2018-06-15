@@ -14,21 +14,53 @@
   >
     {% csrf_token %}
     <div class="input-field">
-      <input id="nick" name="nick" type="text" value="{{ user.member.nick }}">
-      <label for="nick">Nickname</label>
+      <input type="checkbox" id="show_name" name="show_name" autocomplete="off"
+        {% if user.member.show_full_name %}
+        checked="checked"
+        {% endif %}
+      />
+      <label
+        for="show_name"
+        class="tooltipped"
+        data-position="bottom"
+        data-delay="50"
+        data-tooltip="Checking this will display your real name to users viewing your profile. It will also be used to identify you if no nickname is set. For execs, it will also be shown publicly on the exec page."
+      >Show real name</label>
     </div>
+    <br>
     <div class="input-field">
+      <input id="nick" name="nick" type="text" autocomplete="off" value="{{ user.member.nick }}">
+      <label for="nick"
+        class="tooltipped"
+        data-position="bottom"
+        data-delay="0"
+        data-tooltip="Your preferred name to be identified by on the website. If none set, either your full name (if allowed) or your username (university ID) will be used."
+      >Nickname (?)</label>
+    </div>
+    <br>
+    <div class="input-field">
+      <label>Bio</label><br/>
       <textarea
         id="bio"
         name="bio"
-        class="materialize-textarea"
-        >{{ user.member.bio }}</textarea>
-      <label for="bio" >Bio</label>
+        autocomplete="off"
+        >{{ user.member.bio|safe }}</textarea>
     </div>
+    
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
+    <script>
+      tinymce.init({
+        selector: '#bio',
+        plugins: 'autolink textcolor colorpicker link lists',
+        toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent'
+      });
+    </script>
+    
     <div class="file-field input-field">
       <div class="btn blue darken-1">
         <span>File</span>
-        <input type="file" name="img">
+        <input type="file" name="img" autocomplete="off">
       </div>
       <div class="file-path-wrapper">
         <input

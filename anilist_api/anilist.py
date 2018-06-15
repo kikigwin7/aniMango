@@ -1,100 +1,70 @@
+import os.path
+import pickle
 import requests
-import sys
-import traceback
 import time
-import json
-from .anilist_config import aniclient, anisecret
 
-# The anilist api uses numbers > 30000 for manga pages and below for anime
-# I dont know why, it just is
-ANILIST_MAGIC_NUMBER = 30000
+from django.core.exceptions import ValidationError
 
-ANICLIENT = aniclient
-ANISECRET = anisecret
+from .anilist_config import aniclient, anisecret, pickle_path
 
-access_token = ''
+params = {'grant_type': 'client_credentials', 'client_id': aniclient, 'client_secret': anisecret}
 
-def check_and_get_old_token():
+def populate_series_item(series_obj):
     try:
-        # open the file if it exists
-        #print('Checking for old token')
-        token_file = open('anilist.token', 'r+')
-        token_json = json.load(token_file)
-        time_now = time.time()
-
-        if time_now < token_json['expires']:
-            global access_token
-            access_token = token_json['access_token']
-            token_file.close()
-            #print('Old token checked and valid')
-            return True
-        else:
-            token_file.close()
-            #print('Old token checked and invalid')
-            return False
-
+        info = api_get_info(series_obj)
     except Exception as e:
-        # Token file doesnt exist or there was some other error
-        # create a new empty token file
-        #print('No existing token found')
-        open('anilist.token', 'w').close()
-        return False
+        raise ValidationError(repr(e))
+    
+    series_obj.title = info['title_romaji']
+    series_obj.title_eng = info['title_english']
+    series_obj.api_id = int(info['id'])
+    series_obj.series_type = info['series_type']
+    series_obj.synopsis = info['description']
+    series_obj.cover_link = info['image_url_lge']
+    series_obj.ani_link = 'https://anilist.co/{0!s}/{1!s}'.format(series_obj.series_type, series_obj.api_id)
 
-def get_new_token():
+def api_get_info(series_obj):
+    url = 'https://anilist.co/api/{0!s}/{1!s}'.format(series_obj.series_type, series_obj.api_id)
     try:
-        #print ('Trying to get new anilist token')
-        request = requests.post(
-            'https://anilist.co/api/auth/access_token',
-            params={
-                'grant_type':'client_credentials',
-                'client_id':ANICLIENT,
-                'client_secret':ANISECRET
-            }
-        )
-        #print ('Gained anilist token')
-
-        #print('Writing anilist token')
-        request_json = request.json()
-        f = open('anilist.token', 'w')
-        json.dump(request_json, f)
-        f.close()
-
-        global access_token
-        access_token = request_json['access_token']
-
-    except Exception as e:
-        traceback.print_exc()
-        #print('Error getting anilist api token')
-
-def setup():
-    if check_and_get_old_token():
-        return
-    else:
-        #print('No valid existing token')
-        get_new_token()
-
-def api_get_info(media_id):
-    url = 'https://anilist.co/api/'
-    # 30000 is the anilist cutoff value for manga 
-    # MAGIC NUMBERS
-    if media_id > ANILIST_MAGIC_NUMBER:
-        url += 'manga/'
-    else:
-        url += 'anime/'
-
-    url += str(media_id) + '/page'
-
-    try:
-        request = requests.get(url, params={'access_token':access_token})
+        request = requests.get(url, params={'access_token': get_access_token()})
 
         if request.status_code == 401:
-            setup()
-            request = requests.get(url, params={'access_token':access_token})
+            renew_token()
+            request = requests.get(url, params={'access_token': get_access_token()})
 
         if request.status_code == 200:
             return request.json()
         else:
-            return None
+            raise RuntimeError('Could not retrieve info from AniList. Status code received is '+request.status_code)
     except Exception as e:
-        traceback.print_exc()
-        return None
+        raise
+
+#
+# Methods for token management - Sorc
+#
+def get_access_token():
+    if not os.path.isfile(pickle_path):
+        renew_token()
+    token = get_token_from_pickle()
+    if time.time() > token['expires']:
+        renew_token()
+        token = get_token_from_pickle()
+    return token['token']
+    
+def renew_token():
+    try:
+        r = requests.post('https://anilist.co/api/auth/access_token', params=params).json()
+    except Exception as e:
+        raise RuntimeError('Could not renew AniList token.' + repr(e))
+    try:
+        with open(pickle_path, 'wb') as f:
+            pickle.dump({
+                'token': r['access_token'],
+                'expires': time.time() + int(r['expires_in'])
+            }, f)
+    except Exception as e:
+        raise RuntimeError('Could not dump token to pickle.' + repr(e))
+
+def get_token_from_pickle():
+    with open(pickle_path, 'rb') as f:
+        return pickle.load(f)

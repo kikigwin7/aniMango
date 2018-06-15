@@ -1,59 +1,57 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.contrib.auth import logout, authenticate, login
-from django.contrib import messages
-from django.core.urlresolvers import reverse
-from library.models import Item
-from django.contrib.auth.models import User
-from library.models import Item
+import os
 from PIL import Image
 
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+
+from library.models import ArchivedRequest, Request
+
+@login_required
 def profile(request):
-	template = "members/profile.html"
-	if request.user.is_authenticated():
-		loaned_items = Item.objects.filter(loan_user=request.user)
-		context = {
-			'loaned_items': loaned_items
-		}
-		return render(request, template, context)
-	else:
-		messages.error(request, 'You must be logged in to view this page')
-		return HttpResponseRedirect(reverse('site_info:home'))
+	loaned_items = Request.objects.select_related().filter(user=request.user).order_by('-return_deadline')
+	archived_items = ArchivedRequest.objects.select_related().filter(user=request.user).order_by('-date_requested')[:5]
+	context = {
+		'loaned_items': loaned_items,
+		'archived_items': archived_items
+	}
+	return render(request, 'members/profile.html', context)
 
-def view(request, username):
-	template = "members/other_profile.html"
-	try:
-		user = User.objects.get(username=username)
-		context = {
-			'other_user': user,
-		}
-		return render(request, template, context)
-	except User.DoesNotExist:
-		messages.error(request, 'This user does not exist')
-		return HttpResponseRedirect(reverse('site_info:home'))
+@login_required
+def view(request, user_id):
+	context = { 'other_user': get_object_or_404(User, id=user_id) }
+	return render(request, "members/other_profile.html", context)
 
+@login_required
 def profile_edit(request):
-	template = "members/edit.html"
-	if not request.user.is_authenticated():
-		messages.error(request, 'You must be logged in to edit your profile')
-		return HttpResponseRedirect(reverse('member:profile'))
-
 	if request.method == 'POST':
 		user_prof = request.user.member
-		user_prof.nick = request.POST['nick']
-		user_prof.bio = request.POST['bio']
+		user_prof.nick = request.POST.get('nick')
+		user_prof.bio = request.POST.get('bio')
+		user_prof.show_full_name = True if request.POST.get('show_name') else False
 		if request.FILES:
 			try:
 				# Throws exception if file is not an image
 				im = Image.open(request.FILES['img'])
+				name, ext = os.path.splitext(request.FILES['img'].name)
+				if ext not in ['.jpg', '.jpeg', '.png']:
+					raise Warning('Wrong image format')
 				user_prof.img = request.FILES['img']
-			except IOError:
-				messages.error(request, 'You did not upload a valid image file')
-		user_prof.save()
+			except:
+				messages.error(request, 'You did not upload a valid image file. Please select a .jpg, .jpeg or .png file.')
+		try:
+			user_prof.save()
+		except Exception as e:
+			messages.error(request, 'Failed to update profile: internal server error.')
+			raise
 		messages.success(request, 'Your profile was updated')
 		return HttpResponseRedirect(reverse('member:profile'))
 	else:
-		return render(request, template)
+		return render(request, "members/edit.html")
 
 def login_view(request):
 	template = 'members/login.html'
@@ -82,7 +80,9 @@ def logout_view(request):
 	return HttpResponseRedirect(reverse('site_info:home'))
 
 def change_password(request):
+	#TODO
 	pass
 
 def reset_password(request):
+	#TODO
 	pass

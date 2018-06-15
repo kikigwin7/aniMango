@@ -12,7 +12,7 @@
   <li>When: {{ event.when|date:'l jS F - f a' }}</li>
   <li>Where: {{ event.where }}</li>
 </ul>
-<p>{{ event.details }}</p>
+<p>{{ event.details|safe }}</p>
 <ul class="collection">
 {% if signup_required %}
   <li class="collection-item">
@@ -24,9 +24,31 @@
       </strong>
     </span>
   </li>
-  <li class="collection-item">
-    {% include "events/available.html" %}
-  </li>
+  {% if user.is_authenticated %}
+    <li class="collection-item">
+      {% if opened %}
+        {% if closed %}
+          <div class="center-align">
+            Signups are now closed.
+          </div>
+        {% else %}
+          {% if user_is_signed_up %}
+            {% include "events/cancel.html" %}
+          {% elif event_is_full %}
+            <div class="center-align">
+              Sorry! Event is full, check again later for possible free places.
+            </div>
+          {% else %}
+            {% include "events/available.html" %}
+          {% endif %}
+        {% endif %}
+      {% else %}
+        <div class="center-align">
+            Signups are not open yet.
+        </div>
+      {% endif %}
+    </li>
+  {% endif %}
   {% for signup in signups %}
     <li class="collection-item">
       <div class="row" style="margin-bottom: 0px">

@@ -6,8 +6,6 @@ app_name = 'library'
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
 
-	url(r'^search/$', views.index_search, name='search'),
-
 	url(
 		r'^series/(?P<series_id>[0-9]+)/$',
 		views.series_view,

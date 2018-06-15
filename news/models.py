@@ -1,13 +1,15 @@
+from django.conf import settings
 from django.db import models
-from members.models import Member
 from django.utils import timezone
 from django.utils.text import slugify
-import django_wysiwyg
+
+from aniMango.bleach_html import bleach_tinymce, bleach_no_tags
+from members.models import Member
 
 class Article(models.Model):
 	title = models.CharField(max_length=100)
 	content = models.TextField()
-	created = models.DateTimeField()
+	created = models.DateTimeField(auto_now_add=True)
 	slug = models.SlugField(blank=True, editable=False)
 	article_choices = (
 		('News', 'News'),
@@ -20,9 +22,9 @@ class Article(models.Model):
 		default='News'
 	)
 	created_by = models.ForeignKey(
-		Member,
-		on_delete=models.SET_NULL,
-		null=True
+		settings.AUTH_USER_MODEL,
+		on_delete=models.PROTECT,
+		null=False
 	)
 
 	def __str__(self):
@@ -30,10 +32,11 @@ class Article(models.Model):
 	
 	def info(self):
 		out = 'Category: ' + self.article_type
-		out += ', Posted by ' + str(self.created_by)
+		out += ', Posted by ' + str(self.created_by.member)
 		return out + ' on ' + self.created.strftime('%d %b %Y')
 
-	def save(self):
-		self.content = django_wysiwyg.sanitize_html(self.content)
+	def save(self, **kwargs):
+		self.title = bleach_no_tags(self.title)
+		self.content = bleach_tinymce(self.content)
 		self.slug = slugify(self.title)
 		super(Article, self).save()

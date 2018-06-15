@@ -1,0 +1,14 @@
+<form
+    class="row"
+    style="margin-bottom: 12px"
+    action="{% url 'events:cancel' event.id %}"
+    method="POST"
+>
+    {% csrf_token %}
+    <div class="input-field col s9 center-align">
+        You are signed up. See you there!
+    </div>
+    <div class="input-field col s3">
+        <input type="submit" class="btn right red" value="Cancel">
+    </div>
+</form>

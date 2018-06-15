@@ -1,14 +1,14 @@
 <header>
   <div class="navbar-fixed">
     <nav>
-      <div class="nav-wrapper indigo darken-4">
+      <div class="nav-wrapper modern-menu">
 
         <a href="#" data-activates="mobile-menu" class="button-collapse">
           <i class="material-icons">menu</i>
         </a>
         <a
           href="{% url 'site_info:home' %}"
-          class="brand-logo center hide-on-med-only"
+          class="brand-logo center hide"
         >
           {% load static %}
           <img src="{% static 'images/smol_logo.gif' %}">
@@ -31,17 +31,20 @@
         <!--DROPDOWN FOR SITE INFO ON DESKTOP-->
         <ul id="info-dropdown" class="dropdown-content">
           <li><a href="{% url 'site_info:history' %}">History</a></li>
-          <li><a href="{% url 'site_info:exec' %}">Exec</a></li>
+          {% now "Y" as current_year %}
+          <li><a href="{% url 'site_info:exec' year=current_year  %}">Exec</a></li>
+          <li><a href="{% url 'site_info:about' %}">About Us</a></li>
+          <li><a href="{% url 'site_info:contact' %}">Contact</a></li>
         </ul>
 
-        <ul class="right hide-on-med-and-down">
-          <li><a href="{% url 'events:upcoming' %}">Events</a></li>
-          <li><a href="{% url 'news:latest' %}">News</a></li>
-          <li><a href="{% url 'forum:index' %}">Forum</a></li>
-          <li><a href="{% url 'showings:schedule' %}">Showings</a></li>
-          <li><a href="{% url 'library:index' %}">Library</a></li>
-          <li><a class="dropdown-button" data-activates="info-dropdown">
-            About Us
+        <ul class="right right-menu-style hide-on-med-and-down">
+          <li class="nav-item"><a href="{% url 'events:upcoming' page=1 %}">Events</a></li>
+          <li class="nav-item"><a href="{% url 'news:latest' category='All' page='1' %}">News</a></li>
+          <li class="nav-item"><a href="{% url 'forum:index' %}">Forum</a></li>
+          <li class="nav-item"><a href="{% url 'showings:schedule' %}">Showings</a></li>
+          <li class="nav-item"><a href="{% url 'library:index' %}">Library</a></li>
+          <li class="nav-item"><a class="dropdown-button" data-activates="info-dropdown">
+            Society
           </a></li>
           <li>
             {% if user.is_authenticated %}
@@ -82,19 +85,22 @@
               <a href="{% url 'member:login' %}">Login</a>
             {% endif %}
           </li>
-          <li><a href="{% url 'events:upcoming' %}">Events</a></li>
-          <li><a href="{% url 'news:latest' %}">News</a></li>
+          <li><a href="{% url 'events:upcoming' page=1 %}">Events</a></li>
+          <li><a href="{% url 'news:latest' category='All' page='1' %}">News</a></li>
           <li><a href="{% url 'forum:index' %}">Forum</a></li>
           <li><a href="{% url 'showings:schedule' %}">Showings</a></li>
           <li><a href="{% url 'library:index' %}">Library</a></li>
           <ul class="collapsible collapsible-accordian">
             <li>
-              <a class="collapsible-header waves-effect">About Us</a>
+              <a class="collapsible-header waves-effect">Society</a>
               <div class="collapsible-body">
                 <ul>
                   <!--DROPDOWN FOR ABOUT ON MOBILE-->
                   <li><a href="{% url 'site_info:history' %}">History</a></li>
-                  <li><a href="{% url 'site_info:exec' %}">Exec</a></li>
+                  {% now "Y" as current_year %}
+                  <li><a href="{% url 'site_info:exec' year=current_year %}">Exec</a></li>
+                  <li><a href="{% url 'site_info:about' %}">About Us</a></li>
+                  <li><a href="{% url 'site_info:contact' %}">Contact</a></li>
                 </ul>
               </div>
             </li>

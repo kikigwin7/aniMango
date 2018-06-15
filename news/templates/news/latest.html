@@ -11,27 +11,49 @@
   <div class="col s12 m3 push-m9 card-panel">
     <h5 class="center-align">Article Categories</h5>
     <div class="collection">
-      {% for cat in category_l %}
-      <a
-        href="{% url 'news:category' %}?query={{cat}}"
-        class="collection-item"
-      >
-        {{ cat }}
-      </a>
-      {% empty %}
-      <p class="center-align">No categories!</p>
-      {% endfor %}
+      {% with 'All Blog News Minutes' as list %}
+        {% for cat in list.split %}
+        <a
+          href="{% url 'news:latest' category=cat page='1' %}"
+          class="collection-item {% if cat == category %}active{% endif %}"
+        >
+          {{ cat }}
+        </a>
+        {% endfor %}
+      {% endwith %}
     </div>
   </div>
   <div class="col s12 m9 pull-m3">
 
-  {% include "news/news_lister.html" %}
+    {% for article in articles_l %}
+      <h5 >{{ article.title }}</h5>
+      <div class="article-content tinymce-content">
+        {{ article.content|safe|truncatewords_html:50 }}
+      </div>
+      <br>
+      <div class="row">
+        <div class="col s8">
+          {{ article.info }}
+        </div>
+        <div class="col s4">
+          <a
+            href="{% url 'news:article' article.id article.slug %}"
+            class="waves-effect btn-flat"
+          >
+            Read more
+          </a>
+        </div>
+      </div>
+      <div class="divider"></div>
+    {% empty %}
+      <p>No news in this category: {{category}}!</p>
+    {% endfor %}
 
     <div class="center-align">
       <ul class="pagination">
           {% if articles_l.has_previous %}
           <li class="waves-effect">
-            <a href="?page={{ articles_l.previous_page_number }}">
+            <a href="{% url 'news:latest' category=category page=articles_l.previous_page_number %}">
               <i class="material-icons">chevron_left</i>
             </a>
           </li>
@@ -41,7 +63,7 @@
 
           {% if articles_l.has_next %}
           <li class="waves-effect">
-            <a href="?page={{ articles_l.next_page_number }}">
+            <a href="{% url 'news:latest' category=category page=articles_l.next_page_number %}">
               <i class="material-icons">chevron_right</i>
             </a>
           </li>

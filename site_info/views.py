@@ -1,39 +1,43 @@
 from django.shortcuts import render
-from news.models import Article
-from events.models import Event
-from .models import HistoryEntry, Exec
+from django.utils import timezone
 
+from events.models import Event
+from news.models import Article
+
+from .models import  Exec, HistoryEntry
 
 def home(request):
-	template = 'site_info/home.html'
 	news_l = Article.objects.order_by('-created')[:3]
-	events_l = Event.objects.order_by('-when')[:4]
+	# Takes events that are in future, orders soonest first, takes first 4, then reverses (latest first) -Sorc
+	events_l = Event.objects.filter(when__gte=timezone.now()).order_by('when')[:4]
 	context = {
 		'news_l': news_l,
 		'events_l':events_l
 	}
-	return render(request, template, context)
-
-def general(request):
-	template = 'site_info/general_info.html'
-	pass
+	return render(request, 'site_info/home.html', context)
 
 def constitution(request):
-	template = 'site_info/constitution.html'
-	return render(request, template)
+	return render(request, 'site_info/constitution.html')
+	
+def contact(request):
+	return render(request, 'site_info/contact.html')
+	
+def about(request):
+	return render(request, 'site_info/about.html')
 
-def exec_people(request):
-	template = 'site_info/exec.html'
-	exec_members = Exec.objects.all()
+def exec_people(request, year):
+	year_choices = Exec.objects.values('academic_year').distinct().order_by('-academic_year')
+	exec_members = Exec.objects.filter(academic_year = year).order_by('place_in_list');
 	context = {
+		'disp_year': year,
+		'year_choices': year_choices,
 		'exec_members': exec_members
 	}
-	return render(request, template, context)
+	return render(request, 'site_info/exec.html', context)
 
 def history(request):
-	template = 'site_info/history.html'
 	entries = HistoryEntry.objects.order_by('academic_year')
 	context = {
 		'history_list': entries
 	}
-	return render(request, template, context)
+	return render(request, 'site_info/history.html', context)

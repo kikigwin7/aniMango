@@ -1,28 +1,16 @@
-from django.contrib import admin
 from django import forms
-from django.conf.urls import url
-from datetime import date, timedelta
-from anilist_api.anilist import ANILIST_MAGIC_NUMBER
+from django.contrib import admin, messages
+from django.contrib.admin.helpers import ActionForm
+from django.contrib.auth.models import User
 
-from .models import Item, Series
+from .models import Item, Series, Request, ArchivedRequest
 
 class ItemInline(admin.StackedInline):
     model = Item
     extra = 1
-    readonly_fields = (
-        'on_loan',
-        'requested',
-        'loan_user',
-        'return_date'
-    )
+    raw_id_fields=('parent_series',)
 
 class SeriesAPIForm(forms.ModelForm):
-    anilist_series_number = forms.IntegerField(
-        widget=forms.TextInput,
-        required=False,
-        help_text="If using the anilist number, don't fill in anything below"
-    )
-
     class Meta:
         model = Series
         fields = '__all__'
@@ -30,115 +18,151 @@ class SeriesAPIForm(forms.ModelForm):
 class SeriesAdmin(admin.ModelAdmin):
     actions = None
     form = SeriesAPIForm
-    fields = [
-        'mal_link',
-        'wiki_link',
-        'anilist_series_number',
-        'title',
-        'title_eng',
-        'synopsis',
-        'cover_link',
-    ]
-    search_fields = ['name']
+    search_fields = ['title', 'title_eng']
     inlines = [ItemInline]
+    list_display = (
+		'title',
+		'series_type',
+		'api_id',
+		'cooldown_date'
+	)
+    list_filter = [
+        'series_type',
+    ]
 
-    def save_model(self, request, obj, form, change):
-        # Override form save, to input given series number in the correct field
-        series_no = form.cleaned_data['anilist_series_number']
-        if series_no is None:
-            pass
-        elif series_no > ANILIST_MAGIC_NUMBER:
-            obj.api_manga = series_no
-        else:
-            obj.api_anime = series_no
-
-        super(SeriesAdmin, self).save_model(request, obj, form, change)
-
+class CreateLoanForm(ActionForm):
+    university_id = forms.CharField()
 
 class ItemAdmin(admin.ModelAdmin):
-    readonly_fields = (
-        'on_loan',
-        'requested',
-        'loan_user',
-        'return_date'
-    )
+    raw_id_fields=('parent_series',)
     # What to show as column headers in the admin
     list_display = (
         'name',
+        'media_type',
         'parent_series',
         'status',
-        'loan_user',
-        'return_date',
     )
-    # Fields to filter by on the admin
     list_filter = [
-        'requested',
-        'on_loan'
+        'media_type',
     ]
     search_fields = ['parent_series']
-    actions = [
-        'approve_req',
-        'deny_req',
-        'recieve_loan',
-        'renew_loan'
+    action_form = CreateLoanForm
+    actions = ['manual_request']
+    
+    def manual_request(self, request, queryset):
+        university_id = request.POST.get('university_id')
+        if not university_id:
+            self.message_user(request, 'Please provide the university ID', messages.ERROR)
+            return
+        user = User.objects.get(username=university_id)
+        if user:
+            for item in queryset:
+                r = item.request(user)
+                if r:
+                    r.approve()
+                    self.message_user(request, 'Successfully approved loan for {0!s}'.format(item.__str__()), messages.SUCCESS)
+                else:
+                    self.message_user(request, 'Could not issue loan for {0!s}'.format(item.__str__()), messages.ERROR)
+        else:
+            self.message_user(request, 'User {0!s} could not be found'.format(university_id), messages.ERROR)
+    manual_request.short_description = "Issue loan to user manually."
+    
+class RequestAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        'item',
+        'date_requested',
+        'status_variable',
+        'user'
+    )
+    # What to show as column headers in the admin
+    list_display = (
+        'item',
+        'status_variable',
+        'return_deadline',
+        'user',
+    )
+    list_filter = [
+        'status_variable',
     ]
-
-    # Approve item loan request method
-    def approve_req(modeladmin, request, queryset):
-        for item in queryset:
-            if item.status() != 'Requested':
-                pass
-            else:
-                item.requested = False
-                item.on_loan = True
-                # return date in two weeks time
-                item.return_date = date.today() + timedelta(weeks=2)
-                item.save()
-    approve_req.short_description = "Approve loan request for selected item"
-
-    # Deny item loan request method
-    def deny_req(modeladmin, request, queryset):
-        for item in queryset:
-            if item.status() != 'Requested':
-                pass
-            else:
-                item.requested = False
-                item.loan_user = None
-                item.save()
-    deny_req.short_description = "Deny loan request for selected items"
-
-    # Recieve an item after or during its loan period
-    def recieve_loan(modeladmin, request, queryset):
-        for item in queryset:
-            status = item.status()
-            if status == 'On Loan' or status == 'Late':
-                item.on_loan = False
-                item.loan_user = None
-                item.return_date = None
-                item.save()
-            else:
-                pass
-    recieve_loan.short_description = "Return the items to the library"
-
-    # Renew an items loan period
-    def renew_loan(modeladmin, request, queryset):
-        for item in queryset:
-            status = item.status()
-            if status == 'On Loan' or status == 'Late':
-                item.return_date = date.today() + timedelta(weeks=1)
-                item.save()
-            else:
-                pass
-    renew_loan.short_description = "Renew the the selected items for one week"
-
-    # Add item actions
+    search_fields = ['item']
     actions = [
-        approve_req,
-        deny_req,
-        recieve_loan,
-        renew_loan
+        'approve',
+        'deny',
+        'absent',
+        'return_on_time',
+        'return_late',
+        'renew',
     ]
+    
+    def approve(self, request, queryset):
+        for request_obj in queryset:
+            if request_obj.approve():
+                messages.add_message(request, messages.SUCCESS, 'Successfully approved loan for {0!s}'.format(request_obj.item.__str__()))
+            else:
+                messages.add_message(request, messages.ERROR, 'Could not approve loan for {0!s}'.format(request_obj.item.__str__()))
+    approve.short_description = "Approve loan request for selected item"
+    
+    def deny(self, request, queryset):
+        for request_obj in queryset:
+            if request_obj.deny():
+                messages.add_message(request, messages.SUCCESS, 'Successfully denied loan for {0!s}'.format(request_obj.item.__str__()))
+            else:
+                messages.add_message(request, messages.ERROR, 'Could not deny loan for {0!s}'.format(request_obj.item.__str__()))
+    deny.short_description = "Deny loan request for selected items"
+    
+    def absent(self, request, queryset):
+        for request_obj in queryset:
+            if request_obj.absent():
+                messages.add_message(request, messages.SUCCESS,'Marked as available {0!s}'.format(request_obj.item.__str__()))
+            else:
+                messages.add_message(request, messages.ERROR,'Could not mark as available {0!s}'.format(request_obj.item.__str__()))
+    absent.short_description = "Mark item as not taken due to user being absent"
+    
+    def return_on_time(self, request, queryset):
+        for request_obj in queryset:
+            if request_obj.returned('Returned'):
+                messages.add_message(request, messages.SUCCESS, 'On time return of {0!s}'.format(request_obj.item.__str__()))
+            else:
+                messages.add_message(request, messages.ERROR, 'Could not return {0!s}'.format(request_obj.item.__str__()))
+    return_on_time.short_description = "Mark items as returned on time"
+    
+    def return_late(self, request, queryset):
+        for request_obj in queryset:
+            if request_obj.returned('Late'):
+                messages.add_message(request, messages.SUCCESS, 'Late return of {0!s}'.format(request_obj.item.__str__()))
+            else:
+                messages.add_message(request, messages.ERROR, 'Could not return {0!s}'.format(request_obj.item.__str__()))
+    return_late.short_description = "Mark items as returned late"
+    
+    def renew(self, request, queryset):
+        for request_obj in queryset:
+            request_obj.renew()
+    renew.short_description = "Renew the selected items for one week"
+    
+class ArchivedRequestAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        'item',
+        'date_requested',
+        'date_finalised',
+        'return_deadline',
+        'status',
+        'user',
+    )
+    # What to show as column headers in the admin
+    list_display = (
+        'item',
+        'status',
+        'date_requested',
+        'date_finalised',
+        'user',
+    )
+    list_filter = [
+        'status',
+    ]
+    search_fields = ['item']
 
 # Register model with admin site
 admin.site.register(Series, SeriesAdmin)
 admin.site.register(Item, ItemAdmin)
+admin.site.register(Request, RequestAdmin)
+admin.site.register(ArchivedRequest, ArchivedRequestAdmin)

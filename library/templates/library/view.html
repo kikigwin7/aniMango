@@ -10,9 +10,16 @@
   <div class="row">
 
     <div class="col s12 m3">
-      <div class="center-align">
-        <img class="responsive-img" src="{{ series.cover_link }}">
+      <div class="row">
+        <div class="center-align">
+          <img class="responsive-img" src="{{ series.cover_link }}">
+        </div>
       </div>
+      {% if series.cd_status %}
+        <div class="row center-align">
+          {{ series.cd_status }}
+        </div>
+      {% endif %}
     </div>
 
     <div class="col s12 m9">

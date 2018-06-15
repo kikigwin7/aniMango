@@ -5,7 +5,6 @@ from . import views
 app_name = 'news'
 
 urlpatterns = [
-	url(r'^$', views.latest, name='latest'),
-	url(r'^category/$', views.category, name='category'),
-	url(r'^article/(?P<article_slug>.+)/$', views.article, name='article'),
+	url(r'^article/(?P<article_id>[0-9]+)/(?P<article_slug>.+)/$', views.article, name='article'),
+	url(r'^(?P<category>.+)/(?P<page>[0-9]+)/$', views.latest, name='latest'),
 ]

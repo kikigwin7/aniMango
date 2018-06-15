@@ -6,12 +6,12 @@
 {% block content %}
 <div class="card-panel">
   <div class="row">
-    <div class="col s12 m4">
+    <div class="col s12 m3">
       <div class="center-align">
         <img class="responsive-img" src="{{ series.cover_link }}">
       </div>
     </div>
-    <div class="col s12 m8">
+    <div class="col s12 m9">
       <h4 class="center-align">Request this item?</h4>
       <p><b>Item name:</b></p>
         <p>{{ item }}</p>
@@ -19,7 +19,7 @@
         <p>{{ item.details }}</p>
       <b>
         <p>
-          Proceeding will make the available for pickup at the next Animesoc
+          Proceeding will make the item available for pickup at the next Animesoc
           weekly showing.
         </p>
         <p>
@@ -27,8 +27,9 @@
            item is returned.
           Items must be returned within
           the allocated loan period which will be given at item pickup 
-          (usually two weeks.
+          (usually two weeks).
           Loan period may be extended upon request to an exec member.
+        </p>
       </b>
 
       <div class="col s6">

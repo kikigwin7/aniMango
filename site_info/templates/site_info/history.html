@@ -20,8 +20,8 @@
 
 {% for entry in history_list %}
 <h5>{{ entry.title }}</h5>
-<strong>{{ entry.academic_year }}</strong>
-<div class="history-content">{{ entry.body|safe }}</div>
+<strong>{{ entry.academic_year }}/{{ entry.academic_year|add:"1" }}</strong>
+<div class="history-content tinymce-content">{{ entry.body|safe }}</div>
 {% empty %}
 <p>
   No history entries!

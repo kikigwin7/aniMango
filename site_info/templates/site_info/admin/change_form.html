@@ -64,10 +64,11 @@
 	{{ block.super }}
 	
 	{# Replace XXXXXXXX with field name: #}
-	{% wysiwyg_editor "id_body" %}
+	{% wysiwyg_editor 'id_body' %}
 	
 	{% comment %}
 		{# ckeditor custom config example #}
+		<textarea id="id_body">This is some text. Please edit it</textarea>
 		{% wysiwyg_editor "id_body" "id_body_editor" "{ toolbar: 'compact_toolbar' }" %}
 	{% endcomment %}
 	

@@ -14,13 +14,13 @@
       <h5 class="center-align">Event Categories</h5>
       <div class="collection">
         <a
-          href="{% url 'events:upcoming' %}"
+          href="{% url 'events:upcoming' page=1 %}"
           class="collection-item {%if list_type == 'Upcoming'%}active blue darken-2{%endif%}"
          >
         	Upcoming
         </a>
         <a
-          href="{% url 'events:previous' %}"
+          href="{% url 'events:previous' page=1 %}"
           class="collection-item {%if list_type == 'Previous'%}active blue darken-2{%endif%}"
         >
         	Previous
@@ -59,29 +59,35 @@
       <p>No events!</p>
     {% endfor %}
 
-    <!--
     <div class="center-align">
       <ul class="pagination">
-          {% if articles_l.has_previous %}
+          {% if paginator_page.has_previous %}
           <li class="waves-effect">
-            <a href="?page={{ articles_l.previous_page_number }}">
+            {% if list_type == 'Upcoming' %}
+              <a href="{% url 'events:upcoming' page=paginator_page.previous_page_number %}">
+            {% else %}
+              <a href="{% url 'events:previous' page=paginator_page.previous_page_number %}">
+            {% endif %}
               <i class="material-icons">chevron_left</i>
             </a>
           </li>
           {% endif %}
 
-          Page {{ articles_l.number }} of {{ articles_l.paginator.num_pages }}
+          Page {{ paginator_page.number }} of {{ paginator_page.paginator.num_pages }}
 
-          {% if articles_l.has_next %}
+          {% if paginator_page.has_next %}
           <li class="waves-effect">
-            <a href="?page={{ articles_l.next_page_number }}">
+            {% if list_type == 'Upcoming' %}
+              <a href="{% url 'events:upcoming' page=paginator_page.next_page_number %}">
+            {% else %}
+              <a href="{% url 'events:previous' page=paginator_page.next_page_number %}">
+            {% endif %}
               <i class="material-icons">chevron_right</i>
             </a>
           </li>
           {% endif %}
       </ul>
     </div>
-    -->
 
   </div>
 

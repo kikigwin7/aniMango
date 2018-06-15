@@ -10,7 +10,7 @@
     </div>
     <div class="col s4">
       <a
-        href="{% url 'news:article' article.slug %}"
+        href="{% url 'news:article' article.id article.slug %}"
         class="waves-effect btn-flat"
       >
         Read more

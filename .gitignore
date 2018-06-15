@@ -5,3 +5,9 @@ media/
 env/
 *.pyc
 media_files/
+aniMango/mail_settings.py
+anilist_api/anilist_config.py
+
+aniMango/settings\.py
+
+aniMango/urls\.py

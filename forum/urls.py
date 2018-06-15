@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from . import views
+from django.conf.urls import url, include
 
 app_name = 'forum'
 urlpatterns = [
@@ -8,4 +9,5 @@ urlpatterns = [
 	url(r'^board/(?P<board_id>[0-9]+)/new/$', views.new, name='new'),
 	url(r'^thread/(?P<thread_id>[0-9]+)/$', views.thread, name='thread'),
 	url(r'^thread/(?P<thread_id>[0-9]+)/reply/$', views.reply, name='reply'),
+	url(r'^thread/(?P<post_id>[0-9]+)/edit/$', views.edit, name='edit'),
 ]

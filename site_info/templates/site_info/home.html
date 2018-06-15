@@ -6,65 +6,66 @@
 
 {% block content %}
 {% load static %}
-<img
-  class="responsive-img"
-  src="{% static 'front_banner.jpg' %}"
-  alt="banner"
-/>  
-<h4 class="center-align">
-  Welcome to the University of Warwick Anime and Manga Society
-</h4>
-
-<p>
-  From Cowboy Bebop to Princess Mononoke, Azumanga Daioh to Dragon Ball Z, the Anime and Manga society is for anyone interested in trying, watching, discussing or borrowing Anime or Manga of any kind, and meeting people with similar interests.
-</p>
 
 <!--Row that contains the news and events sections, divided by columns-->
 <div class="row">
-<!--The news section-->
   <div class="col s12 m12 l8">
-    <h5>News and Announcements</h5>
-    {% for article in news_l %}
-      <div class="card-panel">
-        <h6>{{ article.title }}</h6>
-      <div class="divider"></div>
-      <div class="article-content">
-        {{ article.content|safe|truncatewords_html:75 }}
-      </div>
-      <div class="divider"></div>
-      <div class="col s4">
-        <a href="{% url 'news:article' article.slug %}"><h6>Read more</h6></a>
-      </div>
-      <div class="col s8">
-        <h6 class="right">{{ article.info }}</h6>
-      </div>
+      <!-- Load the banner image here -->
       <br>
+      <img
+        class="responsive-img"
+        src="{% static 'front_banner.png' %}"
+        alt="banner"
+      />
+
+      <p>
+        Welcome to Warwick's student-run society for anyone with an interest in anime and manga; we run a variety of events to facilitate socialisation with others sharing these interests and give you chance to enjoy some anime together!
+      </p>
+    <h5 class="heading">News and Announcements:</h5>
+    {% for article in news_l %}
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">{{ article.title }}</span>
+          <div class="divider"></div>
+          <div class="article-content tinymce-content">
+            {{ article.content|safe|truncatewords_html:75 }}
+          </div>
+          <div class="divider"></div>
+          <div class="col s4">
+            <a href="{% url 'news:article' article.id article.slug %}"><h6>Read more</h6></a><!--IDs are unique, whereas slugs(here titles) may be not-->
+          </div>
+          <div class="col s8">
+            <h6 class="right">{{ article.info }}</h6>
+          </div>
+          <br>
+        </div>
       </div>
     {% empty %}
       <p>No news!</p>
     {% endfor %}
   </div>
-  <!--The events section-->
-  <div class="col s12 l4">
 
-    <h5>Upcoming Events</h5>
+  <!--The events section-->
+  <div class="col s12 l4 events">
+
+
+    <h5 class="heading">Upcoming Events:</h5>
     <!--single event card-->
     {% for event in events_l %}
     <div class="col s12 m6 l12">
       <div class="card">
         <div class="card-content">
-          <span class="card-title">{{ event.title }}</span>
-            <p>
-              {{event.subtitle}}
+
+          <p class="card-title">{{ event.title }}<span class="right"><a class="btn-small" href="{% url 'events:view' event.id %}">Details</a></span></p>
+
+          <h4 class="card-content-subtitle">When:</h4>
+            <p class="card-content-text">
+                {{event.when}}
             </p>
-            <p>
-              {{event.when}} -- {{event.where}}
+          <h4 class="card-content-subtitle">Where:</h4>
+            <p class="card-content-text">
+                {{event.where}}
             </p>
-          <div class="card-action">
-            <a href="{% url 'events:view' event.id %}" class="blue-text">
-              Go to event
-            </a>
-          </div>
         </div>
       </div>
     </div>
@@ -74,6 +75,7 @@
 
   </div>
 </div>
+
 
 
 {% endblock %}
