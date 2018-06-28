@@ -91,6 +91,8 @@
   </a>
 </div>
 
+{% endif %}
+
 <div id="reply_modal" class="modal">
   <div class="modal-content">
     <h4 class="center-align">Thread Reply</h4>
@@ -101,7 +103,7 @@
         <a class="modal-action modal-close waves-effect waves-red btn-flat">
           Cancel
         </a>
-        <input class="btn" type="submit" value="reply">
+        <input class="btn" type="submit" value="Edit">
       </div>
     </form>
   </div>
@@ -116,7 +118,5 @@
     toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent'
   });
 </script>
-
-{% endif %}
 
 {% endblock %}
