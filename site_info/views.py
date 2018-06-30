@@ -18,10 +18,13 @@ def home(request):
 
 def constitution(request):
 	return render(request, 'site_info/constitution.html')
-	
+
+def gdpr(request):
+	return render(request, 'site_info/gdpr.html')
+
 def contact(request):
 	return render(request, 'site_info/contact.html')
-	
+
 def about(request):
 	return render(request, 'site_info/about.html')
 
