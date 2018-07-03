@@ -11,3 +11,5 @@ anilist_api/anilist_config.py
 aniMango/settings\.py
 
 aniMango/urls\.py
+
+members/migrations/

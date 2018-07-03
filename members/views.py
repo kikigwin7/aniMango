@@ -32,6 +32,7 @@ def profile_edit(request):
 		user_prof = request.user.member
 		user_prof.nick = request.POST.get('nick')
 		user_prof.bio = request.POST.get('bio')
+		user_prof.discordTag = request.POST.get('discordTag')
 		user_prof.show_full_name = True if request.POST.get('show_name') else False
 		if request.FILES:
 			try:

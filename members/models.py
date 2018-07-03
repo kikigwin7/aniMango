@@ -55,6 +55,7 @@ class Member(models.Model):
 	img = models.ImageField(upload_to=user_avatar_path, storage=OverwriteStorage(), height_field='img_height', width_field='img_width', blank=True, null=True)
 	img_height=models.PositiveIntegerField(blank=True, null=True)
 	img_width=models.PositiveIntegerField(blank=True, null=True)
+	discordTag = models.CharField(max_length=40, blank=True)
 
 	def __str__(self):
 		# Nick can be set by self and is most anonymous
@@ -74,10 +75,12 @@ class Member(models.Model):
 	def save(self, *args, **kwargs):
 		self.nick = bleach_no_tags(self.nick)
 		self.bio = bleach_tinymce(self.bio)
+		self.discordTag = bleach_no_tags(self.discordTag)
+
 		#TODO: old images can still stay on the server, as different extensions can be used (.jpeg, .jpg, .png and etc.). Not too problematic but might want to fix - Sorc
 		#Save new image to file first -Sorc
 		super(Member, self).save(*args,  **kwargs)
-		
+
 		dim = 128, 128
 		if self.img and (self.img_height != dim[1] or self.img_width != dim[0]):
 			try:
@@ -101,7 +104,7 @@ class Member(models.Model):
 				super(Member, self).save(*args,  **kwargs)
 			except Exception as e:
 				raise
-			
+
 	def is_privileged(self):
 		return self.user.groups.filter(name='President').exists() or self.user.is_superuser
 

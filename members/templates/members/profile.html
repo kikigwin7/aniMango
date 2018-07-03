@@ -13,15 +13,23 @@
     <div class="col s12 m6">
       <p>Name: {{ user.get_full_name }}</p>
       <p>
-        Nickname: 
+        Nickname:
         {% if user.member.nick %}
           {{ user.member.nick }}
         {% else %}
           None set
         {% endif %}
       </p>
+      <p>
+        Discord Tag:
+        {% if user.member.discordTag %}
+          {{ user.member.discordTag }}
+        {% else %}
+          None set
+        {% endif %}
+      </p>
       <div class="tinymce-content">
-        Bio: 
+        Bio:
         {% if user.member.bio %}
           {{ user.member.bio|safe }}
         {% else %}
