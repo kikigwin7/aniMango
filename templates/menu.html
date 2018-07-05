@@ -86,6 +86,7 @@
               <a href="{% url 'member:login' %}">Login</a>
             {% endif %}
           </li>
+          <li><a href="{% url 'site_info:home' %}">Home</a></li>
           <li><a href="{% url 'events:upcoming' page=1 %}">Events</a></li>
           <li><a href="{% url 'news:latest' category='All' page='1' %}">News</a></li>
           <li><a href="{% url 'forum:index' %}">Forum</a></li>
