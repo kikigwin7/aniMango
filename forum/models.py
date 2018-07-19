@@ -10,6 +10,7 @@ class Board(models.Model):
 	description = models.CharField(max_length=150)
 	order = models.IntegerField()
 	locked = models.BooleanField(default=False)
+
 	def __str__(self):
 		return self.category
 
@@ -31,10 +32,10 @@ class Thread(models.Model):
 
 	def info(self):
 		return 'Created by {0!s} on {1!s}'.format(self.thread_user, d_date(self.created, 'D jS F Y, H:i'))
-		
+
 	def last_reply_info(self):
 		return 'Last reply on {0!s}'.format(d_date(self.last_reply_time, 'D jS F Y, H:i'))
-		
+
 	def last_reply_now(self):
 		self.last_reply_time = timezone.now()
 		self.save()
@@ -59,7 +60,12 @@ class Post(models.Model):
 	def save(self):
 		self.content = bleach_tinymce(self.content)
 		super(Post, self).save()
-		
+
+	def delete(self):
+		print "Test"
+		self.deleted=True
+		self.save()
+
 	def edit(self, new_content):
 		if self.parent_thread.locked:
 			raise Warning('Thread is locked')

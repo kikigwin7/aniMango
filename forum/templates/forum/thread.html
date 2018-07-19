@@ -39,15 +39,21 @@
       {% endif %}
     </div>
     <div class="col s12 grey-text">
-      <p>{{ post.by }}{% if post.edited %} | Edited{% endif %}{% if post.locked %} | Locked{% endif %}
+      <p>{{ post.by }}{% if post.edited %} | Edited{% endif %}{% if post.locked %} | Locked {% endif %}
       {% if post.post_user == request.user.member and not thread.locked and not post.locked%}
         <a
-          class="right modal-trigger"
-          href="#reply_modal"
+          class="right modal-trigger forum-post-controls"
+          href="#edit_modal"
           onclick="
-            document.getElementById('reply_form').action='{% url 'forum:edit' post.id %}';
+            document.getElementById('edit_form').action='{% url 'forum:edit' post.id %}';
             tinymce.get('reply_text').setContent(document.getElementById('post_content{{ post.id }}').innerHTML);"
         >Edit</a>
+        <a
+          class="right forum-post-controls"
+          href=""
+          onclick="
+            action='{% url 'forum:delete' post.id %}';"
+        >Delete</a>
       {% endif %}
       </p>
     </div>
@@ -55,7 +61,7 @@
 {% endfor %}
 </ul>
 
-{% if user.is_authenticated and not thread.locked and board.locked %}
+{% if user.is_authenticated and not thread.locked and not board.locked %}
 <div
   class="fixed-action-btn hide-on-small-only"
   style="bottom: 80px; right: 30px;"
@@ -91,12 +97,26 @@
   </a>
 </div>
 
-{% endif %}
-
 <div id="reply_modal" class="modal">
   <div class="modal-content">
     <h4 class="center-align">Thread Reply</h4>
     <form id='reply_form' name="reply_form" action="{% url 'forum:reply' thread.id %}" method="POST">
+    {% csrf_token %}
+      <textarea id="reply_text" name="reply_text" rows="4" style="height:100%" autocomplete="off"></textarea>
+      <div class="input-field">
+        <a class="modal-action modal-close waves-effect waves-red btn-flat">
+          Cancel
+        </a>
+        <input class="btn" type="submit" value="Reply">
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="edit_modal" class="modal">
+  <div class="modal-content">
+    <h4 class="center-align">Thread Edit</h4>
+    <form id='edit_form' name="edit_form" action="{% url 'forum:reply' thread.id %}" method="POST">
     {% csrf_token %}
       <textarea id="reply_text" name="reply_text" rows="4" style="height:100%" autocomplete="off"></textarea>
       <div class="input-field">
@@ -113,10 +133,13 @@
 <script type="text/javascript" src="{% static 'js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
 <script>
   tinymce.init({
-    selector: '#reply_text',
+    mode: "textareas",
     plugins: 'autolink textcolor colorpicker link lists',
     toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent'
   });
+
 </script>
+
+{% endif %}
 
 {% endblock %}

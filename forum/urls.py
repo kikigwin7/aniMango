@@ -10,4 +10,5 @@ urlpatterns = [
 	url(r'^thread/(?P<thread_id>[0-9]+)/$', views.thread, name='thread'),
 	url(r'^thread/(?P<thread_id>[0-9]+)/reply/$', views.reply, name='reply'),
 	url(r'^thread/(?P<post_id>[0-9]+)/edit/$', views.edit, name='edit'),
+	url(r'^thread/(?P<post_id>[0-9]+)/delete/$', views.delete, name='delete'),
 ]

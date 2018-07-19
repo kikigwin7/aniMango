@@ -54,7 +54,7 @@ def reply(request, thread_id):
 		except Exception as e:
 			messages.error(request, 'An error occured')
 	return HttpResponseRedirect(reverse('forum:thread', args=[thread_id]))
-		
+
 @login_required
 def edit(request, post_id):
 	post = get_object_or_404(Post, id=post_id)
@@ -68,7 +68,16 @@ def edit(request, post_id):
 		except Exception as e:
 			messages.error(request, 'An error occured')
 	return HttpResponseRedirect(reverse('forum:thread', args=[post.parent_thread.id]))
-		
+
+@login_required
+def delete(request, post_id):
+	post = get_object_or_404(Post, id=post_id)
+	thread = post.parent_thread
+	if not request.user.member == post.post_user or not request.user.member.is_privileged():
+		messages.error(request, 'You cannot delete someone else\'s post!')
+	else:
+		post.delete()
+
 def create_thread(board, title, member):
 	if board.locked:
 		raise Warning('Board is locked')
@@ -80,7 +89,7 @@ def create_thread(board, title, member):
 	new_thread.thread_user = member
 	new_thread.save()
 	return new_thread
-	
+
 def create_post(thread, content, member):
 	if thread.locked:
 		raise Warning('Thread is locked')
