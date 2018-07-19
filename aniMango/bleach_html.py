@@ -16,7 +16,7 @@ def bleach_tinymce(str):
 		styles = styles,
 		protocols = protocols,
 	)
-
+	
 def bleach_no_tags(str):
 	return bleach.clean(
 		str,

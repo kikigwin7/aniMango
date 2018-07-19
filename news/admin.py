@@ -12,7 +12,7 @@ class ArticleForm(forms.ModelForm):
 
 class ArticleAdmin(admin.ModelAdmin):
 	form = ArticleForm
-	
+
 	readonly_fields = (
 		'created',
 		'created_by',

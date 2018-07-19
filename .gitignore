@@ -13,3 +13,5 @@ aniMango/settings\.py
 aniMango/urls\.py
 
 members/migrations/
+
+aniMango/bleach_html\.py
