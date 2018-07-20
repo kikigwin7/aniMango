@@ -5,6 +5,7 @@ from django.utils.text import slugify
 
 from aniMango.bleach_html import bleach_tinymce, bleach_no_tags
 from members.models import Member
+from .news_config import discordwebhook
 import requests, json, re, html
 
 class Article(models.Model):
@@ -55,5 +56,5 @@ class Article(models.Model):
 		}
 		data_json = json.dumps(data)
 		headers = {'Content-type': 'application/json'}
-		response = requests.post("", data=data_json, headers=headers)
+		response = requests.post(discordwebhook, data=data_json, headers=headers)
 		super(Article, self).save()
