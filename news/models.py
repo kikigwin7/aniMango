@@ -5,7 +5,7 @@ from django.utils.text import slugify
 
 from aniMango.bleach_html import bleach_tinymce, bleach_no_tags
 from members.models import Member
-import requests, json, re
+import requests, json, re, html
 
 class Article(models.Model):
 	title = models.CharField(max_length=100)
@@ -42,20 +42,18 @@ class Article(models.Model):
 		self.slug = slugify(self.title)
 
 		# Begin the webhook to Discord server
-		from HTMLParser import HTMLParser
-		parser = HTMLParser()
-		contentPrint = parser.unescape(re.compile(r'<.*?>').sub('', self.content))
+		# Note for some god damn stupid reason markupbase is required but doesn't exist anywhere for Python 3.5
+		# To make this work, go tohttps://raw.githubusercontent.com/enthought/Python-2.7.3/master/Lib/markupbase.py
+		# and add this to your project site-packages folder
 		data = {"username": "Announcements", "embeds": [{
 			"title": re.compile(r'<.*?>').sub('', self.title),
 			"description": "Created by " + self.created_by.member.nick,
 			"url": "http://animesoc.co.uk/news/All/1/",
 			"timestamp": self.created.utcnow().isoformat(),
-			"fields": [{"name": "Info:", "value": contentPrint}]
+			"fields": [{"name": "Info:", "value": html.unescape(re.sub(re.compile('<.*?>'), '', self.content))}]
 		}]
 		}
-  		data_json = json.dumps(data)
-  		headers = {'Content-type': 'application/json'}
-  		response = requests.post("", data=data_json, headers=headers)
-  		print response.text
-
+		data_json = json.dumps(data)
+		headers = {'Content-type': 'application/json'}
+		response = requests.post("", data=data_json, headers=headers)
 		super(Article, self).save()
