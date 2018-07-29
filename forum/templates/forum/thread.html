@@ -41,19 +41,25 @@
     <div class="col s12 grey-text">
       <p>{{ post.by }}{% if post.edited %} | Edited{% endif %}{% if post.locked %} | Locked {% endif %}
       {% if post.post_user == request.user.member and not thread.locked and not post.locked%}
+      <a
+        class="right forum-post-controls"
+        href=""
+        onclick="
+          action='{% url 'forum:delete' post.id %}';"
+      ><i title="Delete post" class="fas fa-trash-alt"></i></a>
         <a
           class="right modal-trigger forum-post-controls"
           href="#edit_modal"
           onclick="
             document.getElementById('edit_form').action='{% url 'forum:edit' post.id %}';
             tinymce.get('reply_text').setContent(document.getElementById('post_content{{ post.id }}').innerHTML);"
-        >Edit</a>
+        ><i title="Edit post" class="fas fa-edit"></i></a>
         <a
           class="right forum-post-controls"
           href=""
           onclick="
             action='{% url 'forum:delete' post.id %}';"
-        >Delete</a>
+        ><i title="Pin post" class="fas fa-thumbtack"></i></a>
       {% endif %}
       </p>
     </div>

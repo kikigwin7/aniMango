@@ -17,3 +17,7 @@ members/migrations/
 aniMango/bleach_html\.py
 
 news/news_config\.py
+
+library/management/commands/authdetails\.json
+
+token\.pickle
