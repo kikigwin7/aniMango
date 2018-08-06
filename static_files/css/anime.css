@@ -99,7 +99,7 @@ main {
 .right-menu-style{
     background-color: #0B3C5D;
     max-height: 70px !important;
-    padding-left: 25px;
+    padding-left: 27px;
 }
 @media only screen and (min-width: 1100px){
     .events{
@@ -153,4 +153,9 @@ main {
 
 .forum-post-controls{
   padding: 0 10px 0 10px;
+}
+
+.v-splitter {
+    border-left: 2px solid green;
+    height: 100vh;
 }

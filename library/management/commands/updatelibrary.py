@@ -37,15 +37,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         listOfTitles = getSpreadsheetData()
-        #len(listOfTitles[0])
 
         # This should loop through the spreadsheet and add the value into the library after getting details from anilist
-        for x in range(1, 30):
+        for x in range(1, len(listOfTitles[0])):
             title = listOfTitles[0][x]
             type = listOfTitles[1][x].lower()
             # Sleep for a short period of time to ensure we do not get rate limited... Running time for this command is fairly
             # slow as a result of this.
-            time.sleep(.5)
+            time.sleep(.25)
             try:
                 # Creates a series object and gets the ID of the series from the anilist API (data entry done by same as autofill)
                 series = Series()
@@ -70,10 +69,12 @@ class Command(BaseCommand):
                 itemToAdd.parent_series = series
                 itemToAdd.name = "Vol " + listOfTitles[3][x];
                 if type == "anime":
-                    itemToAdd.media_type = "Anime"
+                    itemToAdd.media_type = "DVD"
                 else:
                     itemToAdd.media_type = "Manga"
                 itemToAdd.save()
             except RuntimeError as e:
                 # Update the sheet stating that the series could not be found on anilist and manual entry is required
+                updateSheet(3, x + 1, "Could not find series - Manual Entry required!")
+            except KeyError as e:
                 updateSheet(3, x + 1, "Could not find series - Manual Entry required!")

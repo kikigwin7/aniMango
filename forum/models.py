@@ -62,7 +62,6 @@ class Post(models.Model):
 		super(Post, self).save()
 
 	def delete(self):
-		print "Test"
 		self.deleted=True
 		self.save()
 
