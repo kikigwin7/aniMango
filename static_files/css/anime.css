@@ -1,28 +1,33 @@
 /* Overrides to make the navbar smaller */
 .navbar-fixed {
-  position: relative;
-  max-height: 70px;
-  z-index: 998;
-  color: #fafafa !important;
+    position: relative;
+    max-height: 70px;
+    z-index: 998;
+    color: #fafafa !important;
 }
+
 nav {
     max-height: 70px;
     line-height: 70px;
 }
+
 nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
     max-height: 70px;
     line-height: 70px;
 }
+
 nav .button-collapse i {
     max-height: 70px;
     line-height: 70px;
 }
-@media only screen and (min-width: 601px){
+
+@media only screen and (min-width: 601px) {
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
         max-height: 70px;
         line-height: 70px;
     }
 }
+
 /* Add padding to the left  and right of the main logo text */
 nav .brand-logo {
     font-size: 24pt;
@@ -31,78 +36,86 @@ nav .brand-logo {
     font-weight: bold;
 
 }
+
 /* Remove padding on labels in the library view */
 .card .card-content.library-label {
-  padding: 0px;
+    padding: 0px;
 }
+
 /* Allow for library images to resize responsively while leaving label space*/
 .library-img {
-  width: 100%;
-  height: 82%;
-  object-fit: contain;
+    width: 100%;
+    height: 82%;
+    object-fit: contain;
 }
+
 /* Sticky footer */
 body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 
-  font-family: 'Oxygen', sans-serif;
+    font-family: 'Oxygen', sans-serif;
 }
+
 main {
-  flex: 1 0 auto;
+    flex: 1 0 auto;
 }
+
 /* Make error messages red */
 .error {
-  color: red;
-  font-weight: bold;
+    color: red;
+    font-weight: bold;
 }
+
 /* Make the text editor stay in the center */
 .yui-editor-container {
-  margin: 0 auto;
+    margin: 0 auto;
 }
+
 /* Allow for forum posts to display correctly */
-.forum-content, .article-content, .history-content{
-  display: block;
-  overflow: auto;
+.forum-content, .article-content, .history-content {
+    display: block;
+    overflow: auto;
 }
+
 /* Modal resize overrides*/
 .modal {
-  max-height: 95% !important;
-  top: 5% !important;
+    max-height: 95% !important;
+    top: 5% !important;
 }
 
 /* Materialize css disables (unordered) list stiling, this fixes that for content under tinymce-content class*/
 .tinymce-content ul {
-  padding-left: 40px;
+    padding-left: 40px;
 }
 
 .tinymce-content ul li {
-  list-style-type: circle;
+    list-style-type: circle;
 }
 
 .tinymce-content ol {
-  padding-left: 40px;
+    padding-left: 40px;
 }
 
-
 .tinymce-content ol li {
-  list-style-type: decimal;
+    list-style-type: decimal;
 }
 
 /* Changes made by Porky to actually make the site not look shit */
 
-.modern-menu{
+.modern-menu {
     background-color: #328CC1 !important;
 }
 
-.right-menu-style{
+.right-menu-style {
     background-color: #0B3C5D;
     max-height: 70px !important;
     padding-left: 27px;
 }
-@media only screen and (min-width: 1100px){
-    .events{
+
+@media only screen and (min-width: 1100px) {
+    .events {
         display: flex !important;
         flex-direction: column;
         padding-top: 10vh !important;
@@ -110,49 +123,50 @@ main {
     }
 }
 
-.card-content-subtitle{
+.card-content-subtitle {
     font-size: 12pt;
     font-weight: bold;
 }
 
-.card-content-text{
+.card-content-text {
     padding-left: 18px;
 }
+
 .btn-small {
-    border:none;
-    border-radius:2px;
-    display:inline-block;
-    height:36px;
-    line-height:36px;
-    outline:0;
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    outline: 0;
     padding: 0 10px;
-    vertical-align:middle;
-    -webkit-tap-highlight-color:transparent;
-    text-decoration:none;
-    color:#fafafa;
-    background-color:#1D2731;
-    text-align:center;
-    letter-spacing:.5px;
-    cursor:pointer;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+    color: #fafafa;
+    background-color: #1D2731;
+    text-align: center;
+    letter-spacing: .5px;
+    cursor: pointer;
 }
 
-.heading{
+.heading {
     font-size: 20pt;
     font-weight: bold;
 }
 
-.divider{
-    position:absolute;
-    left:50%;
-    top:10%;
-    bottom:10%;
-    border-left:1px solid black;
+.divider {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    bottom: 10%;
+    border-left: 1px solid black;
 }
 
 /* Forum look and feel */
 
-.forum-post-controls{
-  padding: 0 10px 0 10px;
+.forum-post-controls {
+    padding: 0 10px 0 10px;
 }
 
 .v-splitter {

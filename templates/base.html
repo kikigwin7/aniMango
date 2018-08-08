@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
+<head>
     <!--Import Google Icon Font-->
     {% load static %}
     <link
-      href="{% static 'css/material-icons.css' %}"
-      rel="stylesheet"
+            href="{% static 'css/material-icons.css' %}"
+            rel="stylesheet"
     />
     <!--Import materialize.css-->
     <link
-      type="text/css"
-      rel="stylesheet"
-      href="{% static 'css/materialize.min.css' %}"
-      media="screen,projection"
+            type="text/css"
+            rel="stylesheet"
+            href="{% static 'css/materialize.min.css' %}"
+            media="screen,projection"
     />
     <!--Site specific anime.css-->
     <link
-      type="text/css"
-      rel="stylesheet"
-      href="{% static 'css/anime.css' %}"
+            type="text/css"
+            rel="stylesheet"
+            href="{% static 'css/anime.css' %}"
     />
 
     <!--{% load static %} i think this is not needed-->
     <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}/">
 
 
-    <!-- Load in the fonts and icon packs --> 
+    <!-- Load in the fonts and icon packs -->
     <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -37,55 +38,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title>
-      {% block title %}Base Template{% endblock %} | Warwick Animesoc
+        {% block title %}Base Template{% endblock %} | Warwick Animesoc
     </title>
-  </head>
+</head>
 
-  <body>
+<body>
 
-    {% include "menu.html" %}
+{% include "menu.html" %}
 
-    <main>
-      <div class="container">
+<main>
+    <div class="container">
 
         {% if messages %}
-          <script type="text/javascript">
-          function pageMessages() {
-          {% for message in messages %}
-            Materialize.toast(
-              '<div class="{{message.tags}}">{{ message }}</div>',
-              6000
-            );
-          {% endfor %}
-          }
-          </script>
+            <script type="text/javascript">
+                function pageMessages() {
+                    {% for message in messages %}
+                        Materialize.toast(
+                            '<div class="{{message.tags}}">{{ message }}</div>',
+                            6000
+                        );
+                    {% endfor %}
+                }
+            </script>
         {% endif %}
 
         {% block content %}
-        <div class="row">
-          <div class="col s12">
-            <h1>Base Template</h1>
-          </div>
-        </div>
+            <div class="row">
+                <div class="col s12">
+                    <h1>Base Template</h1>
+                </div>
+            </div>
         {% endblock %}
-      </div>
-    </main>
+    </div>
+</main>
 
-    {% include "footer.html" %}
+{% include "footer.html" %}
 
-    <!--Import jQuery before materialize.js-->
-    <script
-      type="text/javascript"
-      src="{% static 'js/jquery-2.1.1.min.js' %}">
-    </script>
-    <script
-      type="text/javascript"
-      src="{% static 'js/materialize.min.js' %}">
-    </script>
-    <!--Custom js for the website-->
-    <script
-      type="text/javascript"
-      src="{% static 'js/anime.js' %}">
-    </script>
-  </body>
+<!--Import jQuery before materialize.js-->
+<script
+        type="text/javascript"
+        src="{% static 'js/jquery-2.1.1.min.js' %}">
+</script>
+<script
+        type="text/javascript"
+        src="{% static 'js/materialize.min.js' %}">
+</script>
+<!--Custom js for the website-->
+<script
+        type="text/javascript"
+        src="{% static 'js/anime.js' %}">
+</script>
+</body>
 </html>

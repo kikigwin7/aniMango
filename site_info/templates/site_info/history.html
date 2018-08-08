@@ -1,30 +1,30 @@
 {% extends "base.html" %}
 
 {% block title %}
-  History
+    History
 {% endblock %}
 
 {% block content %}
-<h4>
-  Society History
-</h4>
-<strong>
-  Preface by Artalyx '09
-</strong>
-<p>
-  Everything you’d ever want to know about the society’s history!
-  The original article was brought to you by Bucko (Librarian 2003-2004...
-  president a bit... and general society god). Many thanks!
-</p>
-<div class="divider"></div>
+    <h4>
+        Society History
+    </h4>
+    <strong>
+        Preface by Artalyx '09
+    </strong>
+    <p>
+        Everything you’d ever want to know about the society’s history!
+        The original article was brought to you by Bucko (Librarian 2003-2004...
+        president a bit... and general society god). Many thanks!
+    </p>
+    <div class="divider"></div>
 
-{% for entry in history_list %}
-<h5>{{ entry.title }}</h5>
-<strong>{{ entry.academic_year }}/{{ entry.academic_year|add:"1" }}</strong>
-<div class="history-content tinymce-content">{{ entry.body|safe }}</div>
-{% empty %}
-<p>
-  No history entries!
-</p>
-{% endfor %}
+    {% for entry in history_list %}
+        <h5>{{ entry.title }}</h5>
+        <strong>{{ entry.academic_year }}/{{ entry.academic_year|add:"1" }}</strong>
+        <div class="history-content tinymce-content">{{ entry.body|safe }}</div>
+    {% empty %}
+        <p>
+            No history entries!
+        </p>
+    {% endfor %}
 {% endblock %}

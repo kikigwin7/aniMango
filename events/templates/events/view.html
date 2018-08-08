@@ -1,69 +1,69 @@
 {% extends "base.html" %}
 
 {% block title %}
-  {{ event.title }}
+    {{ event.title }}
 {% endblock %}
 
 {% block content %}
 
-<h4>{{ event.title }}</h4>
-<strong>{{ event.subtitle }}</strong>
-<ul>
-  <li>When: {{ event.when|date:'l jS F - f a' }}</li>
-  <li>Where: {{ event.where }}</li>
-</ul>
-<p>{{ event.details|safe }}</p>
-<ul class="collection">
-{% if signup_required %}
-  <li class="collection-item">
-    Signup count: <strong>({{event.signup_count}})</strong>
-    <span class="right">
+    <h4>{{ event.title }}</h4>
+    <strong>{{ event.subtitle }}</strong>
+    <ul>
+        <li>When: {{ event.when|date:'l jS F - f a' }}</li>
+        <li>Where: {{ event.where }}</li>
+    </ul>
+    <p>{{ event.details|safe }}</p>
+    <ul class="collection">
+        {% if signup_required %}
+            <li class="collection-item">
+                Signup count: <strong>({{ event.signup_count }})</strong>
+                <span class="right">
       Signups close:
       <strong>
-        {{event.signups_close|date:'l jS F - f a'}}
+        {{ event.signups_close|date:'l jS F - f a' }}
       </strong>
     </span>
-  </li>
-  {% if user.is_authenticated %}
-    <li class="collection-item">
-      {% if opened %}
-        {% if closed %}
-          <div class="center-align">
-            Signups are now closed.
-          </div>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="collection-item">
+                    {% if opened %}
+                        {% if closed %}
+                            <div class="center-align">
+                                Signups are now closed.
+                            </div>
+                        {% else %}
+                            {% if user_is_signed_up %}
+                                {% include "events/cancel.html" %}
+                            {% elif event_is_full %}
+                                <div class="center-align">
+                                    Sorry! Event is full, check again later for possible free places.
+                                </div>
+                            {% else %}
+                                {% include "events/available.html" %}
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        <div class="center-align">
+                            Signups are not open yet.
+                        </div>
+                    {% endif %}
+                </li>
+            {% endif %}
+            {% for signup in signups %}
+                <li class="collection-item">
+                    <div class="row" style="margin-bottom: 0px">
+                        <div class="col s2">{{ signup.who }}</div>
+                        <div class="col s10">{{ signup.comment }}</div>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="collection-item">No signups yet. Be the first!</li>
+            {% endfor %}
         {% else %}
-          {% if user_is_signed_up %}
-            {% include "events/cancel.html" %}
-          {% elif event_is_full %}
-            <div class="center-align">
-              Sorry! Event is full, check again later for possible free places.
-            </div>
-          {% else %}
-            {% include "events/available.html" %}
-          {% endif %}
+            <li class="collection-item">
+                Signup not required for this event. Just show up!
+            </li>
         {% endif %}
-      {% else %}
-        <div class="center-align">
-            Signups are not open yet.
-        </div>
-      {% endif %}
-    </li>
-  {% endif %}
-  {% for signup in signups %}
-    <li class="collection-item">
-      <div class="row" style="margin-bottom: 0px">
-      <div class="col s2">{{ signup.who }}</div>
-      <div class="col s10">{{ signup.comment }}</div>
-      </div>
-    </li> 
-  {% empty %}
-    <li class="collection-item">No signups yet. Be the first!</li>  
-  {% endfor %}
-{% else %}
-  <li class="collection-item">
-    Signup not required for this event. Just show up!
-  </li> 
-{% endif %}
-</ul>
+    </ul>
 
 {% endblock %}

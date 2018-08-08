@@ -1,5 +1,3 @@
-from datetime import date
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -9,11 +7,10 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
-from showings.models import Show
-
 from .models import Series, Item
 
-#Combined library index and library search into one - Sorc
+
+# Combined library index and library search into one - Sorc
 def index(request):
     context = {}
     query = request.GET.get('query')
@@ -21,11 +18,11 @@ def index(request):
         context['query'] = query
         series_list = Series.objects.filter(
             Q(item__isnull=False) &
-            (Q(title__icontains=query)|Q(title_eng__icontains=query))
+            (Q(title__icontains=query) | Q(title_eng__icontains=query))
         ).distinct().order_by('title')
     else:
         series_list = Series.objects.filter(item__isnull=False).distinct().order_by('title')
-    
+
     # 24 series per page
     paginator = Paginator(series_list, 24)
     try:
@@ -36,6 +33,7 @@ def index(request):
     context['series_l'] = series
     return render(request, 'library/index.html', context)
 
+
 def series_view(request, series_id):
     library_series = get_object_or_404(Series, id=series_id)
     context = {
@@ -43,6 +41,7 @@ def series_view(request, series_id):
         'items': Item.objects.filter(parent_series=library_series)
     }
     return render(request, 'library/view.html', context)
+
 
 @login_required
 def request_form(request, item_id):
@@ -52,6 +51,7 @@ def request_form(request, item_id):
         'item': item
     }
     return render(request, 'library/request.html', context)
+
 
 @login_required
 def item_get(request):

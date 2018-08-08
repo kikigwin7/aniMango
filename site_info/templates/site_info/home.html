@@ -1,86 +1,96 @@
 {% extends "base.html" %}
 
-{% block title%}
-  Homepage
+{% block title %}
+    Homepage
 {% endblock %}
 
 {% block content %}
-{% load static %}
+    {% load static %}
 
-<!--Row that contains the news and events sections, divided by columns-->
-<div class="row">
-  <div class="col s12 m12 l8">
-      <!-- Load the banner image here -->
-      <br>
-      <img
-        class="responsive-img"
-        src="{% static 'front_banner.png' %}"
-        alt="banner"
-      />
+    <!--Row that contains the news and events sections, divided by columns-->
+    <div class="row">
+        <div class="col s12 m12 l8">
+            <!-- Load the banner image here -->
+            <br>
+            <img
+                    class="responsive-img"
+                    src="{% static 'front_banner.png' %}"
+                    alt="banner"
+            />
 
-      <p>
-        Welcome to Warwick's student-run society for anyone with an interest in anime and manga; we run a variety of events to facilitate socialisation with others sharing these interests and give you chance to enjoy some anime together!
-      </p>
-    <h5 class="heading">News and Announcements:</h5>
-    {% for article in news_l %}
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">{{ article.title }}</span>
-          <div class="divider"></div>
-          <div class="article-content tinymce-content">
-            {{ article.content|safe|truncatewords_html:75 }}
-          </div>
-          <div class="divider"></div>
-          <div class="col s4">
-            <a href="{% url 'news:article' article.id article.slug %}"><h6>Read more</h6></a><!--IDs are unique, whereas slugs(here titles) may be not-->
-          </div>
-          <div class="col s8">
-            <h6 class="right">{{ article.info }}</h6>
-          </div>
-          <br>
-        </div>
-      </div>
-    {% empty %}
-      <p>No news!</p>
-    {% endfor %}
-  </div>
-
-  <!-- The discord server -->
-  <div class="col s12 l4 events">
-    <div class="card">
-    <div class="card-content">
-      <iframe src="https://discordapp.com/widget?id=221309541088886784&theme=dark" width="100%" height="500" allowtransparency="true" frameborder="0"></iframe>
-    </div>
-</div>
-
-
-    <!--The events section-->
-    <h5 class="heading">Upcoming Events:</h5>
-    <!--single event card-->
-    {% for event in events_l %}
-    <div class="col s12 m6 l12">
-      <div class="card">
-        <div class="card-content">
-
-          <p class="card-title">{{ event.title }}<span class="right"><a class="btn-small" href="{% url 'events:view' event.id %}">Details</a></span></p>
-
-          <h4 class="card-content-subtitle">When:</h4>
-            <p class="card-content-text">
-                {{event.when}}
+            <p>
+                Welcome to Warwick's student-run society for anyone with an interest in anime and manga; we run a
+                variety of events to facilitate socialisation with others sharing these interests and give you chance to
+                enjoy some anime together!
             </p>
-          <h4 class="card-content-subtitle">Where:</h4>
-            <p class="card-content-text">
-                {{event.where}}
-            </p>
+            <h5 class="heading">News and Announcements:</h5>
+            {% for article in news_l %}
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">{{ article.title }}</span>
+                        <div class="divider"></div>
+                        <div class="article-content tinymce-content">
+                            {{ article.content|safe|truncatewords_html:75 }}
+                        </div>
+                        <div class="divider"></div>
+                        <div class="col s4">
+                            <a href="{% url 'news:article' article.id article.slug %}"><h6>Read more</h6></a>
+                            <!--IDs are unique, whereas slugs(here titles) may be not-->
+                        </div>
+                        <div class="col s8">
+                            <h6 class="right">{{ article.info }}</h6>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No news!</p>
+            {% endfor %}
         </div>
-      </div>
-    </div>
-    {% empty %}
-    <p>No events!</p>
-    {% endfor %}
 
-  </div>
-</div>
+        <!-- The discord server -->
+        <div class="col s12 l4 events">
+            <div class="card">
+                <div class="card-content">
+                    <iframe src="https://discordapp.com/widget?id=221309541088886784&theme=dark" width="100%"
+                            height="500" allowtransparency="true" frameborder="0"></iframe>
+                </div>
+            </div>
+
+
+            <!--The events section-->
+            <h5 class="heading">Upcoming Events:</h5>
+            <!--single event card-->
+            {% for event in events_l %}
+                <div class="col s12 m6 l12">
+                    <div class="card">
+                        <div class="card-content">
+
+                            <p class="card-title">{{ event.title }}
+                                <span class="right">
+                                    <a class="btn-small"
+                                       href="{% url 'events:view' event.id %}">Details
+                                    </a>
+                                </span>
+                            </p>
+
+                            <h4 class="card-content-subtitle">When:</h4>
+                            <p class="card-content-text">
+                                {{ event.when }}
+                            </p>
+                            <h4 class="card-content-subtitle">Where:</h4>
+                            <p class="card-content-text">
+                                {{ event.where }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No events!</p>
+            {% endfor %}
+
+        </div>
+    </div>
 
 
 

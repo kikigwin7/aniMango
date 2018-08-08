@@ -1,96 +1,96 @@
 {% extends "base.html" %}
 
 {% block title %}
-  {{ board }}
+    {{ board }}
 {% endblock %}
 
 {% block content %}
-{% if board.locked %}
-	<div class="col s12 card-panel red">
-		<div class = "card-content">
-			<span class="card-title">Board is locked. You cannot post or reply.</span>
-		</div>
-	</div>
-{% endif %}
-<div class="collection with-header">
-  <div class="collection-header">
-    <h5>{{ board }}</h5>
-    <p>{{ board.description }}</p>
-  </div>
-{% for thread in thread_list %}
-  <a href="{% url 'forum:thread' thread.id %}" class="collection-item avatar">
-    <i class="material-icons circle">message</i>
-    <span class="title">{{ thread.title|safe }}</span>
-    <p>{{ thread.info }}</p>
-    <p>{{ thread.last_reply_info }}</p>
-  </a>
-{% empty %}
-  <div class="collection-item">
-    <p>No threads! Why don't you start one?</p>
-  </div>
-{% endfor %}
-</div>
+    {% if board.locked %}
+        <div class="col s12 card-panel red">
+            <div class="card-content">
+                <span class="card-title">Board is locked. You cannot post or reply.</span>
+            </div>
+        </div>
+    {% endif %}
+    <div class="collection with-header">
+        <div class="collection-header">
+            <h5>{{ board }}</h5>
+            <p>{{ board.description }}</p>
+        </div>
+        {% for thread in thread_list %}
+            <a href="{% url 'forum:thread' thread.id %}" class="collection-item avatar">
+                <i class="material-icons circle">message</i>
+                <span class="title">{{ thread.title|safe }}</span>
+                <p>{{ thread.info }}</p>
+                <p>{{ thread.last_reply_info }}</p>
+            </a>
+        {% empty %}
+            <div class="collection-item">
+                <p>No threads! Why don't you start one?</p>
+            </div>
+        {% endfor %}
+    </div>
 
-{% if user.is_authenticated and not board.locked %}
-<div
-  class="fixed-action-btn hide-on-small-only"
-  style="bottom: 80px; right: 30px;"
->
-  <a
-    href="#thread_modal"
-    class="btn-floating btn-large blue darken-4 tooltipped modal-trigger"
-    data-position="left"
-    data-delay="50"
-    data-tooltip="Start a new thread"
-  >
-    <i class="large material-icons">add</i>
-  </a>
-</div>
-<div
-  class="fixed-action-btn hide-on-med-and-up"
-  style="bottom: 40px; right: 30px;"
->
-  <a
-    href="#thread_modal"
-    class="btn-floating btn-large blue darken-4 tooltipped modal-trigger"
-    data-position="left"
-    data-delay="50"
-    data-tooltip="Start a new thread"
-  >
-    <i class="large material-icons">add</i>
-  </a>
-</div>
+    {% if user.is_authenticated and not board.locked %}
+        <div
+                class="fixed-action-btn hide-on-small-only"
+                style="bottom: 80px; right: 30px;"
+        >
+            <a
+                    href="#thread_modal"
+                    class="btn-floating btn-large blue darken-4 tooltipped modal-trigger"
+                    data-position="left"
+                    data-delay="50"
+                    data-tooltip="Start a new thread"
+            >
+                <i class="large material-icons">add</i>
+            </a>
+        </div>
+        <div
+                class="fixed-action-btn hide-on-med-and-up"
+                style="bottom: 40px; right: 30px;"
+        >
+            <a
+                    href="#thread_modal"
+                    class="btn-floating btn-large blue darken-4 tooltipped modal-trigger"
+                    data-position="left"
+                    data-delay="50"
+                    data-tooltip="Start a new thread"
+            >
+                <i class="large material-icons">add</i>
+            </a>
+        </div>
 
-<div id="thread_modal" class="modal">
-  <div class="modal-content">
-    <h4 class="center-align">Start a new thread</h4>
-    <form action="{% url 'forum:new' board.id %}" method="POST">
-      {% csrf_token %}
-      <div class="input-field">
-        <input type="text" name="title" id="title">
-        <label for="title">Thread Title</label>
-      </div>
-      <textarea id="content" name="content" rows="4" style="height:100%"></textarea>
-      <div class="input-field">
-        <a class="modal-action modal-close waves-effect waves-red btn-flat">
-          Cancel
-        </a>
-        <input class="btn" type="submit" value="post">
-      </div>
-    </form>
-  </div>
-</div>
+        <div id="thread_modal" class="modal">
+            <div class="modal-content">
+                <h4 class="center-align">Start a new thread</h4>
+                <form action="{% url 'forum:new' board.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-field">
+                        <input type="text" name="title" id="title">
+                        <label for="title">Thread Title</label>
+                    </div>
+                    <textarea id="content" name="content" rows="4" style="height:100%"></textarea>
+                    <div class="input-field">
+                        <a class="modal-action modal-close waves-effect waves-red btn-flat">
+                            Cancel
+                        </a>
+                        <input class="btn" type="submit" value="post">
+                    </div>
+                </form>
+            </div>
+        </div>
 
-{% load static %}
-<script type="text/javascript" src="{% static 'js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
-<script>
-  tinymce.init({
-    selector: '#content',
-    plugins: 'autolink textcolor colorpicker link lists',
-    toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent'
-  });
-</script>
+        {% load static %}
+        <script type="text/javascript" src="{% static 'js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
+        <script>
+            tinymce.init({
+                selector: '#content',
+                plugins: 'autolink textcolor colorpicker link lists',
+                toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent'
+            });
+        </script>
 
-{% endif %}
+    {% endif %}
 
 {% endblock %}

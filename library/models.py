@@ -9,10 +9,14 @@ from django.dispatch import receiver
 from anilist_api.anilist import populate_series_item
 from showings.models import Show
 
+
 # Series model to describe an anime or manga
 # Will be used in library managment
 class Series(models.Model):
-    auto_populate_data = models.BooleanField(default=False, help_text="Check this to use AniList link to (re)populate fields. MAL and Wiki links still need to be entered manually.")#TODO: rewrite this in not hack-ish way -Sorc
+    auto_populate_data = models.BooleanField(default=False,
+                                             help_text="Check this to use AniList link to (re)populate fields. MAL "
+                                                       "and Wiki links still need to be entered manually.")  # TODO:
+    # rewrite this in not hack-ish way -Sorc
 
     title = models.CharField(max_length=110, blank=True)
     title_eng = models.CharField(max_length=110, blank=True)
@@ -41,11 +45,11 @@ class Series(models.Model):
         if self.auto_populate_data:
             self.auto_populate_data = False
             values = re.split(r'\/', re.sub(r'(https:\/\/)*(www\.)*(anilist.co\/)*', '', str(self.ani_link)))
-            #TODO: validate link and values - Sorc
+            # TODO: validate link and values - Sorc
             self.series_type = values[0]
             self.api_id = values[1]
             populate_series_item(self)
-        super(Series, self).save() # Call real save
+        super(Series, self).save()  # Call real save
 
     def nice_title(self):
         return '{0!s} / {1!s}'.format(self.title, self.title_eng)
@@ -98,7 +102,7 @@ class Item(models.Model):
         return Request.objects.get(item=self).status()
 
     def request(self, user):
-        #if request for this item already exists, then it's taken and cannot be requested
+        # if request for this item already exists, then it's taken and cannot be requested
         if Request.objects.filter(item=self).exists():
             return None
         r = Request()
@@ -108,16 +112,19 @@ class Item(models.Model):
         r.save()
         return r
 
+
 class Request(models.Model):
     item = models.ForeignKey(Item, on_delete=models.PROTECT)
     date_requested = models.DateTimeField(auto_now_add=True)
-    return_deadline = models.DateField(blank=True, null=True, help_text='Filled automatically on approval. Default loan period - 2 weeks. Set manually to override.')
+    return_deadline = models.DateField(blank=True, null=True,
+                                       help_text='Filled automatically on approval. Default loan period - 2 weeks. '
+                                                 'Set manually to override.')
     STATUS_CHOICES = (
         ('Requested', 'Requested'),
         ('On Loan', 'On Loan'),
         ('Late', 'Late'),
     )
-    #Use status_variable only for setting it. For getting use def self.status() - Sorc
+    # Use status_variable only for setting it. For getting use def self.status() - Sorc
     status_variable = models.CharField(max_length=16, choices=STATUS_CHOICES, blank=False, null=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False)
 
@@ -156,7 +163,7 @@ class Request(models.Model):
 
     def returned(self, status):
         if 'Late' == status and not self.status() == 'Late':
-            #Prevent user error when marking returned item as late when it is not late -Sorc
+            # Prevent user error when marking returned item as late when it is not late -Sorc
             return False
         if self.status() == 'On Loan' or self.status() == 'Late':
             self.archive(status)
@@ -184,6 +191,7 @@ class Request(models.Model):
 
     class Meta:
         ordering = ['-date_requested']
+
 
 class ArchivedRequest(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
@@ -215,13 +223,14 @@ def update_series_cooldown_pre(sender, **kwargs):
         return None
     cd_date = date.min
     for show in Show.objects.select_related('shown_at').filter(lib_series=lib_series):
-        if(show == old_show):
+        if (show == old_show):
             continue
         d = show.shown_at.date + timedelta(days=show.cooldown_period)
-        if d>cd_date:
+        if d > cd_date:
             cd_date = d
     lib_series.cooldown_date = cd_date
     lib_series.save()
+
 
 @receiver(post_save, sender=Show)
 def update_series_cooldown(sender, **kwargs):
@@ -232,7 +241,7 @@ def update_series_cooldown(sender, **kwargs):
     cd_date = date.min
     for show in Show.objects.select_related('shown_at').filter(lib_series=lib_series):
         d = show.shown_at.date + timedelta(days=show.cooldown_period)
-        if d>cd_date:
+        if d > cd_date:
             cd_date = d
     lib_series.cooldown_date = cd_date
     lib_series.save()

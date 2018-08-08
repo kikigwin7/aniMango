@@ -21,3 +21,7 @@ news/news_config\.py
 library/management/commands/authdetails\.json
 
 token\.pickle
+
+venv/lib/python2\.7/site-packages/django/contrib/admindocs/locale/be/LC_MESSAGES/
+
+venv/

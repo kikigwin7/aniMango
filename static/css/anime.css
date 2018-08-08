@@ -1,86 +1,98 @@
 /* Overrides to make the navbar smaller */
 .navbar-fixed {
-  position: relative;
-  height: 40px;
-  z-index: 998;
+    position: relative;
+    height: 40px;
+    z-index: 998;
 }
+
 nav {
     height: 40px;
     line-height: 40px;
 }
+
 nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
     height: 40px;
     line-height: 40px;
 }
+
 nav .button-collapse i {
     height: 40px;
     line-height: 40px;
 }
-@media only screen and (min-width: 601px){
+
+@media only screen and (min-width: 601px) {
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
         height: 40px;
         line-height: 40px;
     }
 }
+
 /* Add padding to the left  and right of the main logo text */
 nav .brand-logo {
     font-size: 1.5rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
 }
+
 /* Remove padding on labels in the library view */
 .card .card-content.library-label {
-  padding: 0px;
+    padding: 0px;
 }
+
 /* Allow for library images to resize responsively while leaving label space*/
 .library-img {
-  width: 100%;
-  height: 82%;
-  object-fit: contain;
+    width: 100%;
+    height: 82%;
+    object-fit: contain;
 }
+
 /* Sticky footer */
 body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
+
 main {
-  flex: 1 0 auto;
+    flex: 1 0 auto;
 }
+
 /* Make error messages red */
 .error {
-  color: red;
-  font-weight: bold;
+    color: red;
+    font-weight: bold;
 }
+
 /* Make the text editor stay in the center */
 .yui-editor-container {
-  margin: 0 auto;
+    margin: 0 auto;
 }
+
 /* Allow for forum posts to display correctly */
-.forum-content, .article-content, .history-content{
-  display: block;
-  overflow: auto;
+.forum-content, .article-content, .history-content {
+    display: block;
+    overflow: auto;
 }
+
 /* Modal resize overrides*/
 .modal {
-  max-height: 95% !important;
-  top: 5% !important;
+    max-height: 95% !important;
+    top: 5% !important;
 }
 
 /* Materialize css disables (unordered) list stiling, this fixes that for content under tinymce-content class*/
 .tinymce-content ul {
-  padding-left: 40px;
+    padding-left: 40px;
 }
 
 .tinymce-content ul li {
-  list-style-type: circle;
+    list-style-type: circle;
 }
 
 .tinymce-content ol {
-  padding-left: 40px;
+    padding-left: 40px;
 }
 
-
 .tinymce-content ol li {
-  list-style-type: decimal;
+    list-style-type: decimal;
 }

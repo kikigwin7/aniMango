@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 
 {% block title %}
-  News
+    News
 {% endblock %}
 
 {% block content %}
 
-<h4 class="center-align">News and Announcments</h4>
-<div class="row">
-  <div class="col s12 m3 push-m9 card-panel">
-    <h5 class="center-align">Article Categories</h5>
-    <div class="collection">
-      {% for cat in category_l %}
-      <a
-        href="{% url 'news:category' %}?query={{cat}}"
-        class="collection-item {%if cat == query%}active blue darken-2{%endif%}"
-      >
-        {{ cat }}
-      </a>
-      {% empty %}
-      <p class="center-align">No categories!</p>
-      {% endfor %}
+    <h4 class="center-align">News and Announcments</h4>
+    <div class="row">
+        <div class="col s12 m3 push-m9 card-panel">
+            <h5 class="center-align">Article Categories</h5>
+            <div class="collection">
+                {% for cat in category_l %}
+                    <a
+                            href="{% url 'news:category' %}?query={{ cat }}"
+                            class="collection-item {% if cat == query %}active blue darken-2{% endif %}"
+                    >
+                        {{ cat }}
+                    </a>
+                {% empty %}
+                    <p class="center-align">No categories!</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col s12 m9 pull-m3">
+            {% include "news/news_lister.html" %}
+        </div>
+
     </div>
-  </div>
-
-  <div class="col s12 m9 pull-m3">
-    {% include "news/news_lister.html" %}
-  </div>
-
-</div>
 
 {% endblock %}

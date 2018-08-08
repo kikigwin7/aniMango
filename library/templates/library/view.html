@@ -6,99 +6,99 @@
 
 {% block content %}
 
-<div class="card-panel">
-  <div class="row">
+    <div class="card-panel">
+        <div class="row">
 
-    <div class="col s12 m3">
-      <div class="row">
-        <div class="center-align">
-          <img class="responsive-img" src="{{ series.cover_link }}">
+            <div class="col s12 m3">
+                <div class="row">
+                    <div class="center-align">
+                        <img class="responsive-img" src="{{ series.cover_link }}">
+                    </div>
+                </div>
+                {% if series.cd_status %}
+                    <div class="row center-align">
+                        {{ series.cd_status }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col s12 m9">
+                <h4 class="center-align">
+                    {{ series.title }}
+                </h4>
+                <p>
+                    {# added 'autoescape off' as synopsis may contain pre-escaped html #}
+                    {% autoescape off %}
+                        {{ series.synopsis }}
+                    {% endautoescape %}
+                </p>
+                <h5>
+                    More info
+                </h5>
+                {% load static %}
+                {% if series.mal_link %}
+                    <a href="{{ series.mal_link }}" target="_blank">
+                        <img src="{% static 'mal_icon.png' %}" title="View on MyAnimeList.net">
+                    </a>
+                {% endif %}
+
+                {% if series.ani_link %}
+                    <a href="{{ series.ani_link }}" target="_blank">
+                        <img src="{% static 'anilist_icon.png' %}" title="View on Anilist.co">
+                    </a>
+                {% endif %}
+
+                {% if series.wiki_link %}
+                    <a href="{{ series.wiki_link }}" target="_blank">
+                        <img src="{% static 'wiki_icon.png' %}" title="View on Wikipedia">
+                    </a>
+                {% endif %}
+            </div>
+
+
         </div>
-      </div>
-      {% if series.cd_status %}
-        <div class="row center-align">
-          {{ series.cd_status }}
-        </div>
-      {% endif %}
     </div>
 
-    <div class="col s12 m9">
-      <h4 class="center-align">
-        {{ series.title }}
-      </h4>
-      <p>
-      {# added 'autoescape off' as synopsis may contain pre-escaped html #}
-      {% autoescape off %}
-        {{ series.synopsis }}
-      {% endautoescape %}
-      </p>
-      <h5>
-        More info
-      </h5>
-        {% load static %}
-        {% if series.mal_link %}
-        <a href="{{ series.mal_link }}" target="_blank">
-          <img src="{% static 'mal_icon.png' %}" title="View on MyAnimeList.net">
-        </a>
-        {% endif %}
+    <div class="divider"></div>
+    <h4>Library Items</h4>
 
-        {% if series.ani_link %}
-        <a href="{{ series.ani_link }}" target="_blank">
-          <img src="{% static 'anilist_icon.png' %}" title="View on Anilist.co">
-        </a>
-        {% endif %}
-
-        {% if series.wiki_link %}
-        <a href="{{ series.wiki_link }}" target="_blank">
-          <img src="{% static 'wiki_icon.png' %}" title="View on Wikipedia">
-        </a>
-        {% endif %}
-    </div>
-
-
-  </div>
-</div>
-
-<div class="divider"></div>
-<h4>Library Items</h4>
-
-{% if items %}
-	<table class="responsive-table">
-    <thead>
-	  	<tr>
-	   		<th>Media</th>
-		  	<th>Item</th>
-		  	<th>Details</th>
-		  	<th>Status</th>
-		  </tr>
-    </thead>
-    <tbody>
-    {% for item in items %}
-		  <tr>
-		  	<td>{{ item.media_type }}</td>
-		  	<td>{{ item.name }}</td>
-		  	<td>{{ item.details }}</td>
-		  	<td>{{ item.status }}</td>
-		  	<td>
-		  	  {% if item.status == 'Available' %}
-		  		<a 
-            class="btn waves-effect blue darken-3"
-            href="{% url 'library:request_form' item.id %}"
-          >
-            request
-          </a>
-          {% else %}
-            <a class="btn disabled">
-              request
-            </a>
-		  	  {% endif %}
-		  	</td>
-		  </tr>
-    {% endfor %}
-    </tbody>
-	</table>
-{% else %}
-<p>This series has no items available in the library</p>
-{% endif %}
+    {% if items %}
+        <table class="responsive-table">
+            <thead>
+            <tr>
+                <th>Media</th>
+                <th>Item</th>
+                <th>Details</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.media_type }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.details }}</td>
+                    <td>{{ item.status }}</td>
+                    <td>
+                        {% if item.status == 'Available' %}
+                            <a
+                                    class="btn waves-effect blue darken-3"
+                                    href="{% url 'library:request_form' item.id %}"
+                            >
+                                request
+                            </a>
+                        {% else %}
+                            <a class="btn disabled">
+                                request
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>This series has no items available in the library</p>
+    {% endif %}
 
 {% endblock %}

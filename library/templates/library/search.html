@@ -4,49 +4,49 @@
 {% endblock %}
 
 {% block content %}
-<h3 class="center-align">Library Search</h3>
+    <h3 class="center-align">Library Search</h3>
 
-<div class="row">
-  <div class="col s12">
-    <div class="card-panel">
-      <form action="{% url 'library:search' %}" method="get">
-        <div class="input-field">
-          <input
-            id="searchbar"
-            type="search"
-            name="query"
-            value="{{ pre_search }}"
-          >
-          <label for="searchbar" class="active">Search the library</label>
-          <i class="material-icons">close</i>
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <form action="{% url 'library:search' %}" method="get">
+                    <div class="input-field">
+                        <input
+                                id="searchbar"
+                                type="search"
+                                name="query"
+                                value="{{ pre_search }}"
+                        >
+                        <label for="searchbar" class="active">Search the library</label>
+                        <i class="material-icons">close</i>
+                    </div>
+                </form>
+            </div>
         </div>
-      </form>
     </div>
-  </div>
-</div>
 
-<div class="row">
-{% for series in series_l %}
-  <div class="col s6 m4 l3">
-    <a href="{% url 'library:detail' series.id %}">
-    <div class="card small hoverable">
-      <img class="library-img" src="{{ series.cover_link }}">
-      <div class="card-content library-label">
-        <p class="center-align">{{ series.title }}</p>
-      </div>
+    <div class="row">
+        {% for series in series_l %}
+            <div class="col s6 m4 l3">
+                <a href="{% url 'library:detail' series.id %}">
+                    <div class="card small hoverable">
+                        <img class="library-img" src="{{ series.cover_link }}">
+                        <div class="card-content library-label">
+                            <p class="center-align">{{ series.title }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <h5 class="center-align">There are no results for your search</h5>
+        {% endfor %}
     </div>
-    </a>
-  </div>
-{% empty %}
-<h5 class="center-align">There are no results for your search</h5>
-{% endfor %}
-</div>
 
-<div class="center-align">
-  <a class="btn waves-effect blue darken-3" href="{% url 'library:index' %}">
-    <i class="material-icons left">chevron_left</i>
-    back to library
-  </a>
-</div>
+    <div class="center-align">
+        <a class="btn waves-effect blue darken-3" href="{% url 'library:index' %}">
+            <i class="material-icons left">chevron_left</i>
+            back to library
+        </a>
+    </div>
 
 {% endblock %}

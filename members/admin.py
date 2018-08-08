@@ -8,19 +8,23 @@ from tinymce.widgets import TinyMCE
 # Get the models for the members app
 from .models import Member
 
+
 class MemberForm(forms.ModelForm):
-	bio = forms.CharField(required=False, widget=TinyMCE())
+    bio = forms.CharField(required=False, widget=TinyMCE())
+
 
 # Define an inline admin descriptor for Member model
 # which acts a bit like a singleton
 class MemberInline(admin.StackedInline):
-	form = MemberForm
-	model = Member
-	can_delete = False
+    form = MemberForm
+    model = Member
+    can_delete = False
+
 
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):
-	inlines = (MemberInline, )
+    inlines = (MemberInline,)
+
 
 # Re-register UserAdmin
 admin.site.unregister(User)

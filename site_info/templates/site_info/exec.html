@@ -1,42 +1,42 @@
 {% extends "base.html" %}
 
 {% block title %}
-  History
+    History
 {% endblock %}
 
 {% block content %}
-<h4>
-  Society Exec {{disp_year}}/{{disp_year|add:"1"}}
-</h4>
-<div class="row">
-  <div class="col s12 m3 push-m9 card-panel">
-    <h5 class="center-align">Academic Year</h5>
-    <div class="collection" style="max-height: 25vh; overflow: auto;">
-      {% for year in year_choices %}
-        <a
-          href="{% url 'site_info:exec' year=year.academic_year %}"
-          class="collection-item">
-            {{ year.academic_year }}/{{ year.academic_year|add:"1"}}
-        </a>
-      {% empty %}
-        <a href="." class="collection-item">No execs yet!</a>
-      {% endfor %}
+    <h4>
+        Society Exec {{ disp_year }}/{{ disp_year|add:"1" }}
+    </h4>
+    <div class="row">
+        <div class="col s12 m3 push-m9 card-panel">
+            <h5 class="center-align">Academic Year</h5>
+            <div class="collection" style="max-height: 25vh; overflow: auto;">
+                {% for year in year_choices %}
+                    <a
+                            href="{% url 'site_info:exec' year=year.academic_year %}"
+                            class="collection-item">
+                        {{ year.academic_year }}/{{ year.academic_year|add:"1" }}
+                    </a>
+                {% empty %}
+                    <a href="." class="collection-item">No execs yet!</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col s12 m9 pull-m3">
+            {% for exec in exec_members %}
+                <h5>
+                    {{ exec.exec_role }} - {{ exec.user.member.nick }}
+                    {% if exec.user.member.show_full_name %}
+                        ({{ exec.user.get_full_name }})
+                    {% endif %}
+                </h5>
+                <div class="tinymce-content">{{ exec.exec_info|safe }}</div>
+            {% empty %}
+                <p>No exec!</p>
+            {% endfor %}
+        </div>
     </div>
-  </div>
-  
-  <div class="col s12 m9 pull-m3">
-  {% for exec in exec_members %}
-    <h5>
-      {{ exec.exec_role }} - {{ exec.user.member.nick }}
-      {% if exec.user.member.show_full_name %}
-        ({{ exec.user.get_full_name }})
-      {% endif %}
-    </h5>
-    <div class="tinymce-content">{{ exec.exec_info|safe }}</div>
-  {% empty %}
-    <p>No exec!</p>
-  {% endfor %}
-  </div>
-</div>
 
 {% endblock %}

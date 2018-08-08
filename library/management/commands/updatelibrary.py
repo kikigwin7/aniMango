@@ -7,9 +7,10 @@ from anilist_api.anilist import get_series_by_name
 from library.models import Series, Item
 from django.db import IntegrityError
 
+
 def getSpreadsheetData():
     # Load in the scope and the details of API credentials
-    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     creds = ServiceAccountCredentials.from_json_keyfile_name('library/management/commands/authdetails.json', scope)
     client = gspread.authorize(creds)
 
@@ -18,12 +19,13 @@ def getSpreadsheetData():
 
     # Return the values that we need for later
     # [0] = Name of series, [1] = Type of series, [2] = If we can find this series or not, [3] = Volume number
-    listOfTitles = [sheet.col_values(1), sheet.col_values(2),sheet.col_values(3), sheet.col_values(4)]
+    listOfTitles = [sheet.col_values(1), sheet.col_values(2), sheet.col_values(3), sheet.col_values(4)]
     return listOfTitles
 
+
 # Updates the spreadsheet at the specified position
-def updateSheet(x,y,value):
-    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+def updateSheet(x, y, value):
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     creds = ServiceAccountCredentials.from_json_keyfile_name('library/management/commands/authdetails.json', scope)
     client = gspread.authorize(creds)
 
@@ -42,22 +44,24 @@ class Command(BaseCommand):
         for x in range(1, len(listOfTitles[0])):
             title = listOfTitles[0][x]
             type = listOfTitles[1][x].lower()
-            # Sleep for a short period of time to ensure we do not get rate limited... Running time for this command is fairly
-            # slow as a result of this.
+            # Sleep for a short period of time to ensure we do not get rate limited... Running time for this command
+            # is fairly slow as a result of this.
             time.sleep(.25)
             try:
-                # Creates a series object and gets the ID of the series from the anilist API (data entry done by same as autofill)
+                # Creates a series object and gets the ID of the series from the anilist API (data entry done by same
+                #  as autofill)
                 series = Series()
                 series.auto_populate_data = True
-                series.ani_link = "https://anilist.co/{0!s}/{1!s}".format(type, get_series_by_name(type, title)[0]['id'])
+                series.ani_link = "https://anilist.co/{0!s}/{1!s}".format(type,
+                                                                          get_series_by_name(type, title)[0]['id'])
 
                 # Ensures that the data is not being entered in multiple times
                 try:
                     series.save()
                     print("Added " + series.ani_link)
                 except IntegrityError as e:
-                    # If the series already exists, we will search for it and set series to be the value of it ensuring we
-                    # have a valid entry for the parent_series value
+                    # If the series already exists, we will search for it and set series to be the value of it
+                    # ensuring we have a valid entry for the parent_series value
                     print("Failed to add " + series.ani_link + "! Duplicate entry!")
                     try:
                         series = Series.objects.get(ani_link=series.ani_link)

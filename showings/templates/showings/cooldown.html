@@ -1,40 +1,40 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Schedule by Year
+    Schedule by Year
 {% endblock %}
 
 {% block content %}
-<h4 class="center-align">Cooldown search</h4>
-<div class="row">
-  <div class="col s12 m4">
-    <div class="card-panel">
-      <form action="{% url 'showings:cooldown' %}">
-        <div class="input-field">
-          <input id="cool_search" type="search" name="query" value="{{ pre_search }}">
-          <label for="cool_search" class="active">Cooldown Search</label>
+    <h4 class="center-align">Cooldown search</h4>
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="card-panel">
+                <form action="{% url 'showings:cooldown' %}">
+                    <div class="input-field">
+                        <input id="cool_search" type="search" name="query" value="{{ pre_search }}">
+                        <label for="cool_search" class="active">Cooldown Search</label>
+                    </div>
+                </form>
+                <div class="center-align">
+                    <a class="btn waves-effect blue darken-3" href="{% url 'showings:schedule' %}">
+                        <i class="material-icons left">chevron_left</i>
+                        back to showings
+                    </a>
+                </div>
+            </div>
         </div>
-      </form>
-      <div class="center-align">
-        <a class="btn waves-effect blue darken-3" href="{% url 'showings:schedule' %}">
-        <i class="material-icons left">chevron_left</i>
-        back to showings
-        </a>
-      </div>
+        <div class="col s12 m8">
+            {% for show in shows_l %}
+                <div class="card-panel">
+                    {% if show.shown_at.date >= cd_date %}
+                        <p><b>ON COOLDOWN</b> - {{ show }}</p>
+                    {% else %}
+                        <p><b>NOT ON COOLDOWN</b> - {{ show }}</p>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <h5 class="center-align">There are no results for your search</h5>
+            {% endfor %}
+        </div>
     </div>
-  </div>
-  <div class="col s12 m8">
-  {% for show in shows_l %}
-    <div class="card-panel">
-    {% if show.shown_at.date >= cd_date %}
-      <p><b>ON COOLDOWN</b> - {{ show }}</p>
-    {% else %}
-      <p><b>NOT ON COOLDOWN</b> - {{ show }}</p>
-    {% endif %}
-    </div>
-  {% empty %}
-    <h5 class="center-align">There are no results for your search</h5>
-  {% endfor %}
-  </div>
-</div>
 {% endblock %}

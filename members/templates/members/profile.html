@@ -1,122 +1,122 @@
 {% extends "base.html" %}
 
-{% block title%}
-  Profile
+{% block title %}
+    Profile
 {% endblock %}
 
 {% block content %}
-<h4 class="center-align">
-  Your member profile
-</h4>
-<div class="row card-panel">
-  <div class="row">
-    <div class="col s12 m6">
-      <p>Name: {{ user.get_full_name }}</p>
-      <p>
-        Nickname:
-        {% if user.member.nick %}
-          {{ user.member.nick }}
-        {% else %}
-          None set
-        {% endif %}
-      </p>
-      <p>
-        Discord Tag:
-        {% if user.member.discordTag %}
-          {{ user.member.discordTag }}
-        {% else %}
-          None set
-        {% endif %}
-      </p>
-      <div class="tinymce-content">
-        Bio:
-        {% if user.member.bio %}
-          {{ user.member.bio|safe }}
-        {% else %}
-          None set
-        {% endif %}
-      </div>
+    <h4 class="center-align">
+        Your member profile
+    </h4>
+    <div class="row card-panel">
+        <div class="row">
+            <div class="col s12 m6">
+                <p>Name: {{ user.get_full_name }}</p>
+                <p>
+                    Nickname:
+                    {% if user.member.nick %}
+                        {{ user.member.nick }}
+                    {% else %}
+                        None set
+                    {% endif %}
+                </p>
+                <p>
+                    Discord Tag:
+                    {% if user.member.discordTag %}
+                        {{ user.member.discordTag }}
+                    {% else %}
+                        None set
+                    {% endif %}
+                </p>
+                <div class="tinymce-content">
+                    Bio:
+                    {% if user.member.bio %}
+                        {{ user.member.bio|safe }}
+                    {% else %}
+                        None set
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div class="center-align">
+                    {% load static %}
+                    <img
+                            class="circle"
+                            {% if user.member.img %}
+                            src="{{ user.member.img.url }}"
+                            {% else %}
+                            src="{% static 'profile_default.jpg' %}"
+                            {% endif %}
+                    />
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <div class="center-align">
+                    <a href="{% url 'member:edit' %}" class="btn blue darken-3">edit</a>
+                </div>
+            </div>
+            <div class="col s6">
+                <div class="center-align">
+                    <a class="btn red darken-2" href="{% url 'password_change' %}">Change password</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col s12 m6">
-      <div class="center-align">
-        {% load static %}
-        <img
-          class="circle"
-          {% if user.member.img %}
-            src="{{ user.member.img.url }}"
-          {% else %}
-            src="{% static 'profile_default.jpg' %}"
-          {% endif %}
-        />
-      </div>
-      <br>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col s6">
-      <div class="center-align">
-        <a href="{% url 'member:edit' %}" class="btn blue darken-3">edit</a>
-      </div>
-    </div>
-    <div class="col s6">
-      <div class="center-align">
-        <a class="btn red darken-2" href="{% url 'password_change' %}">Change password</a>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<h5>Items on loan:</h5>
-<table>
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Status</th>
-      <th>Requested on</th>
-      <th>Due on</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for item in loaned_items %}
-    <tr>
-      <td>{{ item.item }}</td>
-      <td>{{ item.status }}</td>
-      <td>{{ item.date_requested|date:"Y-m-d" }}</td>
-      <td>{{ item.return_deadline|date:"Y-m-d" }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td>You have no items on loan</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<br>
-<h5>Previous loans:</h5>
-<table>
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Status</th>
-      <th>Requested on</th>
-      <th>Due on</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for item in archived_items %}
-    <tr>
-      <td>{{ item.item }}</td>
-      <td>{{ item.status }}</td>
-      <td>{{ item.date_requested|date:"Y-m-d" }}</td>
-      <td>{{ item.return_deadline|date:"Y-m-d" }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td>No items</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    <h5>Items on loan:</h5>
+    <table>
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th>Status</th>
+            <th>Requested on</th>
+            <th>Due on</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in loaned_items %}
+            <tr>
+                <td>{{ item.item }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.date_requested|date:"Y-m-d" }}</td>
+                <td>{{ item.return_deadline|date:"Y-m-d" }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>You have no items on loan</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <h5>Previous loans:</h5>
+    <table>
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th>Status</th>
+            <th>Requested on</th>
+            <th>Due on</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in archived_items %}
+            <tr>
+                <td>{{ item.item }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.date_requested|date:"Y-m-d" }}</td>
+                <td>{{ item.return_deadline|date:"Y-m-d" }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>No items</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

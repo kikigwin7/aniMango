@@ -1,15 +1,15 @@
 <form
-	class="row"
-	style="margin-bottom: 12px"
-	action="{% url 'events:signup' event.id %}"
-	method="POST"
+        class="row"
+        style="margin-bottom: 12px"
+        action="{% url 'events:signup' event.id %}"
+        method="POST"
 >
-  {% csrf_token %}
-  <div class="input-field col s9">
-    <input id="signup_comment" type="text" name="signup_comment" length="200" maxlength="200" class="validate">
-    <label for="signup_comment">Signup Comment (Optional)</label>
-  </div>
-  <div class="input-field col s3">
-    <input type="submit" class="btn right blue" value="Signup">
-  </div>
+    {% csrf_token %}
+    <div class="input-field col s9">
+        <input id="signup_comment" type="text" name="signup_comment" length="200" maxlength="200" class="validate">
+        <label for="signup_comment">Signup Comment (Optional)</label>
+    </div>
+    <div class="input-field col s3">
+        <input type="submit" class="btn right blue" value="Signup">
+    </div>
 </form>

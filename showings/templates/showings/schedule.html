@@ -1,121 +1,125 @@
 {% extends "base.html" %}
 
 {% block title %}
-  Showings
+    Showings
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col s12 m4">
+    <div class="row">
+        <div class="col s12 m8 l8">
+            <h5 class="center-align">Recent Showings</h5>
+            {% for showing in showing_page %}
+                <div class="card-panel">
+                    <strong>{{ showing.get_showing_type_display }}</strong>
+                    {% if showing.details %}
+                        <div class="divider"></div>
+                        {{ showing.details }}
+                    {% endif %}
+                    <div class="divider"></div>
+                    <dl>
+                        {% for show in showing.show_set.all %}
+                            <dt>
+                                {{ show.lib_series.title_eng }} {% if cd_search %}
+                                <b>(CD until {{ show.lib_series.get_cooldown_date|date:"Y-m-d" }})</b>{% endif %}
 
-    <div class="card-panel">
-      <form action="{% url 'showings:schedule' %}">
-        <div class="input-field">
-          <input id="reg_search" type="search" name="query" value="{{ query }}">
-          <label for="reg_search">Title</label>
-        </div>
-        <div class="row">
-          <div class="input-field col s6">
-            <select id="year" name="year">
-              <option value="any" {% if not year or year == 'any' %}selected{% endif %}>Any Year</option>
-              {% for year_in_range in date_range %}
-                <option value="{{ year_in_range }}" {% if year_in_range == year|add:"0" %}selected{% endif %}>{{ year_in_range }}/{{ year_in_range|add:'1' }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="input-field col s6">
-            <input type="checkbox" id="cd_search" name="cd_search" autocomplete="off" {% if cd_search %}checked="checked"{% endif %}>
-            <label for="cd_search">Show CD</label>
-          </div>
-        </div>
-        <div class="input-field">
-          <input type="submit" value="Search" class="btn blue darken-4">
-        </div>
-      </form>
-    </div>
+                                <div class="right">
+                                    {% load static %}
+                                    {% if show.lib_series.mal_link %}
+                                        <a href="{{ show.lib_series.mal_link }}" target="_blank">
+                                            <img
+                                                    src="{% static 'smol_mal_icon.png' %}"
+                                                    title="View on MyAnimeList.net"
+                                            >
+                                        </a>
+                                    {% endif %}
+                                    <a href="{{ show.lib_series.ani_link }}" target="_blank">
+                                        <img
+                                                src="{% static 'smol_anilist_icon.png' %}"
+                                                title="View on Anilist.co"
+                                        >
+                                    </a>
+                                    {% if show.lib_series.wiki_link %}
+                                        <a href="{{ show.lib_series.wiki_link }}" target="_blank">
+                                            <img
+                                                    src="{% static 'smol_wiki_icon.png' %}"
+                                                    title="View on Wikipedia"
+                                            >
+                                        </a>
+                                    {% endif %}
+                                    {% if show.lib_series.item_set.exists %}
+                                        <a href="{% url 'library:detail' show.lib_series.id %}">
+                                            <img
+                                                    src="{% static 'smol_lib_icon.png' %}"
+                                                    title="Series available in the Animesoc Library"
+                                            >
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </dt>
+                            <dd>
+                                {{ show.details }}
+                            </dd>
+                        {% endfor %}
+                    </dl>
+                    <div class="divider"></div>
+                    <strong>{{ showing.date }}</strong>
+                </div>
+            {% empty %}
+                <h4 class="center-align">No showings available</h4>
+            {% endfor %}
+            <div class="center-align">
+                <ul class="pagination">
+                    {% if showing_page.has_previous %}
+                        <li class="waves-effect">
+                            <a href="?year={{ year }}&page={{ showing_page.previous_page_number }}&query={{ query }}">
+                                <i class="material-icons">chevron_left</i>
+                            </a>
+                        </li>
+                    {% endif %}
 
-  </div>
-  <div class="col s12 m8">
-    <h5 class="center-align">Recent Showings</h5>
-    {% for showing in showing_page %}
-    <div class="card-panel">
-      <strong>{{ showing.get_showing_type_display }}</strong>
-      {% if showing.details %}
-        <div class="divider"></div>
-        {{ showing.details }}
-      {% endif %}
-      <div class="divider"></div>
-      <dl>
-        {% for show in showing.show_set.all %}
-        <dt>
-          {{ show.lib_series.title_eng }} {% if cd_search %}<b>(CD until {{ show.lib_series.get_cooldown_date|date:"Y-m-d" }})</b>{% endif %}
+                    Page {{ showing_page.number }} of {{ showing_page.paginator.num_pages }}
 
-          <div class="right">
-            {% load static %}
-            {% if show.lib_series.mal_link %}
-            <a href="{{ show.lib_series.mal_link }}" target="_blank">
-              <img
-                src="{% static 'smol_mal_icon.png' %}"
-                title="View on MyAnimeList.net"
-              >
-            </a>
-            {% endif %}
-            <a href="{{ show.lib_series.ani_link }}" target="_blank">
-              <img
-                src="{% static 'smol_anilist_icon.png' %}"
-                title="View on Anilist.co"
-              >
-            </a>
-            {% if show.lib_series.wiki_link %}
-            <a href="{{ show.lib_series.wiki_link }}" target="_blank">
-              <img
-                src="{% static 'smol_wiki_icon.png' %}"
-                title="View on Wikipedia"
-              >
-            </a>
-            {% endif %}
-            {% if show.lib_series.item_set.exists %}
-            <a href="{% url 'library:detail' show.lib_series.id %}">
-              <img
-                src="{% static 'smol_lib_icon.png' %}"
-                title="Series available in the Animesoc Library"
-              >
-            </a>
-            {% endif %}
-          </div>
-        </dt>
-        <dd>
-          {{ show.details }}
-        </dd>
-        {% endfor %}
-      </dl>
-      <div class="divider"></div>
-      <strong>{{ showing.date }}</strong>
+                    {% if showing_page.has_next %}
+                        <li class="waves-effect">
+                            <a href="?year={{ year }}&page={{ showing_page.next_page_number }}&query={{ query }}">
+                                <i class="material-icons">chevron_right</i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="col s12 m4 l4">
+
+            <div class="card-panel">
+                <form action="{% url 'showings:schedule' %}">
+                    <div class="input-field">
+                        <input id="reg_search" type="search" name="query" value="{{ query }}">
+                        <label for="reg_search">Title</label>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select id="year" name="year">
+                                <option value="any" {% if not year or year == 'any' %}selected{% endif %}>Any Year
+                                </option>
+                                {% for year_in_range in date_range %}
+                                    <option value="{{ year_in_range }}"
+                                            {% if year_in_range == year|add:"0" %}selected{% endif %}>{{ year_in_range }}/{{ year_in_range|add:'1' }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-field col s6">
+                            <input type="checkbox" id="cd_search" name="cd_search" autocomplete="off"
+                                   {% if cd_search %}checked="checked"{% endif %}>
+                            <label for="cd_search">Show cooldown</label>
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <input type="submit" value="Search" class="btn blue darken-4">
+                    </div>
+                </form>
+            </div>
+
+        </div>
     </div>
-    {% empty %}
-      <h4 class="center-align">No showings available</h4>
-    {% endfor %}
-    <div class="center-align">
-      <ul class="pagination">
-        {% if showing_page.has_previous %}
-          <li class="waves-effect">
-            <a href="?year={{ year }}&page={{ showing_page.previous_page_number }}&query={{ query }}">
-              <i class="material-icons">chevron_left</i>
-            </a>
-          </li>
-          {% endif %}
-  
-          Page {{ showing_page.number }} of {{ showing_page.paginator.num_pages }}
-  
-          {% if showing_page.has_next %}
-          <li class="waves-effect">
-            <a href="?year={{ year }}&page={{ showing_page.next_page_number }}&query={{ query }}">
-              <i class="material-icons">chevron_right</i>
-            </a>
-          </li>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-</div>
 {% endblock %}
