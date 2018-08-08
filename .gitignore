@@ -25,3 +25,5 @@ token\.pickle
 venv/lib/python2\.7/site-packages/django/contrib/admindocs/locale/be/LC_MESSAGES/
 
 venv/
+
+\.idea/
