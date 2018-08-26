@@ -3,7 +3,6 @@ from django.utils import timezone
 
 from events.models import Event
 from news.models import Article
-
 from .models import Exec, HistoryEntry
 
 
@@ -17,6 +16,9 @@ def home(request):
     }
     return render(request, 'site_info/home.html', context)
 
+
+def ssl(request):
+    return render(request, 'site_info/ssl.html')
 
 def constitution(request):
     return render(request, 'site_info/constitution.html')

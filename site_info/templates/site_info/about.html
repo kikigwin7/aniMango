@@ -5,11 +5,39 @@
 {% endblock %}
 
 {% block content %}
-    <h4 class="center-align">About</h4>
+    <div class="container">
+        <h4 class="center-align">About</h4>
 
+        <div class="row">
+            The Anime and Manga Society is Warwick's student-run society for anyone with an interest in anime and manga.
+            Anyone who'd like to meet others who share these interests, or who just want to join us for one of the many
+            events we run each academic year, is welcome to join!
 
+            Our regular viewings take place in <a
+                href="http://campus-cms.warwick.ac.uk/share/a9937c640809938d7dd7b008860e59ee">MS.05 (on the second floor
+            of the Maths Building)</a>, starting at 18:30
+            every Tuesday during term time from week 2 onwards. These events incorporate time for socialising as well as
+            watching anime, so they're an excellent opportunity to meet others and have fun.
 
-    <div class="row">
+            In addition to this, we also hold many socials and other <a
+                href="{% url 'events:upcoming' page=1 %}">events</a> across the year such as:
+            <ul class="collection">
+                <li class="collection-item">All-nighters — extended showings where we watch a selection of things that
+                    may not fit our usual format,
+                    with plenty of breaks for food and socialising.
+                </li>
+                <li class="collection-item">Art/cosplay workshops — a chance to get help and advice with any projects
+                    you might be working on, or just
+                    generally chat with others about art or cosplay.
+                </li>
+                <li class="collection-item">MCM trip — we usually go to the MCM London Comic Con during term 1.</li>
+                <li class="collection-item">Meals — socials where we enjoy the restaurants around Coventry.
+                </li>
+            </ul>
+            We also have an extensive <a href="{% url 'library:index' %}">library</a> of anime to watch and manga to
+            read, available for our members to borrow.
+
+        </div>
 
     </div>
 

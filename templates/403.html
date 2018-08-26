@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+    404
+{% endblock %}
+
+{% block content %}
+    <h2 class="center">403 Forbidden</h2>
+    <h4 class="center">The file you are trying to access is restricted</h4>
+    {% load static %}
+    <span class="center" style="display: block;"><img src="{% static 'images/kurisu.gif' %}"></img></span>
+{% endblock %}

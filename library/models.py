@@ -1,5 +1,5 @@
-from datetime import date, timedelta
 import re
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.db import models
@@ -15,8 +15,8 @@ from showings.models import Show
 class Series(models.Model):
     auto_populate_data = models.BooleanField(default=False,
                                              help_text="Check this to use AniList link to (re)populate fields. MAL "
-                                                       "and Wiki links still need to be entered manually.")  # TODO:
-    # rewrite this in not hack-ish way -Sorc
+                                                       "and Wiki links still need to be entered manually.")
+    # TODO: rewrite this in not hack-ish way -Sorc
 
     title = models.CharField(max_length=110, blank=True)
     title_eng = models.CharField(max_length=110, blank=True)

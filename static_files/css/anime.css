@@ -68,6 +68,14 @@ main {
     font-weight: bold;
 }
 
+.alert {
+    background-color: #B0E0E6;
+    color: #303030;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 20px 10px 20px 10px;
+}
+
 /* Make the text editor stay in the center */
 .yui-editor-container {
     margin: 0 auto;

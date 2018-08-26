@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Polls
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="center-align">Polls</h4>
+        <p>This is a section where you can vote on series that will be shown!</p>
+        <h5>Active polls:</h5>
+        {% for poll in polls.all %}
+            {% if poll.open %}
+                <div class="card">
+                    <div class="card-content">
+                        <p>{{ poll.name }}</p>
+                        {% for option in poll.option_set.all %}
+                            <label>
+                                <ul>
+                                    <li><a href="{{ option.lib_series.ani_link }}">{{ option.lib_series.title }}</a>
+                                    </li>
+                                </ul>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <form id="{{ poll.id }}" name="{{ poll.id }}_form" action="{% url 'polls:vote' poll.id %}"
+                          method="POST">
+                        <div class="card-action">
+                            <p>Voting:</p>
+                            <div class="input-field col s12">
+                                <select multiple>
+                                    {% for option in poll.option_set.all %}
+                                        <option value="{{ option.lib_series.id }}">{{ option.lib_series.title }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label>Voting options for {{ poll.name }} (Multiple can be chosen).</label>
+                            </div>
+                        </div>
+                        <!-- <input class="btn" type="submit" value="Vote"> -->
+                    </form>
+                </div>
+
+            {% endif %}
+        {% empty %}
+            <p>No polls to show!</p>
+        {% endfor %}
+
+        <!-- Polls that have been ended should be displayed differently -->
+
+
+        {% for poll in polls %}
+
+        {% endfor %}
+
+
+    </div>
+
+{% endblock %}
