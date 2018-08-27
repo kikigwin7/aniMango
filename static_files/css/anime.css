@@ -181,3 +181,7 @@ main {
     border-left: 2px solid green;
     height: 100vh;
 }
+
+.bio-label {
+    margin: -20px 0px !important;
+}

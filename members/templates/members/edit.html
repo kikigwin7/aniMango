@@ -37,7 +37,6 @@
                        data-tooltip="Your preferred name to be identified by on the website. If none set, either your full name (if allowed) or your username (university ID) will be used."
                 >Nickname (?)</label>
             </div>
-            <br>
             <div class="input-field">
                 <input id="discordTag" name="discordTag" type="text" autocomplete="off"
                        value="{{ user.member.discordTag }}">
@@ -48,9 +47,8 @@
                        data-tooltip="Your Discord Name and ID (discriminator) - i.e. DiscordUser#0001"
                 >Discord ID (?)</label>
             </div>
-            <br>
             <div class="input-field">
-                <label>Bio</label><br/>
+                <label class="bio-label">Bio</label><br/>
                 <textarea
                         id="bio"
                         name="bio"
