@@ -10,6 +10,9 @@ class Poll(models.Model):
     def results(request):
         return HttpResponse('')
 
+    def vote(request):
+        print("Results")
+
     def __str__(self):
         return self.name
 
@@ -41,3 +44,13 @@ class Option(models.Model):
 
     def save(self):
         super(Option, self).save()
+
+
+class Voter(models.Model):
+    memberOf = models.ForeignKey(
+        Poll,
+        null=False,
+        editable=False
+    )
+
+    voter_id = models.CharField(max_length=30, default='', editable=False)

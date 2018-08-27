@@ -3658,6 +3658,7 @@ small{
     padding:0 2rem;
     text-transform:uppercase;
     vertical-align:middle;
+    margin: 0px 10px 0px 10px;
     -webkit-tap-highlight-color:transparent
 }
 .btn.disabled,.disabled.btn-large,.btn-floating.disabled,.btn-large.disabled,.btn:disabled .btn-large:disabled,.btn-large:disabled .btn-large:disabled,.btn-floating:disabled{

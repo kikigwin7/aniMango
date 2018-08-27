@@ -23,21 +23,40 @@
                             </label>
                         {% endfor %}
                     </div>
-                    <form id="{{ poll.id }}" name="{{ poll.id }}_form" action="{% url 'polls:vote' poll.id %}"
-                          method="POST">
-                        <div class="card-action">
-                            <p>Voting:</p>
-                            <div class="input-field col s12">
-                                <select multiple>
-                                    {% for option in poll.option_set.all %}
-                                        <option value="{{ option.lib_series.id }}">{{ option.lib_series.title }}</option>
-                                    {% endfor %}
-                                </select>
-                                <label>Voting options for {{ poll.name }} (Multiple can be chosen).</label>
+                    {% if user.is_authenticated %}
+                        <form id="{{ poll.id }}" name="{{ poll.id }}_form" action="{% url 'polls:vote' poll.id %}"
+                              method="POST">
+                            {% csrf_token %}
+
+                            <div class="card-action">
+                                <p>Voting:</p>
+                                <div class="input-field col s12">
+                                    <select multiple name="options">
+                                        {% for option in poll.option_set.all %}
+                                            <option value="{{ option.lib_series.id }}">{{ option.lib_series.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label>Voting options for {{ poll.name }} (Multiple can be chosen).</label>
+                                </div>
+                                <input class="btn" type="submit" value="Vote">
+
+                                <a type="button" class="right btn" value="Results"
+                                   href="{% url 'polls:results' poll.id %}">Results</a>
+                                <a type="button" class="right btn" value="Details"
+                                   href="{% url 'polls:view' poll.id %}">Details</a>
                             </div>
+                        </form>
+
+                    {% else %}
+                        <div class="card-action">
+                            <span>Please log-in to vote!</span>
+
+                            <a type="button" class="right btn" value="Results"
+                               href="{% url 'polls:results' poll.id %}">Results</a>
+                            <a type="button" class="right btn" value="Details"
+                               href="{% url 'polls:view' poll.id %}">Details</a>
                         </div>
-                        <!-- <input class="btn" type="submit" value="Vote"> -->
-                    </form>
+                    {% endif %}
                 </div>
 
             {% endif %}

@@ -45,7 +45,7 @@ def new(request, board_id):
             messages.success(request, 'Thread created')
             return HttpResponseRedirect(reverse('forum:thread', args=[new_thread.id]))
         except Exception as e:
-            messages.error(request, 'An error occured')
+            messages.error(request, 'An error occurred')
     return HttpResponseRedirect(reverse('forum:board', args=[board_id]))
 
 
@@ -57,7 +57,7 @@ def reply(request, thread_id):
             new_post = create_post(thread, request.POST.get('reply_text'), request.user.member)
             messages.success(request, 'Reply posted')
         except Exception as e:
-            messages.error(request, 'An error occured')
+            messages.error(request, 'An error occurred')
     return HttpResponseRedirect(reverse('forum:thread', args=[thread_id]))
 
 
