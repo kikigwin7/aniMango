@@ -41,7 +41,7 @@ class Command(BaseCommand):
         listOfTitles = getSpreadsheetData()
 
         # This should loop through the spreadsheet and add the value into the library after getting details from anilist
-        for x in range(1, 30):
+        for x in range(0, 107):
             title = listOfTitles[0][x]
             type = listOfTitles[1][x].lower()
             # Sleep for a short period of time to ensure we do not get rate limited... Running time for this command
@@ -61,24 +61,21 @@ class Command(BaseCommand):
                 try:
                     series.save()
                     print("Added " + series.ani_link)
+                    # Create an item and add this item into the site
+                    itemToAdd = Item()
+                    itemToAdd.parent_series = series
+                    itemToAdd.name = "Vol " + listOfTitles[3][x];
+                    if type == "anime":
+                        itemToAdd.media_type = "DVD"
+                    else:
+                        itemToAdd.media_type = "Manga"
+                    itemToAdd.save()
+
+
                 except IntegrityError as e:
                     # If the series already exists, we will search for it and set series to be the value of it
                     # ensuring we have a valid entry for the parent_series value
                     print("Failed to add " + series.ani_link + "! Duplicate entry!")
-                    try:
-                        series = Series.objects.get(ani_link=series.ani_link)
-                    except Series.DoesNotExist:
-                        # Ensures that the data is not being entered in multiple times
-                        series = None
-                        # Create an item and add this item into the site
-                        itemToAdd = Item()
-                        itemToAdd.parent_series = series
-                        itemToAdd.name = "Vol " + listOfTitles[3][x];
-                        if type == "anime":
-                            itemToAdd.media_type = "DVD"
-                        else:
-                            itemToAdd.media_type = "Manga"
-                        itemToAdd.save()
             except RuntimeError as e:
                 # Update the sheet stating that the series could not be found on anilist and manual entry is required
                 updateSheet(3, x + 1, "Could not find series - Manual Entry required!")

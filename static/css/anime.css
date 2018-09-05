@@ -6,39 +6,40 @@ html, body {
 /* Overrides to make the navbar smaller */
 .navbar-fixed {
     position: relative;
-    height: 40px;
+    max-height: 70px;
     z-index: 998;
+    color: #fafafa !important;
 }
 
 nav {
-    height: 40px;
-    line-height: 40px;
+    max-height: 70px;
+    line-height: 70px;
 }
 
 nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
-    height: 40px;
-    line-height: 40px;
+    max-height: 70px;
+    line-height: 70px;
 }
 
-S
-
 nav .button-collapse i {
-    height: 40px;
-    line-height: 40px;
+    max-height: 70px;
+    line-height: 70px;
 }
 
 @media only screen and (min-width: 601px) {
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
-        height: 40px;
-        line-height: 40px;
+        max-height: 70px;
+        line-height: 70px;
     }
 }
 
 /* Add padding to the left  and right of the main logo text */
 nav .brand-logo {
-    font-size: 1.5rem;
+    font-size: 24pt;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+    font-weight: bold;
+
 }
 
 /* Remove padding on labels in the library view */
@@ -58,6 +59,8 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+
+    font-family: 'Oxygen', sans-serif;
 }
 
 main {
@@ -68,6 +71,14 @@ main {
 .error {
     color: red;
     font-weight: bold;
+}
+
+.alert {
+    background-color: #B0E0E6;
+    color: #303030;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 20px 10px 20px 10px;
 }
 
 /* Make the text editor stay in the center */
@@ -104,6 +115,78 @@ main {
     list-style-type: decimal;
 }
 
-.padding-h {
-    padding: 0 10px 0 10px !important;
+/* Changes made by Porky to actually make the site not look shit */
+
+.modern-menu {
+    background-color: #328CC1 !important;
+}
+
+.right-menu-style {
+    background-color: #0B3C5D;
+    max-height: 70px !important;
+    padding-left: 27px;
+}
+
+@media only screen and (min-width: 1100px) {
+    .events {
+        display: flex !important;
+        flex-direction: column;
+        padding-top: 10vh !important;
+        padding-left: 5vw !important;
+    }
+}
+
+.card-content-subtitle {
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.card-content-text {
+    padding-left: 18px;
+}
+
+.btn-small {
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    outline: 0;
+    padding: 0 10px;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+    color: #fafafa;
+    background-color: #1D2731;
+    text-align: center;
+    letter-spacing: .5px;
+    cursor: pointer;
+}
+
+.heading {
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+.divider {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    bottom: 10%;
+    border-left: 1px solid black;
+}
+
+/* Forum look and feel */
+
+.forum-post-controls {
+    padding: 0 10px 0 10px;
+}
+
+.v-splitter {
+    border-left: 2px solid green;
+    height: 100vh;
+}
+
+.bio-label {
+    margin: -20px 0px !important;
 }
