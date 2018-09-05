@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, InvalidPage
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -7,9 +9,27 @@ from django.urls import reverse
 from .models import Poll, Option, Voter
 
 
-def index(request):
-    polls = Poll.objects.all()
-    return render(request, 'polls/polls.html', {'polls': polls})
+def index(request, category, page):
+
+    polls = {}
+    if category == "Open":
+        polls = Poll.objects.filter(open=True)
+    else:
+        polls = Poll.objects.filter(open=False)
+
+    context = {}
+
+    # 5 polls per page
+    paginator = Paginator(polls, 2)
+    try:
+        polls = paginator.page(request.GET.get('page'))
+    except InvalidPage:
+        polls = paginator.page(1)
+
+    context['poll_l'] = polls
+
+
+    return render(request, 'polls/polls.html', context)
 
 
 def results(request, post_id):
@@ -25,7 +45,6 @@ def view(request, post_id):
 
 @login_required
 def vote(request, post_id):
-    # TODO: You were working from here
     poll = get_object_or_404(Poll, id=post_id)
     if request.method == 'POST':
         if len(request.POST.getlist('options')) > 0:
@@ -33,10 +52,13 @@ def vote(request, post_id):
                 voter = Voter.objects.get(memberOf=poll, voter_id=request.user.id)
                 messages.error(request, 'You have already voted!')
             except Voter.DoesNotExist:
-                addVote(poll, request)
-                voter = Voter(voter_id=request.user.id, memberOf=poll)
-                voter.save()
-                messages.info(request, 'Vote cast!')
+                if poll.open:
+                    addVote(poll, request)
+                    voter = Voter(voter_id=request.user.id, memberOf=poll)
+                    voter.save()
+                    messages.info(request, 'Vote cast!')
+                else:
+                    messages.error(request, 'This poll is closed!')
         else:
             messages.error(request, 'You must select an option!')
     return HttpResponseRedirect(reverse('polls:index'))

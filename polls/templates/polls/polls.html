@@ -6,72 +6,130 @@
 
 {% block content %}
     <div class="container">
-        <h4 class="center-align">Polls</h4>
-        <p>This is a section where you can vote on series that will be shown!</p>
-        <h5>Active polls:</h5>
-        {% for poll in polls.all %}
-            {% if poll.open %}
-                <div class="card">
-                    <div class="card-content">
-                        <p>{{ poll.name }}</p>
-                        {% for option in poll.option_set.all %}
-                            <label>
-                                <ul>
-                                    <li><a href="{{ option.lib_series.ani_link }}">{{ option.lib_series.title }}</a>
-                                    </li>
-                                </ul>
-                            </label>
+        <div class="row">
+            <div class="col s12 m3 push-m9 card-panel">
+                <h5 class="center-align">Polls</h5>
+                <div class="collection">
+                    {% with 'Open Closed' as list %}
+                        {% for cat in list.split %}
+                            <a
+                                    href="{% url 'polls:index' category=cat page='1' %}"
+                                    class="collection-item {% if cat == category %}active{% endif %}"
+                            >
+                                {{ cat }}
+                            </a>
                         {% endfor %}
-                    </div>
-                    {% if user.is_authenticated %}
-                        <form id="{{ poll.id }}" name="{{ poll.id }}_form" action="{% url 'polls:vote' poll.id %}"
-                              method="POST">
-                            {% csrf_token %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="col s12 m9 pull-m3">
 
+
+                <h4 class="center-align">Polls</h4>
+                <p>This is a section where you can vote on series that will be shown!</p>
+                {% for poll in poll_l %}
+                    {% if poll.open %}
+                        <div class="card">
+                            <div class="card-content">
+                                <p>{{ poll.name }}</p>
+                                {% for option in poll.option_set.all %}
+                                    <label>
+                                        <ul>
+                                            <li>
+                                                <a href="{{ option.lib_series.ani_link }}">{{ option.lib_series.title }}</a>
+                                            </li>
+                                        </ul>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <form id="{{ poll.id }}" name="{{ poll.id }}_form"
+                                      action="{% url 'polls:vote' poll.id %}"
+                                      method="POST">
+                                    {% csrf_token %}
+
+                                    <div class="card-action">
+                                        <p>Voting:</p>
+                                        <div class="input-field col s12">
+                                            <select multiple name="options">
+                                                {% for option in poll.option_set.all %}
+                                                    <option value="{{ option.lib_series.id }}">{{ option.lib_series.title }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <label>Voting options for {{ poll.name }} (Multiple can be chosen).</label>
+                                        </div>
+                                        <input class="btn" type="submit" value="Vote">
+
+                                        <a type="button" class="right btn" value="Details"
+                                           href="{% url 'polls:view' poll.id %}">Details</a>
+                                    </div>
+                                </form>
+
+                            {% else %}
+                                <div class="card-action">
+                                    <span>Please log-in to vote!</span>
+
+                                    <a type="button" class="right btn" value="Details"
+                                       href="{% url 'polls:view' poll.id %}">Details</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p>No polls to show!</p>
+                {% endfor %}
+
+                <!-- Polls that have been ended should be displayed differently -->
+
+                {% for poll in poll_l %}
+                    {% if not poll.open %}
+                        <div class="card">
+                            <div class="card-content">
+                                <p>{{ poll.name }}</p>
+                                {% for option in poll.option_set.all %}
+                                    <label>
+                                        <ul>
+                                            <li>
+                                                <a href="{{ option.lib_series.ani_link }}">{{ option.lib_series.title }}</a>
+                                            </li>
+                                        </ul>
+                                    </label>
+                                {% endfor %}
+                            </div>
                             <div class="card-action">
                                 <p>Voting:</p>
-                                <div class="input-field col s12">
-                                    <select multiple name="options">
-                                        {% for option in poll.option_set.all %}
-                                            <option value="{{ option.lib_series.id }}">{{ option.lib_series.title }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <label>Voting options for {{ poll.name }} (Multiple can be chosen).</label>
-                                </div>
-                                <input class="btn" type="submit" value="Vote">
+                                <span>Sorry, this poll is closed!</span>
 
-                                <a type="button" class="right btn" value="Results"
-                                   href="{% url 'polls:results' poll.id %}">Results</a>
                                 <a type="button" class="right btn" value="Details"
                                    href="{% url 'polls:view' poll.id %}">Details</a>
                             </div>
-                        </form>
-
-                    {% else %}
-                        <div class="card-action">
-                            <span>Please log-in to vote!</span>
-
-                            <a type="button" class="right btn" value="Results"
-                               href="{% url 'polls:results' poll.id %}">Results</a>
-                            <a type="button" class="right btn" value="Details"
-                               href="{% url 'polls:view' poll.id %}">Details</a>
                         </div>
                     {% endif %}
-                </div>
+                {% endfor %}
+            </div>
 
-            {% endif %}
-        {% empty %}
-            <p>No polls to show!</p>
-        {% endfor %}
+            <div class="center-align">
+                <ul class="pagination">
+                    {% if poll_l.has_previous %}
+                        <li class="waves-effect">
+                            <a href="?page=
+                                    {{ poll_l.previous_page_number }}{% if query %}&query={{ query }}{% endif %}">
+                                <i class="material-icons">chevron_left</i>
+                            </a>
+                        </li>
+                    {% endif %}
 
-        <!-- Polls that have been ended should be displayed differently -->
+                    Page {{ poll_l.number }} of {{ poll_l.paginator.num_pages }}
 
-
-        {% for poll in polls %}
-
-        {% endfor %}
-
-
+                    {% if poll_l.has_next %}
+                        <li class="waves-effect">
+                            <a href="?page={{ poll_l.next_page_number }}{% if query %}&query={{ query }}{% endif %}">
+                                <i class="material-icons">chevron_right</i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
     </div>
-
 {% endblock %}

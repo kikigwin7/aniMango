@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Results - {{ poll.name }}
+{% endblock %}
+
+{% block content %}
+    <!-- This is really bad right now, fix sometime -MrPorky -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages: ["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Show', 'Votes'],
+                {% for option in  options %}
+                    ['{{ option.lib_series.title }}', {{ option.votes }}],
+                {% endfor %}
+            ]);
+
+            var options = {
+                title: 'Results for {{ poll.name }}',
+                pieHole: 0.4,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chart.draw(data, options);
+        }
+    </script>
+    <div class="container">
+        <div class="row">
+            <h4 class="center-align">Results for {{ poll.name }}</h4>
+            <p>{{ poll.description }}</p>
+
+
+            <!-- Polls that have been ended should be displayed differently -->
+            <div class="col s12 m6">
+                <div id="donutchart" style="width: 100vw; height: 60vh;"></div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

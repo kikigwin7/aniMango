@@ -41,12 +41,15 @@ class Command(BaseCommand):
         listOfTitles = getSpreadsheetData()
 
         # This should loop through the spreadsheet and add the value into the library after getting details from anilist
-        for x in range(1, len(listOfTitles[0])):
+        for x in range(1, 30):
             title = listOfTitles[0][x]
             type = listOfTitles[1][x].lower()
             # Sleep for a short period of time to ensure we do not get rate limited... Running time for this command
             # is fairly slow as a result of this.
             time.sleep(.25)
+
+            # Check if we have already added the series into the site:
+
             try:
                 # Creates a series object and gets the ID of the series from the anilist API (data entry done by same
                 #  as autofill)
@@ -55,7 +58,6 @@ class Command(BaseCommand):
                 series.ani_link = "https://anilist.co/{0!s}/{1!s}".format(type,
                                                                           get_series_by_name(type, title)[0]['id'])
 
-                # Ensures that the data is not being entered in multiple times
                 try:
                     series.save()
                     print("Added " + series.ani_link)
@@ -66,17 +68,17 @@ class Command(BaseCommand):
                     try:
                         series = Series.objects.get(ani_link=series.ani_link)
                     except Series.DoesNotExist:
+                        # Ensures that the data is not being entered in multiple times
                         series = None
-
-                # Create an item and add this item into the site
-                itemToAdd = Item()
-                itemToAdd.parent_series = series
-                itemToAdd.name = "Vol " + listOfTitles[3][x];
-                if type == "anime":
-                    itemToAdd.media_type = "DVD"
-                else:
-                    itemToAdd.media_type = "Manga"
-                itemToAdd.save()
+                        # Create an item and add this item into the site
+                        itemToAdd = Item()
+                        itemToAdd.parent_series = series
+                        itemToAdd.name = "Vol " + listOfTitles[3][x];
+                        if type == "anime":
+                            itemToAdd.media_type = "DVD"
+                        else:
+                            itemToAdd.media_type = "Manga"
+                        itemToAdd.save()
             except RuntimeError as e:
                 # Update the sheet stating that the series could not be found on anilist and manual entry is required
                 updateSheet(3, x + 1, "Could not find series - Manual Entry required!")
