@@ -12,30 +12,30 @@ html, body {
 }
 
 nav {
-    max-height: 70px;
-    line-height: 70px;
+    max-height: 60px;
+    line-height: 60px;
 }
 
 nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
-    max-height: 70px;
-    line-height: 70px;
+    max-height: 60px;
+    line-height: 60px;
 }
 
 nav .button-collapse i {
-    max-height: 70px;
-    line-height: 70px;
+    max-height: 60px;
+    line-height: 60px;
 }
 
 @media only screen and (min-width: 601px) {
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
-        max-height: 70px;
-        line-height: 70px;
+        max-height: 60px;
+        line-height: 60px;
     }
 }
 
 /* Add padding to the left  and right of the main logo text */
 nav .brand-logo {
-    font-size: 24pt;
+    font-size: 18pt;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     font-weight: bold;
@@ -123,7 +123,7 @@ main {
 
 .right-menu-style {
     background-color: #0B3C5D;
-    max-height: 70px !important;
+    max-height: 60px !important;
     padding-left: 27px;
 }
 

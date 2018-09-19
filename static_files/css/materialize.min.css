@@ -3096,10 +3096,10 @@ nav ul li.active{
 }
 nav ul a{
     transition:background-color .3s;
-    font-size:12pt;
+    font-size:10pt;
     color:#fff;
     display:inline-block;
-    padding:0 12.5px;
+    padding:0 12px;
     cursor:pointer
 }
 nav ul a.btn,nav ul a.btn-large,nav ul a.btn-large,nav ul a.btn-flat,nav ul a.btn-floating{
