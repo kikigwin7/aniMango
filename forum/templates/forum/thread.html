@@ -40,12 +40,12 @@
                 </div>
                 <div class="col s12 grey-text">
                     <p>{{ post.by }}{% if post.edited %} | Edited{% endif %}{% if post.locked %} | Locked {% endif %}
-                        {% if post.post_user == request.user.member and not thread.locked and not post.locked %}
+                        {% if post.post_user == request.user.member and not thread.locked and not post.locked or request.user.member.is_privileged %}
                             <a
-                                    class="right forum-post-controls"
-                                    href=""
+                                    class="right modal-trigger forum-post-controls"
+                                    href="#delete_modal"
                                     onclick="
-                                            action='{% url 'forum:delete' post.id %}';"
+                                            document.getElementById('delete_form').action='{% url 'forum:delete' post.id %}';"
                             ><i title="Delete post" class="fas fa-trash-alt"></i></a>
                             <a
                                     class="right modal-trigger forum-post-controls"
@@ -54,12 +54,13 @@
                                             document.getElementById('edit_form').action='{% url 'forum:edit' post.id %}';
                                             tinymce.get('reply_text').setContent(document.getElementById('post_content{{ post.id }}').innerHTML);"
                             ><i title="Edit post" class="fas fa-edit"></i></a>
-                            <a
-                                    class="right forum-post-controls"
-                                    href=""
-                                    onclick="
-                                            action='{% url 'forum:delete' post.id %}';"
-                            ><i title="Pin post" class="fas fa-thumbtack"></i></a>
+
+                            {% if post.id == post.parent_thread.originalPost and request.user.member.is_privileged %}
+                                <a
+                                        class="right forum-post-controls"
+                                        href="{% url 'forum:pin' thread.id %}"
+                                ><i title="Pin post" class="fas fa-thumbtack"></i></a>
+                            {% endif %}
                         {% endif %}
                     </p>
                 </div>
@@ -101,6 +102,23 @@
             >
                 <i class="large material-icons">mode_edit</i>
             </a>
+        </div>
+
+        <div id="delete_modal" class="modal">
+            <div class="modal-content">
+                <h4 class="center-align">Delete post</h4>
+                <form id='delete_form' name="delete_form" action="{% url 'forum:delete' thread.id %}" method="POST">
+                    {% csrf_token %}
+                    <p>Are you sure you want to delete this post? Note, deleting a post does not remove the data,
+                        rather it just hides it. An Admin can always recover the post as a matter of policy.</p>
+                    <div class="input-field">
+                        <a class="modal-action modal-close waves-effect waves-red btn blue">
+                            Cancel
+                        </a>
+                        <input class="btn red right" type="submit" value="Delete">
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div id="reply_modal" class="modal">

@@ -5,11 +5,11 @@ from django.utils import timezone
 from aniMango.bleach_html import bleach_tinymce, bleach_no_tags
 from members.models import Member
 
-
 class Board(models.Model):
     category = models.CharField(max_length=100)
     description = models.CharField(max_length=150)
     order = models.IntegerField()
+
     locked = models.BooleanField(default=False)
 
     def __str__(self):
@@ -17,13 +17,17 @@ class Board(models.Model):
 
 
 class Thread(models.Model):
+
     title = models.CharField(max_length=100)
     thread_user = models.ForeignKey(Member, on_delete=models.PROTECT)
     # You would not want to delete a board before moving threads elsewhere, would you? -Sorc
     parent_board = models.ForeignKey(Board, on_delete=models.PROTECT)
+    originalPost = models.IntegerField(default=False)
     created = models.DateTimeField(null=False, blank=False)
     last_reply_time = models.DateTimeField()
     locked = models.BooleanField(default=False)
+    pinned = models.BooleanField(default=False)
+
 
     def __str__(self):
         return str(self.parent_board) + ' : ' + self.title

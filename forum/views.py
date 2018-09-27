@@ -42,6 +42,8 @@ def new(request, board_id):
         try:
             new_thread = create_thread(board, request.POST.get('title'), request.user.member)
             new_post = create_post(new_thread, request.POST.get('content'), request.user.member)
+            new_thread.originalPost = new_post.id
+            new_thread.save()
             messages.success(request, 'Thread created')
             return HttpResponseRedirect(reverse('forum:thread', args=[new_thread.id]))
         except Exception as e:
@@ -60,6 +62,15 @@ def reply(request, thread_id):
             messages.error(request, 'An error occurred')
     return HttpResponseRedirect(reverse('forum:thread', args=[thread_id]))
 
+@login_required
+def pin(request, thread_id):
+    thread = Thread.objects.filter(id=thread_id)[0]
+    if request.user.member.is_privileged():
+        thread.pinned = True
+        thread.save()
+    else:
+        messages.error(request, 'You do not have permission to do this!')
+    return HttpResponseRedirect(reverse('forum:thread', args=[thread_id]))
 
 @login_required
 def edit(request, post_id):
@@ -84,6 +95,10 @@ def delete(request, post_id):
         messages.error(request, 'You cannot delete someone else\'s post!')
     else:
         post.delete()
+        post.save()
+    return HttpResponseRedirect(reverse('forum:thread', args=[post.parent_thread.id]))
+
+
 
 
 def create_thread(board, title, member):

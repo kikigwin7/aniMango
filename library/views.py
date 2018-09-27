@@ -14,6 +14,8 @@ from .models import Series, Item
 def index(request):
     context = {}
     query = request.GET.get('query')
+
+
     if query:
         context['query'] = query
         series_list = Series.objects.filter(
@@ -24,7 +26,9 @@ def index(request):
         series_list = Series.objects.filter(item__isnull=False).distinct().order_by('title')
 
     # 24 series per page
+
     paginator = Paginator(series_list, 24)
+
     try:
         series = paginator.page(request.GET.get('page'))
     except InvalidPage:
