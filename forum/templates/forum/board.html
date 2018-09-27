@@ -18,20 +18,21 @@
             <p>{{ board.description }}</p>
         </div>
 
-        <div class="collection with-header">
-            <div class="collection-header"><h6>Pinned posts:</h6></div>
-            <h6></h6>
-            {% for thread in thread_list %}
-                {% if thread.pinned %}
+        {% if pinned_threads %}
+            <div class="collection with-header">
+                <div class="collection-header"><h6>Pinned posts:</h6></div>
+                <h6></h6>
+
+                {% for thread in pinned_threads %}
                     <a href="{% url 'forum:thread' thread.id %}" class="collection-item avatar">
                         <i class="material-icons circle">message</i>
                         <span class="title">{{ thread.title|safe }}</span>
                         <p>{{ thread.info }}</p>
                         <p>{{ thread.last_reply_info }}</p>
                     </a>
-                {% endif %}
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <div class="collection-header"><h6>Recent posts:</h6></div>
         {% for thread in thread_list %}

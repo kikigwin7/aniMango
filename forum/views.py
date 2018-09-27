@@ -18,9 +18,11 @@ def index(request):
 def board(request, board_id):
     board = get_object_or_404(Board, id=board_id)
     threads = Thread.objects.filter(parent_board=board).order_by('-last_reply_time')
+    pinned = Thread.objects.filter(parent_board=board, pinned=True).order_by('-last_reply_time')
     context = {
         'board': board,
-        'thread_list': threads
+        'thread_list': threads,
+        'pinned_threads': pinned,
     }
     return render(request, 'forum/board.html', context)
 
