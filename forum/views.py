@@ -92,12 +92,13 @@ def edit(request, post_id):
 @login_required
 def delete(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    print (request.user.member == post.post_user)
     thread = post.parent_thread
-    if not request.user.member == post.post_user or not request.user.member.is_privileged():
-        messages.error(request, 'You cannot delete someone else\'s post!')
-    else:
+    if request.user.member == post.post_user or request.user.member.is_privileged():
         post.delete()
         post.save()
+    else:
+        messages.error(request, 'You cannot delete someone else\'s post!')
     return HttpResponseRedirect(reverse('forum:thread', args=[post.parent_thread.id]))
 
 
