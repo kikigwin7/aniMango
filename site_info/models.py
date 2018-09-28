@@ -6,6 +6,21 @@ from django.db import models
 from aniMango.bleach_html import bleach_tinymce, bleach_no_tags
 
 
+class HomeAlert(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+    def save(self):
+        self.title = bleach_no_tags(self.title)
+        self.content = bleach_tinymce(self.content)
+        super(HomeAlert, self).save()
+
+    class Meta:
+        verbose_name_plural = 'Alerts'
+
 def get_year_choices():
     return [(r, r) for r in range(1997, datetime.date.today().year + 1)]
 

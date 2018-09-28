@@ -8,7 +8,8 @@ class Showing(models.Model):
         ('wk', 'Weekly showing'),
         ('an', 'Allnighter'),
         ('ev', 'Event'),
-        ('ot', 'Other')
+        ('mo', 'Movie Night'),
+        ('ot', 'Other'),
     )
     showing_type = models.CharField(
         max_length=2,

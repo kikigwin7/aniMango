@@ -31,3 +31,5 @@ venv/
 polls/migrations/
 
 security/
+
+static/

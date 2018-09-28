@@ -9,15 +9,17 @@
 
     <!--Row that contains the news and events sections, divided by columns-->
     <div class="row">
+        {% if alert %}
         <div class="col s12 m12">
             <div class="card-panel alert">
-                <span>Welcome to the University of Warwick Anime and Manga society! If you are a fresher, our showings
-                    are on Tuesdays in MS.05, if you do not know where this is, check out
-                    <a href="{% url 'site_info:about' %}">the about page</a>. We
-                    also have a <a href="https://discordapp.com/invite/KgU2S7B">discord server</a>.
+                <span>
+                    <div class="article-content tinymce-content">
+                    {{ alert.content|safe|truncatewords_html:50 }}
+                </div>
         </span>
             </div>
         </div>
+    {% endif %}
 
         <div class="col s12 m12 l8">
             <!-- Load the banner image here -->

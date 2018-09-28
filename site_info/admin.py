@@ -3,8 +3,24 @@ from django.contrib import admin, messages
 
 from tinymce.widgets import TinyMCE
 
-from .models import Exec, HistoryEntry
+from .models import Exec, HistoryEntry, HomeAlert
 
+class AlertForm(forms.ModelForm):
+    content = forms.CharField(widget=TinyMCE())
+
+
+class AlertAdmin(admin.ModelAdmin):
+    form = AlertForm
+
+    list_display = (
+        'title',
+        'content',
+    )
+
+    def save_model(self, request, obj, form, change):
+        super(AlertAdmin, self).save_model(request, obj, form, change)
+
+admin.site.register(HomeAlert, AlertAdmin)
 
 class ExecForm(forms.ModelForm):
     exec_info = forms.CharField(widget=TinyMCE())

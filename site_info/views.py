@@ -3,16 +3,18 @@ from django.utils import timezone
 
 from events.models import Event
 from news.models import Article
-from .models import Exec, HistoryEntry
+from .models import Exec, HistoryEntry, HomeAlert
 
 
 def home(request):
     news_l = Article.objects.order_by('-created')[:3]
     # Takes events that are in future, orders soonest first, takes first 4, then reverses (latest first) -Sorc
     events_l = Event.objects.filter(when__gte=timezone.now()).order_by('when')[:4]
+    alerts = HomeAlert.objects.last()
     context = {
         'news_l': news_l,
-        'events_l': events_l
+        'events_l': events_l,
+        'alert': alerts,
     }
     return render(request, 'site_info/home.html', context)
 
