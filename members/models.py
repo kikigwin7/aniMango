@@ -75,7 +75,7 @@ class Member(models.Model):
         elif self.show_full_name:
             return self.user.get_full_name()
         else:
-            return self.user.username
+            return self.user.get_short_name()
 
     def save(self, *args, **kwargs):
         self.nick = bleach_no_tags(self.nick)
