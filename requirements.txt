@@ -2,5 +2,5 @@ Django==1.10.2
 django-wysiwyg==0.8.0
 html5lib==0.9999999
 Pillow==3.4.2
-requests==2.11.1
+requests==2.20.0
 six==1.10.0
