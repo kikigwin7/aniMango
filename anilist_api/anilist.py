@@ -2,6 +2,7 @@ import os.path
 import pickle
 import requests
 import time
+import json
 
 from django.core.exceptions import ValidationError
 
@@ -16,16 +17,46 @@ def populate_series_item(series_obj):
     except Exception as e:
         raise ValidationError(repr(e))
 
-    series_obj.title = info['title_romaji']
-    series_obj.title_eng = info['title_english']
+    series_obj.title = info['title']['romaji']
+    series_obj.title_eng = info['title']['english']
     series_obj.api_id = int(info['id'])
-    series_obj.series_type = info['series_type']
+    series_obj.series_type = info['type']
+
     series_obj.synopsis = info['description']
-    series_obj.cover_link = info['image_url_lge']
+    series_obj.cover_link = info['coverImage']['large']
     series_obj.ani_link = 'https://anilist.co/{0!s}/{1!s}'.format(str(series_obj.series_type), str(series_obj.api_id))
 
 
 def api_get_info(series_obj):
+    query = '''
+    query ($id: Int) { # Define which variables will be used in the query (id)
+      Media (id: $id) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+        id
+        title {
+            romaji
+            english
+        }
+        type
+        description
+        coverImage {
+            large
+        }
+      }
+    }
+    '''
+    variables = {'id': series_obj.api_id}
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    response = requests.post(url, json={'query': query, 'variables': variables})
+
+    return json.loads(response.content)['data']['Media']
+
+
+# This is deprecated but left in in-case anilist api v1 is required
+# For future work please look at Anilist API v2 https://github.com/AniList/ApiV2-GraphQL-Docs
+def api_get_info_old(series_obj):
     url = 'https://anilist.co/api/{0!s}/{1!s}'.format(str(series_obj.series_type), str(series_obj.api_id))
     try:
         request = requests.get(url, params={'access_token': get_access_token()})
@@ -43,8 +74,37 @@ def api_get_info(series_obj):
         raise
 
 
-# Gets the series json minimised from anilist
 def get_series_by_name(series_type, title):
+    query = '''
+        query ($name: String) {
+  Media(search: $name) {
+    id
+    title {
+      romaji
+      english
+    }
+    type
+    description
+    coverImage {
+      large
+    }
+  }
+}
+
+        '''
+    variables = {'name': title}
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    response = requests.post(url, json={'query': query, 'variables': variables})
+    print(response.content)
+    return json.loads(response.content)['data']['Media']
+
+
+
+# Gets the series json minimised from anilist
+def get_series_by_name_old(series_type, title):
     url = 'https://anilist.co/api/{0!s}/search/{1!s}'.format(series_type, title)
     try:
         request = requests.get(url, params={'access_token': get_access_token()})

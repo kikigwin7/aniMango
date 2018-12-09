@@ -126,7 +126,7 @@ class Request(models.Model):
     )
     # Use status_variable only for setting it. For getting use def self.status() - Sorc
     status_variable = models.CharField(max_length=16, choices=STATUS_CHOICES, blank=False, null=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=False)
 
     def __str__(self):
         return '{0!s}: {1!s} ({2!s})'.format(self.status(), self.item.parent_series.nice_title(), self.item.name)

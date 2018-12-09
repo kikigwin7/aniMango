@@ -33,3 +33,7 @@ polls/migrations/
 security/
 
 static/
+
+venv3/
+
+logs/

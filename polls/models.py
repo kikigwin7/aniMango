@@ -50,7 +50,8 @@ class Voter(models.Model):
     memberOf = models.ForeignKey(
         Poll,
         null=False,
-        editable=False
+        editable=False,
+        on_delete=models.PROTECT
     )
 
     voter_id = models.CharField(max_length=30, default='', editable=False)

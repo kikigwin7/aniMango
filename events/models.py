@@ -54,7 +54,7 @@ class Event(models.Model):
 
 
 class Signup(models.Model):
-    who = models.ForeignKey(Member)
+    who = models.ForeignKey(Member, on_delete=models.PROTECT)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     comment = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField()
