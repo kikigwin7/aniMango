@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+<head>
+    {% load static %}
+    <script src="{% static 'js/archive.js' %}"></script>
+</head>
+
+{% block title %}
+    Archive
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div style="display: none" class="card-panel alert" id="resize-notification">
+                <div class="article-content tinymce-content">
+                    <span>This image has been re-sized! <a href="{{ item.file.url }}">Click here</a> for the original image.</span>
+                </div>
+                </span>
+            </div>
+
+            <div class="section">
+                <div class="col offset-s1 s11"><h4>{{ item.name }}</h4></div>
+            </div>
+
+            <div class="row">
+                <div class="col s4 push-s8">
+                    <h5>Stats:</h5>
+                    <p>Original file name: {{ raw_name }}</p>
+                    <p>Size: {{ size }} KB</p>
+                    <p>Created on {{ item.date }}</p>
+                    <p>{{ item.details }}</p>
+
+                </div>
+                <div class="col s8 pull-s4 center-align"><img class="archive-image" src="{{ item.file.url }}"></div>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}
+

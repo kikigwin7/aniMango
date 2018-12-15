@@ -176,6 +176,11 @@ main {
     border-left: 1px solid black;
 }
 
+/* Making sure that the items within the archive are the right size */
+
+.archive-image{
+    max-width: 50%;
+}
 /* Forum look and feel */
 
 .forum-post-controls {

@@ -1,3 +1,4 @@
+import codecs
 import os.path
 import pickle
 import requests
@@ -51,7 +52,7 @@ def api_get_info(series_obj):
     # Make the HTTP Api request
     response = requests.post(url, json={'query': query, 'variables': variables})
 
-    return json.loads(response.content)['data']['Media']
+    return json.loads(response.content.decode("utf-8"))['data']['Media']
 
 
 # This is deprecated but left in in-case anilist api v1 is required

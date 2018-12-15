@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Archive
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="collection with-header">
+
+                {% for year in years %}
+                    <a href="{% url 'archive:year' year.year %}" }} class="collection-item avatar">
+                        <i class="material-icons circle">folder</i>
+                        <p class="title">{{ year.year }} </p>
+                        <p>{{ year.numItems }} items</p>
+                    </a>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}

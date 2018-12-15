@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Archive
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="collection with-header">
+                {% for item in items %}
+                    <a href="{% url 'archive:item' item.id %}" }} class="collection-item avatar">
+                        {% if item.type == 'tx' %}
+                            <i class="material-icons circle">subject</i>
+                        {% elif item.type == 'im' %}
+                            <i class="material-icons circle">photo</i>
+                        {% elif item.type == 'we' %}
+                            <i class="material-icons circle">web</i>
+                        {% endif %}
+                        <p class="title">{{ item.name }}</p>
+                        <p>Created on {{ item.date }}</p>
+                    </a>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}
