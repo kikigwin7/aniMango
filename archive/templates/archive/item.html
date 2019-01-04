@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load thumbnail %}
+
 <head>
     {% load static %}
     <script src="{% static 'js/archive.js' %}"></script>
@@ -32,7 +32,16 @@
                     <p>{{ item.details }}</p>
 
                 </div>
-                <div class="col s8 pull-s4 center-align"><img class="archive-image" src="{{ item.file.url }}"></div>
+                <div class="col s8 pull-s4 center-align">
+                    {% if item.type == 'im' %}
+                        <img class="archive-image" src="{{ item.file.url }}">
+                    {% elif item.type == 'vi' %}
+                        <video width="320" height="240" controls>
+                            <source src={{ item.file.url }}>
+                        </video>
+                    {% endif %}
+
+                </div>
             </div>
 
 

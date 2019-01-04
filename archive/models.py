@@ -18,6 +18,7 @@ class Item(models.Model):
 
     TYPE_CHOICES = (
         ('im', 'Image'),
+        ('vi', 'Video'),
         ('tx', 'Text File'),
         ('we', 'Website File')
     )
@@ -45,8 +46,3 @@ class Item(models.Model):
         blank=True,
         help_text='Any details about the item'
     )
-
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        if self.type == 'im':
-            s = 1

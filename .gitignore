@@ -37,3 +37,5 @@ static/
 venv3/
 
 logs/
+
+archive/migrations/

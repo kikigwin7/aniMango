@@ -9,7 +9,7 @@
         <div class="row">
             <div class="collection with-header">
                 {% for month in months %}
-                    <a href="{% url 'archive:month' 2018 month.month %}" }} class="collection-item avatar">
+                    <a href="{% url 'archive:month' yearDate month.month %}" }} class="collection-item avatar">
                         <i class="material-icons circle">folder</i>
                         <p class="title">{{ month.monthName }}</p>
                         <p>{{ month.numItems }} items</p>

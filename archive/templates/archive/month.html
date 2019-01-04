@@ -16,6 +16,8 @@
                             <i class="material-icons circle">photo</i>
                         {% elif item.type == 'we' %}
                             <i class="material-icons circle">web</i>
+                        {% elif item.type == 'vi' %}
+                            <i class="material-icons circle">ondemand_video</i>
                         {% endif %}
                         <p class="title">{{ item.name }}</p>
                         <p>Created on {{ item.date }}</p>

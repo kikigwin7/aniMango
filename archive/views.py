@@ -1,7 +1,6 @@
 from .models import Item
 from django.shortcuts import render
 import calendar
-from sorl.thumbnail import get_thumbnail
 import math, re
 
 def index(request):
@@ -30,7 +29,7 @@ def year(request, year):
     for month in months:
         monthData.append({'month': month, 'monthName': calendar.month_name[month],
                           'numItems': items.filter(date__month=month).count()})
-    return render(request, 'archive/year.html', {'months': monthData})
+    return render(request, 'archive/year.html', {'yearDate': year, 'months': monthData})
 
 
 def month(request, year, month):
