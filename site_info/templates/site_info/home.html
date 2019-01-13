@@ -10,31 +10,110 @@
     <!--Row that contains the news and events sections, divided by columns-->
     <div class="row">
         {% if alert %}
-        <div class="col s12 m12">
-            <div class="card-panel alert">
+            <div class="col s12 m12">
+                <div class="card-panel alert">
                 <span>
                     <div class="article-content tinymce-content">
                     {{ alert.content|safe|truncatewords_html:50 }}
                 </div>
         </span>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="col s12 m12 l9">
+            <h3 class="animated fadeInDown">Warwick Anime and Manga Society</h3>
+            <div class="container col s10 m10 l10">
+<div class="animated fadeInUp">
+                <p >
+            The Anime and Manga Society is Warwick's student-run society for anyone with an interest in Anime and Manga.
+            The society is for anyone who would like to meet others who share these interests, or who just want to join
+            us for one of the many events we run each academic year. </p><p> Our
+                    regular viewings take place in <a
+                            href="http://campus-cms.warwick.ac.uk/share/a9937c640809938d7dd7b008860e59ee">MS.05 (on the second floor
+                        of the Maths Building)</a>, starting
+                    at 18:30 every Tuesday during term time from Week 1 onwards. These events incorporate time for
+                    socialising as well as watching anime, so they're an excellent opportunity to meet others and
+                    have fun. In addition to this, we also hold many socials and other <a
+                href="{% url 'events:upcoming' page=1 %}">events</a> across the year!
+                </p></div></div>
+
+        </div>
+        <div class="col s0 m0 l3">
+            <div class="logo-components floating ">
+                <img
+                        width="80%"
+                        class="responsive-img animated fadeIn fast"
+                        src="{% static 'images/logo/logo_base.png' %}"
+                        alt="A winged logo"
+                />
+
+                <img
+                        width="80%"
+                        class="responsive-img logo-sub-component animated fadeInLeft fast"
+                        src="{% static 'images/logo/logo_left.png' %}"
+                        alt="banner"
+                />
+                <img
+                        width="80%"
+                        class="responsive-img logo-sub-component animated fadeInRight"
+                        src="{% static 'images/logo/logo_right.png' %}"
+                        alt="banner"
+                />
+                <img
+                        width="80%"
+                        class="responsive-img logo-sub-component animated bounceInDown slow "
+                        src="{% static 'images/logo/logo_top.png' %}"
+                        alt="banner"
+                />
+
+
             </div>
         </div>
-    {% endif %}
+    </div>
+    </div>
+
+    <div class="h-splitter">
+        <div class="row">
+            <div class="container">
+                <div class="col s12 m12 l3 center-align h-splitter-content animated fadeInLeft fast">
+                    <h5>Weekly showings</h5>
+                    <p>Our regular viewings take place in <a
+                            href="http://campus-cms.warwick.ac.uk/share/a9937c640809938d7dd7b008860e59ee"
+                            style="color: #c0c0c0;">MS.05 (on the second floor
+                        of the Maths Building)</a>,
+                        starting at 18:30 every Tuesday during term time from Week 1 onwards.</p>
+                </div>
+                <div class="col s12 m12 l3 center-align h-splitter-content animated fadeInDown fast">
+                    <h5>Meal socials</h5>
+                    <p>Come join us for our meal socials. We usually go to Japanese style
+                    restaurants in the Coventry area.</p>
+                </div>
+                <div class="col s12 m12 l3 center-align h-splitter-content animated fadeInDown fast">
+                    <h5>Karaoke</h5>
+                    <p>Join us for an evening Karaoke session featuring all types of music from Anime openings
+                    to Western classics! Held usually twice a term and announced
+                        <a href="{% url 'events:upcoming' page=1 %}" style="color: #c0c0c0;">here</a>.</p>
+                </div>
+                <div class="col s12 m12 l3 center-align h-splitter-content animated fadeInRight fast">
+                    <h5>Movie Nights / All-Nighters</h5>
+                    <p>Come along to our Movie Nights and All-Nighter events where we watch a collection of movies
+                    or shows respectively.</p>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+    <div class="row">
 
         <div class="col s12 m12 l8">
             <!-- Load the banner image here -->
-            <br>
-            <img
-                    class="responsive-img"
-                    src="{% static 'front_banner.png' %}"
-                    alt="banner"
-            />
 
-            <p>
-                Welcome to Warwick's student-run society for anyone with an interest in anime and manga; we run a
-                variety of events to facilitate socialisation with others sharing these interests and give you chance to
-                enjoy some anime together!
-            </p>
+
             <h5 class="heading">News and Announcements:</h5>
             {% for article in news_l %}
                 <div class="card">
@@ -61,45 +140,45 @@
         </div>
 
 
-
-
-        <div class="col s12 l4 events">
+        <div class="col s12 l4">
             <!--The events section-->
-        <h5 class="heading">Upcoming Events:</h5>
-        <!--single event card-->
-        {% for event in events_l %}
-            <!-- <div class="col s12 m6 l12"> -->
-                <div class="card">
-                    <div class="card-content">
+            <div class="col l10 offset-l2">
+                <h5 class="heading">Upcoming Events:</h5>
+                <!--single event card-->
+                {% for event in events_l %}
+                    <!-- <div class="col s12 m6 l12"> -->
+                    <div class="card">
+                        <div class="card-content">
 
-                        <p class="card-title">{{ event.title }}
-                            <span class="right">
+                            <p class="card-title">{{ event.title }}
+                                <span class="right">
                                     <a class="btn-small"
                                        href="{% url 'events:view' event.id %}">Details
                                     </a>
                                 </span>
-                        </p>
+                            </p>
 
-                        <h4 class="card-content-subtitle">When:</h4>
-                        <p class="card-content-text">
-                            {{ event.when }}
-                        </p>
-                        <h4 class="card-content-subtitle">Where:</h4>
-                        <p class="card-content-text">
-                            {{ event.where }}
-                        </p>
+                            <h4 class="card-content-subtitle">When:</h4>
+                            <p class="card-content-text">
+                                {{ event.when }}
+                            </p>
+                            <h4 class="card-content-subtitle">Where:</h4>
+                            <p class="card-content-text">
+                                {{ event.where }}
+                            </p>
+                        </div>
                     </div>
-                </div>
-            <!-- </div> -->
-        {% empty %}
-            <p>No events!</p>
-        {% endfor %}
+                    <!-- </div> -->
+                {% empty %}
+                    <p>No events!</p>
+                {% endfor %}
 
-        <!-- The discord server -->
-            <div class="card">
-                <div class="card-content">
-                    <iframe src="https://discordapp.com/widget?id=221309541088886784&theme=dark" width="100%"
-                            height="500" allowtransparency="true" frameborder="0"></iframe>
+                <!-- The discord server -->
+                <div class="card">
+                    <div class="card-content">
+                        <iframe src="https://discordapp.com/widget?id=221309541088886784&theme=dark" width="100%"
+                                height="500" allowtransparency="true" frameborder="0"></iframe>
+                    </div>
                 </div>
             </div>
 

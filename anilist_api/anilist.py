@@ -19,7 +19,7 @@ def populate_series_item(series_obj):
         raise ValidationError(repr(e))
 
     series_obj.title = info['title']['romaji']
-    series_obj.title_eng = info['title']['english']
+    series_obj.title_eng = info['title']['english'] if (info['title']['english'] is not None) else ''
     series_obj.api_id = int(info['id'])
     series_obj.series_type = info['type']
 

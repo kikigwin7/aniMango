@@ -1,6 +1,7 @@
 html, body {
     max-width: 100%;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 /* Overrides to make the navbar smaller */
@@ -121,6 +122,34 @@ main {
     background-color: #328CC1 !important;
 }
 
+@keyframes float {
+    0% {
+        transform: translatey(0px);
+    }
+    50% {
+        transform: translatey(-20px);
+    }
+    100% {
+        transform: translatey(0px);
+    }
+}
+
+.floating_object {
+    transform: translatey(0px);
+    animation: float 3s ease-in-out infinite;
+}
+
+.logo-components {
+    z-index: 1;
+    position: relative;
+}
+
+.logo-sub-component {
+    z-index: -1;
+    position: absolute;
+    left: 0px;
+}
+
 .right-menu-style {
     background-color: #0B3C5D;
     max-height: 60px !important;
@@ -178,9 +207,10 @@ main {
 
 /* Making sure that the items within the archive are the right size */
 
-.archive-image{
+.archive-image {
     max-width: 50%;
 }
+
 /* Forum look and feel */
 
 .forum-post-controls {
@@ -194,4 +224,17 @@ main {
 
 .bio-label {
     margin: -20px 0px !important;
+}
+
+.h-splitter{
+    margin-bottom: 5vh;
+    width: 100vw;
+    height: auto;
+    background-color: #328CC1;
+    font-weight: bold;
+    color: #fafafa;
+}
+
+.h-splitter-content{
+    margin: 20px 0 40px 0;
 }
