@@ -11,6 +11,8 @@ from .anilist_config import aniclient, anisecret, pickle_path
 
 params = {'grant_type': 'client_credentials', 'client_id': aniclient, 'client_secret': anisecret}
 
+# Alot of this file is actually redundant at this point.
+# TODO Clean up and remove redundant dependencies that are called upon and serve no function
 
 def populate_series_item(series_obj):
     try:
@@ -30,8 +32,8 @@ def populate_series_item(series_obj):
 
 def api_get_info(series_obj):
     query = '''
-    query ($id: Int) { # Define which variables will be used in the query (id)
-      Media (id: $id) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+    query ($id: Int) {
+      Media (id: $id) {
         id
         title {
             romaji

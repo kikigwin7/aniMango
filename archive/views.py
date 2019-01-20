@@ -11,10 +11,13 @@ def index(request):
         if object.date.year not in years:
             years.add(object.date.year)
 
-    yearData = list()
+    year_data = list()
     for year in years:
-        yearData.append({'year': year, 'numItems': items.filter(date__year=year).count()})
-    return render(request, 'archive/index.html', {'years': yearData})
+        year_data.append({'year': year, 'numItems': items.filter(date__year=year).count()})
+    context = {
+        'years': year_data
+    }
+    return render(request, 'archive/index.html', context)
 
 
 def year(request, year):
@@ -25,20 +28,32 @@ def year(request, year):
         if object.date.month not in months:
             months.add(object.date.month)
 
-    monthData = list()
-    for month in months:
-        monthData.append({'month': month, 'monthName': calendar.month_name[month],
-                          'numItems': items.filter(date__month=month).count()})
-    return render(request, 'archive/year.html', {'yearDate': year, 'months': monthData})
+    month_data = list()
+    for month_item in months:
+        month_data.append({'month': month_item, 'monthName': calendar.month_name[month_item],
+                          'numItems': items.filter(date__month=month_item).count()})
+    context = {
+        'yearDate': year,
+        'months': month_data,
+    }
+    return render(request, 'archive/year.html', context)
 
 
 def month(request, year, month):
     items = Item.objects.filter(date__year=year, date__month=month)
-    return render(request, 'archive/month.html', {'items': items})
+    context = {
+        'items': items,
+    }
+    return render(request, 'archive/month.html', context)
 
 
 def item(request, id):
     item = Item.objects.get(id=id)
-    filesize = math.ceil(item.file.size / 1024)
-    name_raw = re.sub(r"^(.*?)/", "", str(item.file.name))
-    return render(request, 'archive/item.html', {'item': item, "size": filesize, "raw_name": name_raw})
+    file_size = math.ceil(item.file.size / 1024)
+    raw_name = re.sub(r"^(.*?)/", "", str(item.file.name))
+    context = {
+        'item': item,
+        'size': file_size,
+        'raw_name': raw_name,
+    }
+    return render(request, 'archive/item.html', context)
