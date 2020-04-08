@@ -13,7 +13,6 @@ aniMango/settings\.py
 aniMango/urls\.py
 
 members/migrations/
-
 aniMango/bleach_html\.py
 
 news/news_config\.py
@@ -39,3 +38,7 @@ venv3/
 logs/
 
 archive/migrations/
+
+.git-old
+
+.well-known/
