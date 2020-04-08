@@ -1,6 +1,11 @@
-Django==2.1.5
+Django==2.2.2
 django-wysiwyg==0.8.0
 html5lib==0.9999999
-Pillow==3.4.2
+Pillow==5.4.1
 requests==2.20.0
 six==1.10.0
+djangorestframework
+django-tinymce==2.8.0
+mysqlclient
+django-bleach==0.4.0
+django-jet==1.0.8
