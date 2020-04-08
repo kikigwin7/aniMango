@@ -12,9 +12,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='homealert',
-            name='title',
-            field=models.CharField(default=b'', max_length=30),
-        ),
     ]
