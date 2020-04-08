@@ -1,13 +1,12 @@
 from django.db import models
 
-# Showing models should be defined here:
-# Showing ids should be a foreign key to the library itself, so be aware that the IDs are not unique to showings
-# and visa versa
+
+# Create your models here.
 class Showing(models.Model):
     date = models.DateField()
     SHOWING_CHOICES = (
         ('wk', 'Weekly showing'),
-        ('an', 'All-Nighter'),
+        ('an', 'Allnighter'),
         ('ev', 'Event'),
         ('mo', 'Movie Night'),
         ('ot', 'Other'),
@@ -50,8 +49,7 @@ class Show(models.Model):
         ('ms', 'Main series'),
         ('mc', 'Main series candidate'),
         ('ex', 'Exec choice'),
-        ('an', 'All-Nighter'),
-        ('mo', 'Movie'),
+        ('an', 'Allnighter'),
         ('ot', 'Other'),
     )
     show_type = models.CharField(

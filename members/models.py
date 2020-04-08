@@ -79,7 +79,7 @@ class Member(models.Model):
 
     def save(self, *args, **kwargs):
         self.nick = bleach_no_tags(self.nick)
-        self.bio = bleach_tinymce(self.bio)
+        #self.bio = self.bio
         self.discordTag = bleach_no_tags(self.discordTag)
 
         # TODO: old images can still stay on the server, as different extensions can be used (.jpeg, .jpg,

@@ -3,10 +3,15 @@ from library.models import Series
 from anilist_api.anilist import api_get_info
 import time
 
+
 def updateImage(item):
     data = api_get_info(item)
-    item.cover_link = data['coverImage']['large']
-    item.save()
+    try:
+        item.cover_link = data['coverImage']['large']
+        item.save()
+    except TypeError:
+        print("Failed to update")
+
 
 class Command(BaseCommand):
     help = 'Displays current time'
@@ -29,4 +34,3 @@ class Command(BaseCommand):
                     print(count, "/", library.__len__(), " - Updating ", item.title)
                 else:
                     break;
-

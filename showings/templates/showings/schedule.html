@@ -97,36 +97,26 @@
                         <input id="reg_search" type="search" name="query" value="{{ query }}">
                         <label for="reg_search">Title</label>
                     </div>
-                    <div class="input-field col s6">
-                        <select id="year" name="year">
-                            <option value="any" {% if not year or year == 'any' %}selected{% endif %}>Any Year
-                            </option>
-                            {% for year_in_range in date_range %}
-                                <option value="{{ year_in_range }}"
-                                        {% if year_in_range == year|add:"0" %}selected{% endif %}>{{ year_in_range }}/{{ year_in_range|add:'1' }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="input-field col s6">
-                        <select id="type" name="type">
-                            <option value="all" {% if type == 'all' %}selected{% endif %}>All showings</option>
-                            {% for type_code, show_type in showing_types %}
-                                <option value="{{ type_code }}"
-                                        {% if type == type_code %}selected{% endif %}>{{ show_type }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-
-                    <div class="input-field">
-                        <input type="checkbox" id="cd_search" name="cd_search" autocomplete="off"
-                               {% if cd_search %}checked="checked"{% endif %}>
-                        <label for="cd_search">Show cooldown</label>
-                    </div>
-                    <br>
-                        <div class="input-field">
-                            <input type="submit" value="Search" class="btn blue darken-4">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select id="year" name="year">
+                                <option value="any" {% if not year or year == 'any' %}selected{% endif %}>Any Year
+                                </option>
+                                {% for year_in_range in date_range %}
+                                    <option value="{{ year_in_range }}"
+                                            {% if year_in_range == year|add:"0" %}selected{% endif %}>{{ year_in_range }}/{{ year_in_range|add:'1' }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
+                        <div class="input-field col s6">
+                            <input type="checkbox" id="cd_search" name="cd_search" autocomplete="off"
+                                   {% if cd_search %}checked="checked"{% endif %}>
+                            <label for="cd_search">Show cooldown</label>
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <input type="submit" value="Search" class="btn blue darken-4">
+                    </div>
                 </form>
             </div>
 

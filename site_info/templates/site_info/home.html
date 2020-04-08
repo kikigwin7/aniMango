@@ -28,23 +28,22 @@
                 <p >
             The Anime and Manga Society is Warwick's student-run society for anyone with an interest in Anime and Manga.
             The society is for anyone who would like to meet others who share these interests, or who just want to join
-            us for one of the many events we run each academic year. </p><p> Our
-                    regular viewings take place in <a
-                            href="http://campus-cms.warwick.ac.uk/share/a9937c640809938d7dd7b008860e59ee">MS.05 (on the second floor
-                        of the Maths Building)</a>, starting
-                    at 18:30 every Tuesday during term time from Week 1 onwards. These events incorporate time for
-                    socialising as well as watching anime, so they're an excellent opportunity to meet others and
-                    have fun. In addition to this, we also hold many socials and other <a
+            us for one of the many events we run each academic year. </p><p> Our regular viewings take place in
+                        <a href="http://campus-cms.warwick.ac.uk/share/e49ddabf83dc93b7124237137fcc41a2">
+                            MS.02 (on the ground floor of the Maths Building) </a>
+                        , starting at 19:00 every Tuesday during term time. These events incorporate time for
+                        socialising as well as watching anime, so they're an excellent opportunity to meet others
+                        and have fun. In addition to this, we also hold many socials and other <a
                 href="{% url 'events:upcoming' page=1 %}">events</a> across the year!
                 </p></div></div>
 
         </div>
         <div class="col s0 m0 l3">
-            <div class="logo-components floating ">
+            <div class="logo-components floating" onclick="moveLogo()">
                 <img
                         width="80%"
                         class="responsive-img animated fadeIn fast"
-                        src="{% static 'images/logo/logo_base.png' %}"
+                        src="{% static 'images/logo/logo_base_alt.png' %}"
                         alt="A winged logo"
                 />
 
@@ -73,38 +72,47 @@
     </div>
     </div>
 
+    <!-- DESKTOP EVENTS BAR -->
     <div class="h-splitter">
-        <div class="row">
-            <div class="container">
-                <div class="col s12 m12 l3 center-align h-splitter-content animated fadeInLeft fast">
+        <div class="row valign-wrapper">
+            <div class="col s0 m1 l1 home-event-button unselectable" id="home-event-prev" style="opacity: 0;">
+                <i class="medium material-icons">keyboard_arrow_left</i>
+            </div>
+            <div class="container home-event-container col s12 m10 l10 ">
+                <div class="center-align home-event-item">
                     <h5>Weekly showings</h5>
-                    <p>Our regular viewings take place in <a
-                            href="http://campus-cms.warwick.ac.uk/share/a9937c640809938d7dd7b008860e59ee"
-                            style="color: #c0c0c0;">MS.05 (on the second floor
-                        of the Maths Building)</a>,
-                        starting at 18:30 every Tuesday during term time from Week 1 onwards.</p>
+                    <p>Our regular viewings take place in
+                        <a style="color: #c0c0c0;"
+                            href="http://campus-cms.warwick.ac.uk/share/e49ddabf83dc93b7124237137fcc41a2">
+                            MS.02 (on the ground floor of the Maths Building)
+                        </a>
+                        , starting at 19:00 every Tuesday during term time.</p>
                 </div>
-                <div class="col s12 m12 l3 center-align h-splitter-content animated fadeInDown fast">
+                <div class="center-align home-event-item">
                     <h5>Meal socials</h5>
                     <p>Come join us for our meal socials. We usually go to Japanese style
                     restaurants in the Coventry area.</p>
                 </div>
-                <div class="col s12 m12 l3 center-align h-splitter-content animated fadeInDown fast">
+                <div class="center-align home-event-item">
                     <h5>Karaoke</h5>
                     <p>Join us for an evening Karaoke session featuring all types of music from Anime openings
-                    to Western classics! Held usually twice a term and announced
+                    to Western classics! Held twice a term and announced
                         <a href="{% url 'events:upcoming' page=1 %}" style="color: #c0c0c0;">here</a>.</p>
                 </div>
-                <div class="col s12 m12 l3 center-align h-splitter-content animated fadeInRight fast">
+                <div class="center-align home-event-item">
                     <h5>Movie Nights / All-Nighters</h5>
                     <p>Come along to our Movie Nights and All-Nighter events where we watch a collection of movies
                     or shows respectively.</p>
                 </div>
-
-
+                <div class="center-align home-event-item" style="display: none;">
+                    <h5>Manga/LN/VN Social</h5>
+                    <p>Try out the start of a Visual Novel, or come to socialise whilst reading Manga and Light Novels</p>
+                </div>
+            </div>
+            <div class="col s0 m1 l1 home-event-button unselectable" id="home-event-next">
+                <i class="medium material-icons">keyboard_arrow_right</i>
             </div>
         </div>
-
     </div>
 
     <div class="container">
@@ -181,9 +189,93 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
+        <script type="text/javascript">
+            $('#home-event-next').on('click', function () {
+                var last = $('.home-event-item').last();
+                var first = $('.home-event-item').first();
+                var self = $('#home-event-next');
+                var other = $('#home-event-prev');
+                var anim = function () {
+                    first.css({display: 'none'});
+                    last.css({display: 'block'});
+                    self.animate({opacity: '0'});
+                    other.animate({opacity: '1'});
+                }
+                anim();
+            });
+            $('#home-event-prev').on('click', function () {
+                var last = $('.home-event-item').last();
+                var first = $('.home-event-item').first();
+                var self = $('#home-event-prev');
+                var other = $('#home-event-next');
+                var anim = function () {
+                    first.css({display: 'block'});
+                    last.css({display: 'none'});
+                    self.animate({opacity: '0'});
+                    other.animate({opacity: '1'});
+                }
+                anim();
+            });
+{% comment %}            var setBarHeight = function () {
+               var max = -1;
+
+               $('.home-event-item').each(function() {
+                 max = max > $(this).height() ? max : $(this).height();
+               });
+
+               $('.home-event-container').each(function() {
+                 $(this).height(max + 20);
+               });
+            };{% endcomment %}
+            $(document).ready(function () {
+                //setBarHeight();
+                fixLogo();
+                mobileBar(false);
+            });
+            $(window).resize(function () {
+               //setBarHeight();
+               mobileBar(true);
+            });
+            var moveLogo = function () {
+                $('.logo-components').css({position: 'absolute'});
+                var windowHeight = $(window).height() - 50;
+                var windowWidth = $(window).width() - 50;
+                var newHeight = Math.floor(Math.random() * windowHeight);
+                var newWidth = Math.floor(Math.random() * windowWidth);
+
+                $('.logo-components').animate({top: newHeight, left: newWidth});
+            };
+            var fixLogo = function () {
+                var height = $('.logo-components').height();
+                var width = $('.logo-components').width();
+                $('.logo-components').height(height + 1);
+                $('.logo-components').width(width + 1);
+            };
+            var flag = false;
+            var mobileBar = function ( resize ) {
+                var smallScreen = window.matchMedia("only screen and (max-width: 760px)").matches;
+                if (smallScreen) {
+                    $('#home-event-prev').css({ display: 'none' });
+                    $('#home-event-next').css({ display: 'none' });
+                    $('.home-event-item').each( function () {
+                        $( this ).css({width: '100%', display: 'block' });
+                    });
+                    $('.home-event-item').last().css({ display: 'block' });
+                    $('.home-event-container').css({ height: 'auto'});
+                    flag = true;
+                } else if (resize && flag) {
+                    $('#home-event-next').css({ display: 'block', opacity: '1' });
+                    $('#home-event-prev').css({ opacity: '0', display: 'block' });
+                    $('.home-event-item').each( function () {
+                        $( this ).css({width: '25%'});
+                    });
+                    $('.home-event-item').last().css({ display: 'none' });
+                    //setBarHeight();
+                    flag = false;
+                };
+            };
+        </script>
     </div>
 
 

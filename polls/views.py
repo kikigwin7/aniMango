@@ -10,8 +10,8 @@ from .models import Poll, Option, Voter
 
 
 def index(request, category, page):
-    polls = None
-    context = {}
+
+    polls = {}
     if category == "Open":
         polls = Poll.objects.filter(open=True)
     else:
@@ -26,9 +26,9 @@ def index(request, category, page):
     except InvalidPage:
         polls = paginator.page(1)
 
-    context = {
-        'poll_l': polls,
-    }
+    context['poll_l'] = polls
+
+
     return render(request, 'polls/polls.html', context)
 
 

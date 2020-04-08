@@ -6,6 +6,7 @@ app_name = 'site_info'
 
 urlpatterns = [
 	url(r'^$', views.home, name='home'),
+	url(r'^discord/$', views.discord, name='discord'),
 	url(r'^info/constitution/$', views.constitution, name='constitution'),
 	url(r'^info/contact/$', views.contact, name='contact'),
 	url(r'^info/about/$', views.about, name='about'),

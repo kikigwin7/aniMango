@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -21,6 +22,7 @@ def home(request):
 
 def ssl(request):
     return render(request, 'site_info/ssl.html')
+
 
 def constitution(request):
     return render(request, 'site_info/constitution.html')
@@ -55,3 +57,7 @@ def history(request):
         'history_list': entries
     }
     return render(request, 'site_info/history.html', context)
+
+
+def discord(request):
+    return HttpResponseRedirect("https://discordapp.com/invite/GYM6ay7")

@@ -20,6 +20,7 @@ def bleach_tinymce(str):
     )
 
 
+
 def bleach_no_tags(str):
     return bleach.clean(
         str,

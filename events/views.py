@@ -13,15 +13,15 @@ from .models import Event, Signup
 
 # Create your views here.
 def upcoming(request, page):
-    return render(request, 'events/list.html', get_context(page, 'Upcoming'))
+    return render(request, 'events/list.html', getContext(page, 'Upcoming'))
 
 
 def previous(request, page):
-    return render(request, 'events/list.html', get_context(page, 'Previous'))
+    return render(request, 'events/list.html', getContext(page, 'Previous'))
 
 
 # puting duplicate code from upcoming/previous in one place - Sorc
-def get_context(page, event_type):
+def getContext(page, event_type):
     if 'Upcoming' == event_type:
         events_all = Event.objects.filter(when__gte=timezone.now()).order_by('when')
     else:

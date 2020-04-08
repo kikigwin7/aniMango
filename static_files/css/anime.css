@@ -42,6 +42,10 @@ nav .brand-logo {
     font-weight: bold;
 
 }
+/* Blue links on car actions */
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
+    color: #039be5 !important;
+}
 
 /* Remove padding on labels in the library view */
 .card .card-content.library-label {
@@ -70,8 +74,7 @@ main {
 
 /* Make error messages red */
 .error {
-    color: red;
-    font-weight: bold;
+    color: #f44336;
 }
 
 .alert {
@@ -237,4 +240,47 @@ main {
 
 .h-splitter-content{
     margin: 20px 0 40px 0;
+}
+
+/* Home scrolling events */
+.home-event-container {
+    width:100%;
+    overflow: hidden;
+    height: auto;
+}
+
+.home-event-item {
+    display: block;
+    float: left;
+    width: 25%;
+    padding: 30px;
+}
+
+.home-event-button {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+/* Restore bold text in articles */
+.article-content strong {
+    font-weight: bold;
+}
+
+.unselectable {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
+/* Different Menu's for Home */
+@media only screen and (max-width: 760px) {
+  #home-event-desktop { display: none; }
+}
+
+@media only screen and (min-width: 761px) {
+  #home-event-mobile { display: none; }
 }
