@@ -43,7 +43,7 @@
                 <img
                         width="80%"
                         class="responsive-img animated fadeIn fast"
-                        src="{% static 'images/logo/logo_base_alt.png' %}"
+                        src="{% static 'images/logo/logo_base.png' %}"
                         alt="A winged logo"
                 />
 
@@ -190,6 +190,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- TODO Make the events bar js code less terrible -->
         <script type="text/javascript">
             $('#home-event-next').on('click', function () {
                 var last = $('.home-event-item').last();
@@ -217,41 +219,12 @@
                 }
                 anim();
             });
-{% comment %}            var setBarHeight = function () {
-               var max = -1;
-
-               $('.home-event-item').each(function() {
-                 max = max > $(this).height() ? max : $(this).height();
-               });
-
-               $('.home-event-container').each(function() {
-                 $(this).height(max + 20);
-               });
-            };{% endcomment %}
             $(document).ready(function () {
-                //setBarHeight();
-                fixLogo();
                 mobileBar(false);
             });
             $(window).resize(function () {
-               //setBarHeight();
                mobileBar(true);
             });
-            var moveLogo = function () {
-                $('.logo-components').css({position: 'absolute'});
-                var windowHeight = $(window).height() - 50;
-                var windowWidth = $(window).width() - 50;
-                var newHeight = Math.floor(Math.random() * windowHeight);
-                var newWidth = Math.floor(Math.random() * windowWidth);
-
-                $('.logo-components').animate({top: newHeight, left: newWidth});
-            };
-            var fixLogo = function () {
-                var height = $('.logo-components').height();
-                var width = $('.logo-components').width();
-                $('.logo-components').height(height + 1);
-                $('.logo-components').width(width + 1);
-            };
             var flag = false;
             var mobileBar = function ( resize ) {
                 var smallScreen = window.matchMedia("only screen and (max-width: 760px)").matches;
