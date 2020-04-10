@@ -13,9 +13,9 @@ def index(request, category, page):
 
     polls = {}
     if category == "Open":
-        polls = Poll.objects.filter(open=True)
+        polls = Poll.objects.filter(open=True).order_by('-id')
     else:
-        polls = Poll.objects.filter(open=False)
+        polls = Poll.objects.filter(open=False).order_by('-id')
 
     context = {}
 
