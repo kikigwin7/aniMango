@@ -1,47 +1,38 @@
+# Protected Files
 db.sqlite3
 __pycache__/
 anilist.token
+token\.pickle
 media/
-env/
-*.pyc
 media_files/
 aniMango/mail_settings.py
 anilist_api/anilist_config.py
-
 aniMango/settings\.py
-
 aniMango/urls\.py
-
-members/migrations/
 aniMango/bleach_html\.py
-
 news/news_config\.py
-
 library/management/commands/authdetails\.json
-
-token\.pickle
-
-venv/lib/python2\.7/site-packages/django/contrib/admindocs/locale/be/LC_MESSAGES/
-
-venv/
-
-.idea/
-
-polls/migrations/
-
-security/
-
-static/
-
-venv3/
-
-logs/
-
-archive/migrations/
-
-git-old\.zip
-
 .well-known/
-
+security/
+static/
+logs/
 site_info/templates/site_info/ssl.html
 site_info/templates/site_info/ssl2.html
+
+# Migrations
+# archive/migrations/
+# members/migrations/
+# polls/migrations/
+
+# Virtual Env
+env/
+venv/
+venv3/
+
+# IDE Settings
+.idea/
+
+# Other
+git-old\.zip
+*.pyc
+
