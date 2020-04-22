@@ -1,0 +1,36 @@
+{% extends "karaoke/request_base.html" %}
+
+{% block request_area %}
+
+    <div class="card">
+        <form action="{% url 'karaoke:request_song' %}" name="request_form" method="post">
+            {% csrf_token %}
+            <div class="card-content">
+                <div class="left-align input-field">
+                    <input type="text" id="title" name="title" value="{{ form.title.value|default_if_none:'' }}" maxlength="200" required>
+                    <label for="title">Title</label>
+                    {{ form.title.errors }}
+                </div>
+                <div class="left-align input-field">
+                    <input type="text" id="artist" name="artist" value="{{ form.artist.value|default_if_none:'' }}" maxlength="200" required>
+                    <label for="artist">Artist</label>
+                    {{ form.artist.errors }}
+                </div>
+                <div class="left-align input-field">
+                    <input type="text" id="ultrastar_url" name="ultrastar_url" value="{{ form.ultrastar_url.value }}">
+                    <label for="ultrastar_url">Ultrastar Link</label>
+                    {{ form.ultrastar_url.errors }}
+                </div>
+                <div class="left-align input-field">
+                    <input type="text" id="anilist_url" name="anilist_url" value="{{ form.anilist_url.value }}">
+                    <label for="anilist_url">Anilist Link (Optional)</label>
+                    {{ form.anilist_url.errors }}
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="#" onclick="document.forms['request_form'].submit(); return false;">Request Song</a>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

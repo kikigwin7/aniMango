@@ -1,0 +1,15 @@
+{% extends "karaoke/request_base.html" %}
+
+{% block request_area %}
+
+    <div class="card">
+        <div class="card-content">
+            <h5 class="left-align">This song has already been requested!</h5>
+        </div>
+        <div class="card-action">
+            <a href="{% url 'karaoke:request_song' %}">Request a different song</a>
+        </div>
+    </div>
+
+
+{% endblock %}

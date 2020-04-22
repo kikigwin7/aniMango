@@ -284,3 +284,35 @@ main {
 @media only screen and (min-width: 761px) {
   #home-event-mobile { display: none; }
 }
+
+/* Restore list style in ULs */
+.ul-restore-points {
+    list-style-type: circle;
+    padding-inline-start: 40px;
+}
+
+.ul-restore-points li {
+    list-style-type: circle;
+}
+
+/* Style code*/
+code {
+    background-color: #EFF0F1;
+    border-radius: 1px;
+}
+
+.code-box {
+    white-space: pre-line;
+    background-color: #EFF0F1;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* Error list in forms */
+.errorlist {
+    color: #f44336;
+    margin-top: -12px;
+    margin-bottom: 15px;
+    font-size: 12px;
+}

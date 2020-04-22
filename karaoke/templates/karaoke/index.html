@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}
+    Karaoke
+{% endblock %}
+
+{% block content %}
+    <h3 class="center-align">Karaoke Songs List</h3>
+
+    <div class="row">
+        <form action="{% url 'karaoke:index' %}" method="get">
+            <div class="col s12">
+                <div class="card-panel">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field">
+                                <input id="searchbar" type="search" name="query"
+                                       {% if query %}value="{{ query }}"{% endif %}>
+                                <label for="searchbar">Search for a song, artist or show</label>
+                                <i class="material-icons">close</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        {% for song in songs_list %}
+            <div class="col s6 s12 m4 l2">
+                <div class="card hoverable">
+                    <div class="card-content karoke-label">
+                        <p class="left-align truncate" style="font-size: 22px"><b> {{ song.title }} </b></p>
+                        <p class="left-align truncate" style="font-size: 20px"><em>{{ song.artist }}</em></p>
+                        {% if song.series.title_eng %}
+                            <p class="left-align truncate" style="font-size: 16px">From {{ song.series.title_eng}}</p>
+                        {% else %}
+                            <p class="left-align truncate" style="font-size: 16px"><br></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <h5 class="center-align">There are no results for your search</h5>
+        {% endfor %}
+    </div>
+
+    <div class="center-align">
+        <ul class="pagination">
+            {% if songs_list.has_previous %}
+                <li class="waves-effect">
+                    <a href="?page={{ songs_list.previous_page_number }}{% if query %}&query={{ query }}{% endif %}">
+                        <i class="material-icons">chevron_left</i>
+                    </a>
+                </li>
+            {% endif %}
+
+            Page {{ songs_list.number }} of {{ songs_list.paginator.num_pages }}
+
+            {% if songs_list.has_next %}
+                <li class="waves-effect">
+                    <a href="?page={{ songs_list.next_page_number }}{% if query %}&query={{ query }}{% endif %}">
+                        <i class="material-icons">chevron_right</i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

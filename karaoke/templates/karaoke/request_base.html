@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Request
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="center-align">Request a Song</h4>
+
+        <div class="row">
+            <h5>How to request songs:</h5>
+            <p>First, check that the song you want to request is not already on our
+                <a href="{% url 'karaoke:index' %}">list</a>, or that it has already been
+                <a href="#pending-requests">requested</a>.
+            </p>
+            <p>If you can't find the song you want then follow the steps bellow to request it:</p>
+            <ol>
+                <li> Go to the <a href="https://ultrastar-es.org/en/canciones">ultastar-es</a> website.</li>
+                <li>Search the name of the song you want or the artist (Searching by anime doesn't always work).</li>
+                <li>Narrow the search to song you want and copy the URL (i.e. https://ultrastar-es.org/en/canciones?cancion=Kyoumei+no+true+force).</li>
+                <li>Fill out the request form bellow.</li>
+                <li>If the song has some relation to an Anime (for example if it is the OP of a show), it helps if you also fill in the <a href="https://anilist.co/">anilist</a> link for the show
+                    (i.e. https://anilist.co/anime/11757/Sword-Art-Online/ for the song Crossing Field).
+                </li>
+            </ol>
+            <p><i>Note: The song you want may not be karaoke-fied yet so if its not on the site then you could try mapping a song yourself.
+                We have a guide on how to do this <a href="{% url 'karaoke:mapping_guide' %}">here</a></i></p>
+
+
+            {% block request_area %}{% endblock %}
+
+
+        </div>
+    </div>
+
+    <div class="container">
+        <h4 class="center-align" id="pending-requests">Pending Requests</h4>
+
+        <div class="row">
+        {% for request in requests_list %}
+            <div class="col s6 s12 m4 l3">
+                <div class="card hoverable">
+                    <div class="card-content">
+                        <p class="left-align truncate"><b>Title:</b> {{ request.title }}</p>
+                        <p class="left-align truncate"><b>Artist:</b> {{ request.artist }}</p>
+                        <p class="left-align truncate"><b>Ultrastar Url:</b> <a>{{ request.ultrastar_url}}</a></p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <h5 class="center-align">There are no pending requests</h5>
+        {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}
